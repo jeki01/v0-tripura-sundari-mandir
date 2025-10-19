@@ -1,0 +1,87 @@
+# Robots.txt for Shree Tripura Sundari Mandir & Panchal Samaj
+# Official Digital Portal - https://shreetripurasundari.com
+
+User-agent: *
+Allow: /
+
+# Allow all search engines to crawl the entire site
+Allow: /images/
+Allow: /videos/
+Allow: /_next/static/
+Allow: /manifest.json
+
+# Disallow admin or private areas (if any in future)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Sitemap location
+Sitemap: https://shreetripurasundari.com/sitemap.xml
+
+# Crawl delay (optional - helps with server load)
+Crawl-delay: 1
+
+# Specific instructions for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+# Social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# Archive crawlers
+User-agent: ia_archiver
+Allow: /
+
+# SEO and monitoring tools
+User-agent: AhrefsBot
+Allow: /
+
+User-agent: MJ12bot
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+
+# Block aggressive crawlers that might overload the server
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Additional sitemap references
+Sitemap: https://shreetripurasundari.com/sitemap.xml
+Sitemap: https://matrimony.shreetripurasundari.com/sitemap.xml

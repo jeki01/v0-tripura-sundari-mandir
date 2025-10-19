@@ -1,0 +1,29 @@
+{
+  "name": "Shree Tripura Sundari Mandir & Panchal Samaj",
+  "short_name": "Tripura Sundari",
+  "description": "Official digital portal for Shree Tripura Sundari Mandir and Panchal Samaj 14 Chokhra",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF4E6",
+  "theme_color": "#B30000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/main-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/main-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["religion", "lifestyle", "social"],
+  "lang": "hi",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}
