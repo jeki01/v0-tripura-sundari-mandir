@@ -11,6 +11,7 @@ export default function NoticePortalSection() {
 
   // Moving ticker notices
   const tickerNotices = [
+    "🔔 सूचना: चैत्र नवरात्रि महोत्सव 19-26 मार्च 2026 को श्रद्धा और उत्साह के साथ आयोजित किया जाएगा। घट स्थापना 19 मार्च को दोपहर 12:15 बजे होगी।",
     "🔔 सूचना: पंचाल समाज 14 चोखरा परिचय सम्मेलन दिनांक 22 जून 2025, सुबह 9 बजे से मां त्रिपुरा सुंदरी मंदिर प्रांगण में आयोजित होगा।",
     "📢 महत्वपूर्ण: नवरात्रि महोत्सव 2025 के लिए पंजीकरण शुरू हो गया है। अधिक जानकारी के लिए संपर्क करें।",
     "🎉 शुभ समाचार: मंदिर में नई सुविधाओं का उद्घाटन 15 मार्च 2025 को होगा।",
@@ -18,6 +19,15 @@ export default function NoticePortalSection() {
 
   // Notice grid items
   const noticeItems = [
+    {
+      id: 0,
+      image: "/placeholder.svg?height=300&width=400&text=चैत्र नवरात्रि महोत्सव",
+      title: "चैत्र नवरात्रि महोत्सव 2026",
+      subtitle: "19-26 मार्च 2026, श्रद्धा और उत्साह के साथ",
+      date: "19 मार्च - 26 मार्च 2026",
+      location: "श्री त्रिपुरासुन्दरी मंदिर, उमराई",
+      type: "त्योहार",
+    },
     {
       id: 1,
       image: "/placeholder.svg?height=300&width=400&text=पंचाल समाज सम्मेलन",
@@ -187,10 +197,25 @@ export default function NoticePortalSection() {
                   <div className="mt-4 pt-4 border-t border-[#FF6B00]/20 animate-in slide-in-from-top duration-300">
                     <div className="bg-[#FFF4E6] p-3 rounded-lg">
                       <h4 className="font-bold text-[#B30000] mb-2">कार्यक्रम विवरण:</h4>
-                      <p className="text-gray-700 text-sm leading-relaxed">
-                        यह एक महत्वपूर्ण कार्यक्रम है जो समाज के सभी सदस्यों के लिए आयोजित किया जा रहा है। सभी से निवेदन है कि समय पर
-                        पधारें और कार्यक्रम को सफल बनाने में योगदान दें।
-                      </p>
+                      {notice.id === 0 ? (
+                        <div className="text-gray-700 text-sm leading-relaxed space-y-2">
+                          <p>माँ राजराजेश्वरी भगवती त्रिपुरासुन्दरी की कृपा से श्री त्रिपुरासुन्दरी मंदिर, उमराई में चैत्र नवरात्रि महोत्सव दिनांक 19 मार्च 2026 से 26 मार्च 2026 तक श्रद्धा और उत्साह के साथ आयोजित किया जाएगा।</p>
+                          <div className="bg-white p-2 rounded border-l-4 border-[#B30000]">
+                            <p className="font-semibold text-[#B30000] mb-1">मुख्य कार्यक्रम:</p>
+                            <ul className="text-xs space-y-1 text-gray-700">
+                              <li>• <strong>घट स्थापना:</strong> 19 मार्च 2026, दोपहर 12:15 से 1:15 बजे (अभिजीत मुहूर्त)</li>
+                              <li>• <strong>दैनिक आरती:</strong> प्रातः 7:00 बजे एवं सायं 7:00 बजे</li>
+                              <li>• <strong>अष्टमी हवन:</strong> 26 मार्च 2026, पूर्णाहुति सायं 5:30 बजे</li>
+                            </ul>
+                          </div>
+                          <p className="text-[#B30000] font-semibold">आप सभी से निवेदन है कि पधारकर माँ के दर्शन कर धर्म लाभ प्राप्त करें।</p>
+                        </div>
+                      ) : (
+                        <p>
+                          यह एक महत्वपूर्ण कार्यक्रम है जो समाज के सभी सदस्यों के लिए आयोजित किया जा रहा है। सभी से निवेदन है कि समय पर
+                          पधारें और कार्यक्रम को सफल बनाने में योगदान दें।
+                        </p>
+                      )}
                       <div className="mt-3 flex items-center justify-between">
                         <div className="flex items-center text-[#FF6B00] text-sm">
                           <Users className="mr-1" size={14} />
