@@ -3,95 +3,63 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Menu, X, ChevronDown } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function Header() {
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-  const [activeSection, setActiveSection] = useState("")
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-
-      const sections = [
-        "home",
-        "temple-history",
-        "festivals",
-        "events",
-        "gallery",
-        "blog",
-        "press-release",
-        "media-handlers",
-        "dharamshala",
-        "food",
-        "estore",
-        "contact",
-      ]
-
-      for (const section of sections) {
-        const el = document.getElementById(section)
-        if (el) {
-          const rect = el.getBoundingClientRect()
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section)
-            break
-          }
-        }
-      }
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50)
     window.addEventListener("scroll", handleScroll)
-    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // ✅ Menus
   const templeMenu = [
-    { name: "Temple History ", href: "#temple-history", id: "temple-history" },
-    { name: "Festivals", href: "#festivals", id: "festivals" },
-    { name: "Events", href: "#events", id: "events" },
-    { name: "Temple Timings", href: "#Timings", id: "Timings" },
+    { name: "History", href: "/history" },
+    { name: "Trust Mandal", href: "/trust-mandal" },
+    { name: "Contact", href: "/contact" },
+    { name: "Events", href: "/events" },
+    { name: "Festivals", href: "/festivals" },
+    { name: "Panchal Samaj", href: "/about-panchal-samaj" },
   ]
 
   const mediaMenu = [
-    { name: "Gallery", href: "#gallery", id: "gallery" },
-    { name: "Blog", href: "#blog", id: "blog" },
-    { name: "Press Release", href: "#press-release", id: "press-release" },
-    { name: "Media Handlers", href: "#media-handlers", id: "media-handlers" },
-    { name: "FAQ'S", href: "#faqs", id: "faq" },
+    { name: "Gallery", href: "/temple-images" },
+    { name: "Blog", href: "/blog" },
+    { name: "Press Release", href: "/press-release" },
+    { name: "Media Handlers", href: "/media-handlers" },
+    { name: "FAQ’S", href: "/faq" },
   ]
 
   const serviceMenu = [
-    { name: "Dharamshala", href: "#dharamshala", id: "dharamshala" },
-    { name: "Food & Restaurants", href: "#food", id: "food" },
-    { name: "E-Store", href: "#estore", id: "estore" },
-    { name: "Contact", href: "#contact", id: "contact" },
-    { name: "Donation", href: "#donation", id: "donation" },
-    { name: "Maa Shringar", href: "#shringar", id: "shringar" },
+    { name: "E-Store", href: "/estore" },
+    { name: "Donation", href: "/donation" },
+    { name: "Book Shringar", href: "/shringar" },
+  ]
+
+  const visitorsMenu = [
+    { name: "Recent Visits", href: "/vip-visitors-all" },
+    { name: "About Banswara", href: "/about-banswara" },
+    { name: "About Rajasthan", href: "/about-rajasthan" },
   ]
 
   const handleDropdownToggle = (menu: string) => {
     setActiveDropdown(activeDropdown === menu ? null : menu)
   }
 
-  const closeDropdowns = () => setActiveDropdown(null)
-
-  const handleLinkClick = (href: string) => {
+  const handleRoute = (path: string) => {
+    router.push(path)
     setIsMobileMenuOpen(false)
-    closeDropdowns()
-
-    const el = document.querySelector(href)
-    if (el) {
-      const offset = el.getBoundingClientRect().top + window.scrollY - 80
-      window.scrollTo({ top: offset, behavior: "smooth" })
-    }
+    setActiveDropdown(null)
   }
 
   return (
     <header className={`fixed top-0 w-full z-50 transition ${isScrolled ? "bg-[#B30000]" : "bg-gradient-to-r from-[#B30000]/90 to-[#FF6B00]/90"}`}>
 
-      {/* Top Tagline */}
+      {/* Tagline */}
       <div className="bg-[#FFD700] text-center py-1 text-[#B30000] text-sm font-bold">
         जय श्री मां त्रिपुरा सुंदरी
       </div>
@@ -100,24 +68,24 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
 
           {/* Logo */}
-          <div className="flex items-center gap-2 text-white cursor-pointer" onClick={() => handleLinkClick("#home")}>
+          <div
+            className="flex items-center gap-2 text-white cursor-pointer"
+            onClick={() => handleRoute("/")}
+          >
             <Image src="/images/main-logo.png" alt="logo" width={40} height={40} />
             <span className="font-bold">श्री त्रिपुरा सुंदरी मंदिर</span>
           </div>
 
-          {/* Desktop Nav */}
+          {/* Desktop Menu */}
           <nav className="hidden lg:flex items-center gap-8 text-white">
 
             {/* Home */}
-            <button
-              onClick={() => handleLinkClick("#home")}
-              className={activeSection === "home" ? "text-[#FFD700]" : ""}
-            >
+            <button onClick={() => handleRoute("/")} className="cursor-pointer">
               Home
             </button>
 
-            {/* Temple */}
-            <div className="relative">
+            {/* Temple Dropdown */}
+            <div className="relative cursor-pointer">
               <button onClick={() => handleDropdownToggle("temple")} className="flex items-center gap-1">
                 Temple <ChevronDown size={16} />
               </button>
@@ -125,7 +93,11 @@ export default function Header() {
               {activeDropdown === "temple" && (
                 <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
                   {templeMenu.map((item, i) => (
-                    <button key={i} onClick={() => handleLinkClick(item.href)} className="block w-full text-left text-sm text-gray-700 hover:text-[#FF6B00] py-1">
+                    <button
+                      key={i}
+                      onClick={() => handleRoute(item.href)}
+                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                    >
                       {item.name}
                     </button>
                   ))}
@@ -133,8 +105,8 @@ export default function Header() {
               )}
             </div>
 
-            {/* Media */}
-            <div className="relative">
+            {/* Media Dropdown */}
+            <div className="relative cursor-pointer">
               <button onClick={() => handleDropdownToggle("media")} className="flex items-center gap-1">
                 Media <ChevronDown size={16} />
               </button>
@@ -142,7 +114,11 @@ export default function Header() {
               {activeDropdown === "media" && (
                 <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
                   {mediaMenu.map((item, i) => (
-                    <button key={i} onClick={() => handleLinkClick(item.href)} className="block w-full text-left text-sm text-gray-700 hover:text-[#FF6B00] py-1">
+                    <button
+                      key={i}
+                      onClick={() => handleRoute(item.href)}
+                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                    >
                       {item.name}
                     </button>
                   ))}
@@ -150,8 +126,8 @@ export default function Header() {
               )}
             </div>
 
-            {/* Services */}
-            <div className="relative">
+            {/* Services Dropdown */}
+            <div className="relative cursor-pointer">
               <button onClick={() => handleDropdownToggle("services")} className="flex items-center gap-1">
                 Services <ChevronDown size={16} />
               </button>
@@ -159,7 +135,32 @@ export default function Header() {
               {activeDropdown === "services" && (
                 <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
                   {serviceMenu.map((item, i) => (
-                    <button key={i} onClick={() => handleLinkClick(item.href)} className="block w-full text-left text-sm text-gray-700 hover:text-[#FF6B00] py-1">
+                    <button
+                      key={i}
+                      onClick={() => handleRoute(item.href)}
+                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Visitors Dropdown */}
+            <div className="relative cursor-pointer">
+              <button onClick={() => handleDropdownToggle("visitors")} className="flex items-center gap-1">
+                Visitors <ChevronDown size={16} />
+              </button>
+
+              {activeDropdown === "visitors" && (
+                <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
+                  {visitorsMenu.map((item, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleRoute(item.href)}
+                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                    >
                       {item.name}
                     </button>
                   ))}
@@ -169,52 +170,108 @@ export default function Header() {
 
           </nav>
 
-          {/* Mobile Button */}
+          {/* Mobile Menu Button */}
           <button className="lg:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Sidebar */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-[#B30000] text-white p-4 space-y-4">
+          <div className="fixed inset-0 z-50 lg:hidden">
 
-            <button onClick={() => handleLinkClick("#home")}>Home</button>
+            <div
+              className="absolute inset-0 bg-black/40"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
 
-            <div>
-              <h3 className="text-[#FFD700] font-bold">Temple</h3>
-              {templeMenu.map((item, i) => (
-                <button key={i} onClick={() => handleLinkClick(item.href)} className="block text-sm py-1">
-                  {item.name}
+            <div className="absolute left-0 top-0 h-full w-72 bg-[#B30000] text-white p-5 overflow-y-auto shadow-xl">
+
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-lg font-semibold">Menu</h2>
+                <button onClick={() => setIsMobileMenuOpen(false)}>
+                  <X size={24} />
                 </button>
-              ))}
-            </div>
+              </div>
 
-            <div>
-              <h3 className="text-[#FFD700] font-bold">Media</h3>
-              {mediaMenu.map((item, i) => (
-                <button key={i} onClick={() => handleLinkClick(item.href)} className="block text-sm py-1">
-                  {item.name}
+              <div className="space-y-6">
+                <button onClick={() => handleRoute("/")} className="block text-left text-white text-base">
+                  Home
                 </button>
-              ))}
-            </div>
 
-            <div>
-              <h3 className="text-[#FFD700] font-bold">Services</h3>
-              {serviceMenu.map((item, i) => (
-                <button key={i} onClick={() => handleLinkClick(item.href)} className="block text-sm py-1">
-                  {item.name}
-                </button>
-              ))}
-            </div>
+                {/* Temple - Mobile */}
+                <div>
+                  <h3 className="text-[#FFD700] font-semibold mb-2">Temple</h3>
+                  <div className="pl-2 space-y-1">
+                    {templeMenu.map((item, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleRoute(item.href)}
+                        className="block text-sm w-full text-left py-1"
+                      >
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
+                {/* Media - Mobile */}
+                <div>
+                  <h3 className="text-[#FFD700] font-semibold mb-2">Media</h3>
+                  <div className="pl-2 space-y-1">
+                    {mediaMenu.map((item, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleRoute(item.href)}
+                        className="block text-sm w-full text-left py-1"
+                      >
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Services - Mobile */}
+                <div>
+                  <h3 className="text-[#FFD700] font-semibold mb-2">Services</h3>
+                  <div className="pl-2 space-y-1">
+                    {serviceMenu.map((item, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleRoute(item.href)}
+                        className="block text-sm w-full text-left py-1"
+                      >
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Visitors - Mobile */}
+                <div>
+                  <h3 className="text-[#FFD700] font-semibold mb-2">Visitors</h3>
+                  <div className="pl-2 space-y-1">
+                    {visitorsMenu.map((item, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleRoute(item.href)}
+                        className="block text-sm w-full text-left py-1"
+                      >
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
           </div>
         )}
+
       </div>
 
-      {/* Overlay */}
-      {activeDropdown && <div className="fixed inset-0" onClick={closeDropdowns} />}
+      {activeDropdown && <div className="fixed inset-0" onClick={() => setActiveDropdown(null)} />}
     </header>
   )
 }
-
