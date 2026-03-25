@@ -17,6 +17,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  /* ------------------ Menus ------------------ */
   const templeMenu = [
     { name: "History", href: "/history" },
     { name: "Trust Mandal", href: "/trust-mandal" },
@@ -46,6 +47,8 @@ export default function Header() {
     { name: "About Rajasthan", href: "/about-rajasthan" },
   ]
 
+  /* ------------------ Utility Functions ------------------ */
+
   const handleDropdownToggle = (menu: string) => {
     setActiveDropdown(activeDropdown === menu ? null : menu)
   }
@@ -59,10 +62,22 @@ export default function Header() {
   return (
     <header className={`fixed top-0 w-full z-50 transition ${isScrolled ? "bg-[#B30000]" : "bg-gradient-to-r from-[#B30000]/90 to-[#FF6B00]/90"}`}>
 
-      {/* Tagline */}
+      {/* Top Tagline */}
       <div className="bg-[#FFD700] text-center py-1 text-[#B30000] text-sm font-bold">
         जय श्री मां त्रिपुरा सुंदरी
       </div>
+
+      <style>
+        {`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fade-in {
+            animation: fadeIn 0.18s ease-out;
+          }
+        `}
+      </style>
 
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
@@ -76,27 +91,35 @@ export default function Header() {
             <span className="font-bold">श्री त्रिपुरा सुंदरी मंदिर</span>
           </div>
 
-          {/* Desktop Menu */}
-          <nav className="hidden lg:flex items-center gap-8 text-white">
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-10 text-white">
 
             {/* Home */}
-            <button onClick={() => handleRoute("/")} className="cursor-pointer">
+            <button
+              onClick={() => handleRoute("/")}
+              className="cursor-pointer hover:text-[#FFD700] transition"
+            >
               Home
             </button>
 
-            {/* Temple Dropdown */}
-            <div className="relative cursor-pointer">
-              <button onClick={() => handleDropdownToggle("temple")} className="flex items-center gap-1">
+            {/* ---------- DROPDOWN TEMPLATE ---------- */}
+            {/* Temple */}
+            <div className="relative">
+              <button
+                onClick={() => handleDropdownToggle("temple")}
+                className="flex items-center gap-1 cursor-pointer hover:text-[#FFD700] transition"
+              >
                 Temple <ChevronDown size={16} />
               </button>
 
               {activeDropdown === "temple" && (
-                <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
+                <div className="absolute mt-3 w-56 bg-white rounded-lg shadow-xl p-4 pointer-events-auto animate-fade-in">
                   {templeMenu.map((item, i) => (
                     <button
                       key={i}
                       onClick={() => handleRoute(item.href)}
-                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                      className="block w-full text-left text-gray-700 py-2 rounded-lg
+                                 hover:bg-[#FFF4E6] hover:text-[#B30000] cursor-pointer transition"
                     >
                       {item.name}
                     </button>
@@ -105,19 +128,22 @@ export default function Header() {
               )}
             </div>
 
-            {/* Media Dropdown */}
-            <div className="relative cursor-pointer">
-              <button onClick={() => handleDropdownToggle("media")} className="flex items-center gap-1">
+            {/* Media */}
+            <div className="relative">
+              <button
+                onClick={() => handleDropdownToggle("media")}
+                className="flex items-center gap-1 cursor-pointer hover:text-[#FFD700] transition"
+              >
                 Media <ChevronDown size={16} />
               </button>
 
               {activeDropdown === "media" && (
-                <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
+                <div className="absolute mt-3 w-56 bg-white rounded-lg shadow-xl p-4 pointer-events-auto animate-fade-in">
                   {mediaMenu.map((item, i) => (
                     <button
                       key={i}
                       onClick={() => handleRoute(item.href)}
-                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                      className="block w-full text-left text-gray-700 py-2 rounded-lg hover:bg-[#FFF4E6] hover:text-[#B30000] cursor-pointer transition"
                     >
                       {item.name}
                     </button>
@@ -126,19 +152,22 @@ export default function Header() {
               )}
             </div>
 
-            {/* Services Dropdown */}
-            <div className="relative cursor-pointer">
-              <button onClick={() => handleDropdownToggle("services")} className="flex items-center gap-1">
+            {/* Services */}
+            <div className="relative">
+              <button
+                onClick={() => handleDropdownToggle("services")}
+                className="flex items-center gap-1 cursor-pointer hover:text-[#FFD700] transition"
+              >
                 Services <ChevronDown size={16} />
               </button>
 
               {activeDropdown === "services" && (
-                <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
+                <div className="absolute mt-3 w-56 bg-white rounded-lg shadow-xl p-4 pointer-events-auto animate-fade-in">
                   {serviceMenu.map((item, i) => (
                     <button
                       key={i}
                       onClick={() => handleRoute(item.href)}
-                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                      className="block w-full text-left text-gray-700 py-2 rounded-lg hover:bg-[#FFF4E6] hover:text-[#B30000] cursor-pointer transition"
                     >
                       {item.name}
                     </button>
@@ -147,19 +176,22 @@ export default function Header() {
               )}
             </div>
 
-            {/* Visitors Dropdown */}
-            <div className="relative cursor-pointer">
-              <button onClick={() => handleDropdownToggle("visitors")} className="flex items-center gap-1">
+            {/* Visitors */}
+            <div className="relative">
+              <button
+                onClick={() => handleDropdownToggle("visitors")}
+                className="flex items-center gap-1 cursor-pointer hover:text-[#FFD700] transition"
+              >
                 Visitors <ChevronDown size={16} />
               </button>
 
               {activeDropdown === "visitors" && (
-                <div className="absolute mt-4 w-56 bg-white rounded-lg shadow-lg p-4">
+                <div className="absolute mt-3 w-56 bg-white rounded-lg shadow-xl p-4 pointer-events-auto animate-fade-in">
                   {visitorsMenu.map((item, i) => (
                     <button
                       key={i}
                       onClick={() => handleRoute(item.href)}
-                      className="block w-full text-left text-gray-700 hover:text-[#FF6B00] py-1 cursor-pointer"
+                      className="block w-full text-left text-gray-700 py-2 rounded-lg hover:bg-[#FFF4E6] hover:text-[#B30000] cursor-pointer transition"
                     >
                       {item.name}
                     </button>
@@ -176,7 +208,7 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Sidebar */}
+        {/* ================= MOBILE SIDEBAR ================= */}
         {isMobileMenuOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
 
@@ -199,7 +231,7 @@ export default function Header() {
                   Home
                 </button>
 
-                {/* Temple - Mobile */}
+                {/* Mobile Menu Sections */}
                 <div>
                   <h3 className="text-[#FFD700] font-semibold mb-2">Temple</h3>
                   <div className="pl-2 space-y-1">
@@ -215,48 +247,33 @@ export default function Header() {
                   </div>
                 </div>
 
-                {/* Media - Mobile */}
                 <div>
                   <h3 className="text-[#FFD700] font-semibold mb-2">Media</h3>
                   <div className="pl-2 space-y-1">
                     {mediaMenu.map((item, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleRoute(item.href)}
-                        className="block text-sm w-full text-left py-1"
-                      >
+                      <button key={i} onClick={() => handleRoute(item.href)} className="block text-sm w-full text-left py-1">
                         {item.name}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Services - Mobile */}
                 <div>
                   <h3 className="text-[#FFD700] font-semibold mb-2">Services</h3>
                   <div className="pl-2 space-y-1">
                     {serviceMenu.map((item, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleRoute(item.href)}
-                        className="block text-sm w-full text-left py-1"
-                      >
+                      <button key={i} onClick={() => handleRoute(item.href)} className="block text-sm w-full text-left py-1">
                         {item.name}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Visitors - Mobile */}
                 <div>
                   <h3 className="text-[#FFD700] font-semibold mb-2">Visitors</h3>
                   <div className="pl-2 space-y-1">
                     {visitorsMenu.map((item, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleRoute(item.href)}
-                        className="block text-sm w-full text-left py-1"
-                      >
+                      <button key={i} onClick={() => handleRoute(item.href)} className="block text-sm w-full text-left py-1">
                         {item.name}
                       </button>
                     ))}
@@ -271,7 +288,13 @@ export default function Header() {
 
       </div>
 
-      {activeDropdown && <div className="fixed inset-0" onClick={() => setActiveDropdown(null)} />}
+      {/* Non-blocking Overlay */}
+      {activeDropdown && (
+        <div
+          className="fixed inset-0 pointer-events-none"
+          onClick={() => setActiveDropdown(null)}
+        />
+      )}
     </header>
   )
 }
