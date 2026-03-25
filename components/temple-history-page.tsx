@@ -4,6 +4,33 @@ import { Badge } from "@/components/ui/badge"
 import { Crown, Building, Calendar, Hammer, Star, MapPin, BookOpen, Users, Camera } from "lucide-react"
 
 export default function TempleHistoryPage() {
+     const divineImages = [
+      {
+        src: "/images/divine/ma-swarup-1.jpg",
+        alt: "माँ त्रिपुरा सुंदरी का पूर्ण दिव्य स्वरूप - 18 भुजाओं सहित",
+        caption: "माँ का पूर्ण दिव्य स्वरूप - 18 भुजाओं सहित",
+      },
+      {
+        src: "/images/divine/ma-swarup-4.jpg",
+        alt: "सुनहरे प्रभामंडल के साथ माँ का दिव्य रूप",
+        caption: "सुनहरे प्रभामंडल के साथ दिव्य रूप",
+      },
+      {
+        src: "/images/divine/ma-face-4.jpg",
+        alt: "माँ के दिव्य मुखारविंद का निकट दर्शन",
+        caption: "दिव्य मुखारविंद का निकट दर्शन",
+      },
+      {
+        src: "/images/divine/ma-swarup-5.jpg",
+        alt: "स्वर्ण आभूषणों से सुसज्जित माँ का मुख",
+        caption: "स्वर्ण आभूषणों से सुसज्जित मुख",
+      },
+      {
+        src: "/images/divine/ma-face-3.jpg",
+        alt: "माँ के नेत्रों का दिव्य तेज",
+        caption: "माँ के नेत्रों का दिव्य तेज",
+      },
+    ]
   const developmentFeatures = [
     "सुंदर बाग-बगीचे",
     "फव्वारे",
@@ -53,33 +80,7 @@ export default function TempleHistoryPage() {
     },
   ]
 
-  const divineImages = [
-    {
-      src: "/images/divine/ma-swarup-1.jpg",
-      alt: "माँ त्रिपुरा सुंदरी का पूर्ण दिव्य स्वरूप - 18 भुजाओं सहित",
-      caption: "माँ का पूर्ण दिव्य स्वरूप - 18 भुजाओं सहित",
-    },
-    {
-      src: "/images/divine/ma-swarup-4.jpg",
-      alt: "सुनहरे प्रभामंडल के साथ माँ का दिव्य रूप",
-      caption: "सुनहरे प्रभामंडल के साथ दिव्य रूप",
-    },
-    {
-      src: "/images/divine/ma-face-4.jpg",
-      alt: "माँ के दिव्य मुखारविंद का निकट दर्शन",
-      caption: "दिव्य मुखारविंद का निकट दर्शन",
-    },
-    {
-      src: "/images/divine/ma-swarup-5.jpg",
-      alt: "स्वर्ण आभूषणों से सुसज्जित माँ का मुख",
-      caption: "स्वर्ण आभूषणों से सुसज्जित मुख",
-    },
-    {
-      src: "/images/divine/ma-face-3.jpg",
-      alt: "माँ के नेत्रों का दिव्य तेज",
-      caption: "माँ के नेत्रों का दिव्य तेज",
-    },
-  ]
+
 
   return (
     <section id="temple-history" className="py-16 bg-gradient-to-b from-[#FFF4E6] to-[#FDF0D5]">

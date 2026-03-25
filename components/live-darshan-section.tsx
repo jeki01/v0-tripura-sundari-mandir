@@ -1,82 +1,119 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Heart, Users, Bell, Camera, Video, Shield, Globe, WifiOff } from 'lucide-react'
+import { Camera, Video, WifiOff, AlertTriangle } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
-const IS_CURRENTLY_LIVE = true; // change to false if offline
-const YOUTUBE_CHANNEL_ID = "UClQYJEOUrS2WS4a5-8yD7cQ"; // test live channel (replace with your real one)
+const IS_CURRENTLY_LIVE = true
+const YOUTUBE_CHANNEL_ID = "UClQYJEOUrS2WS4a5-8yD7cQ"
 
 export default function LiveDarshanSection() {
+  const [videoError, setVideoError] = useState(false)
+
   return (
     <section id="darshan-live" className="py-16 bg-[#FFF4E6]">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <Video className="text-[#B30000] mr-3" size={32} />
-            <h2 className="text-4xl font-bold text-[#B30000]">Live Darshan</h2>
+
+        {/* Heading */}
+        <div className="text-center mb-10">
+          <div className="flex items-center justify-center mb-3">
+            <Video className="text-[#B30000] mr-2" size={28} />
+            <h2 className="text-3xl font-bold text-[#B30000]">
+              लाइव दर्शन
+            </h2>
           </div>
-          {IS_CURRENTLY_LIVE ? (
-            <p className="text-[#00B300] text-xl font-medium">LIVE Now from Garbh Grah</p>
-          ) : (
-            <p className="text-[#B30000] text-xl font-medium">Darshan Currently Offline</p>
-          )}
-          <p className="text-gray-600 mt-2">श्री त्रिपुरा सुंदरी मंदिर - गर्भगृह से सीधा दर्शन</p>
+
+          <p className="text-sm text-gray-500">
+            श्री त्रिपुरा सुंदरी मंदिर - गर्भगृह से सीधा प्रसारण
+          </p>
         </div>
 
-        <div className="max-w-5xl mx-auto">
-          <Card className="border-4 border-[#FF6B00] shadow-2xl">
-            <CardHeader className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white text-center">
-              <div className="flex items-center justify-center mb-2">
-                <Camera className="text-[#FFD700] mr-2" size={24} />
-                <CardTitle className="text-2xl">श्री त्रिपुरा सुंदरी दर्शन</CardTitle>
-                <Camera className="text-[#FFD700] ml-2" size={24} />
+        <div className="max-w-4xl mx-auto">
+          <Card className="rounded-2xl overflow-hidden shadow-lg">
+
+            <CardHeader className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white text-center py-4">
+              <div className="flex items-center justify-center gap-2">
+                <Camera className="text-[#FFD700]" size={20} />
+                <CardTitle className="text-lg">
+                  श्री त्रिपुरा सुंदरी मंदिर
+                </CardTitle>
               </div>
-              <p className="text-[#FFD700] font-medium">Live Darshan from Sacred Garbh Grah</p>
             </CardHeader>
 
             <CardContent className="p-0">
-              <div className="relative">
-                <div className="aspect-video bg-black relative overflow-hidden flex items-center justify-center">
-                  {IS_CURRENTLY_LIVE ? (
-                    <iframe
-                      className="absolute top-0 left-0 w-full h-full"
-                      src={`https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1&controls=1&rel=0`}
-                      title="Shree Tripura Sundari Mandir - Live Darshan"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                    ></iframe>
-                  ) : (
-                    <Image
-                      src="/images/garbh-grah-darshan.jpg"
-                      alt="Darshan is currently offline"
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                  )}
-                </div>
+              <div className="relative aspect-video bg-black">
 
-                {IS_CURRENTLY_LIVE ? (
-                  <div className="absolute top-4 left-4 bg-[#00B300] text-white px-3 py-1 rounded-full text-sm font-bold flex items-center animate-pulse">
-                    <div className="w-2 h-2 bg-white rounded-full mr-2 animate-ping" />
-                    LIVE DARSHAN
-                  </div>
+                {/* VIDEO / IMAGE */}
+                {IS_CURRENTLY_LIVE && !videoError ? (
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1`}
+                    title="Live Darshan"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    onError={() => setVideoError(true)}
+                  />
                 ) : (
-                  <div className="absolute top-4 left-4 bg-gray-700 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center">
-                    <WifiOff className="w-4 h-4 mr-2" />
-                    OFFLINE
+                  <Image
+                    src="/images/garbh-grah-darshan.jpg"
+                    alt="Darshan Offline"
+                    fill
+                    className="object-cover"
+                  />
+                )}
+
+                {/* Overlay for Error */}
+                {videoError && (
+                  <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center px-4">
+                    <AlertTriangle className="text-yellow-400 mb-3" size={32} />
+
+                    <p className="text-white font-semibold text-lg">
+                      वीडियो उपलब्ध नहीं है
+                    </p>
+
+                    <p className="text-gray-300 text-sm mt-2 max-w-md">
+                      तकनीकी समस्या के कारण लाइव दर्शन उपलब्ध नहीं है।
+                      कृपया हमारे सोशल मीडिया चैनल पर अन्य वीडियो देखें।
+                    </p>
+
+                    {/* Social Links */}
+                    <div className="flex gap-4 mt-4 text-sm">
+                      <Link href="https://www.youtube.com/@shreetripurasundari" target="_blank" className="text-red-400 hover:underline">
+                        YouTube
+                      </Link>
+                      <Link href="https://www.instagram.com/maa_tripura_sunadari_mandir" target="_blank" className="text-pink-400 hover:underline">
+                        Instagram
+                      </Link>
+                      <Link href="https://www.facebook.com/profile.php?id=61579670115975" target="_blank" className="text-blue-400 hover:underline">
+                        Facebook
+                      </Link>
+                    </div>
                   </div>
                 )}
 
-                <div className="absolute top-4 right-4 bg-[#FFD700] text-[#B30000] px-3 py-1 rounded-lg text-sm font-bold">
-                  गर्भगृह - Garbh Grah
+                {/* Status Badge */}
+                <div className="absolute top-4 left-4">
+                  {IS_CURRENTLY_LIVE && !videoError ? (
+                    <div className="flex items-center gap-2 bg-green-600 text-white px-3 py-1 rounded-full text-xs">
+                      <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                      LIVE
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 bg-gray-700 text-white px-3 py-1 rounded-full text-xs">
+                      <WifiOff size={14} />
+                      OFFLINE
+                    </div>
+                  )}
                 </div>
+
               </div>
             </CardContent>
+
           </Card>
         </div>
+
       </div>
     </section>
   )

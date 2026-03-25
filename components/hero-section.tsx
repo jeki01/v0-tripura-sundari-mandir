@@ -88,8 +88,7 @@ export default function HeroSection({ onContentLoad }: HeroSectionProps) {
       </div>
 
       {/* Hero Content Section */}
-      <div className="bg-[#FFF4E6] py-6 xs:py-8 sm:py-10 md:py-12 lg:py-16 xl:py-20 2xl:py-24 relative overflow-hidden">
-        {/* Background Pattern */}
+      {/* <div className="bg-[#FFF4E6] py-6 xs:py-8 sm:py-10 md:py-12 lg:py-16 xl:py-20 2xl:py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-2 md:opacity-3 lg:opacity-5 hidden md:block">
           <div className="absolute top-20 left-20 w-24 h-24 lg:w-32 lg:h-32 border-2 lg:border-4 border-[#FF6B00] rounded-full"></div>
           <div className="absolute bottom-20 right-20 w-16 h-16 lg:w-24 lg:h-24 border-2 lg:border-4 border-[#B30000] rounded-full"></div>
@@ -97,7 +96,6 @@ export default function HeroSection({ onContentLoad }: HeroSectionProps) {
         </div>
 
         <div className="container mx-auto px-3 xs:px-4 sm:px-6 md:px-8 text-center relative z-10">
-          {/* Main Heading */}
           <div className="mb-6 xs:mb-8 sm:mb-10 md:mb-12">
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-[#B30000] mb-3 xs:mb-4 sm:mb-5 md:mb-6 leading-tight px-2">
               जय श्री माँ त्रिपुरा सुंदरी
@@ -108,14 +106,12 @@ export default function HeroSection({ onContentLoad }: HeroSectionProps) {
             </p>
           </div>
 
-          {/* Subtitle */}
           <div className="mb-6 xs:mb-8 sm:mb-10 md:mb-12">
             <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-2">
               श्री त्रिपुरा सुंदरी मंदिर और पंचाल समाज 14 चोखरा का आधिकारिक डिजिटल पोर्टल
             </p>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-2 xs:gap-3 sm:gap-4 md:gap-6 justify-center items-center mb-8 xs:mb-10 sm:mb-12 md:mb-16 px-3 xs:px-4">
             <Button
               size="lg"
@@ -157,7 +153,6 @@ export default function HeroSection({ onContentLoad }: HeroSectionProps) {
             </Button>
           </div>
 
-          {/* Feature Highlights */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto px-2">
             <div className="bg-white/90 backdrop-blur-sm p-3 xs:p-4 sm:p-6 md:p-8 rounded-xl xs:rounded-2xl sm:rounded-3xl border border-[#FF6B00]/15 sm:border-2 border-[#FF6B00]/20 shadow-md sm:shadow-lg md:shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 sm:hover:-translate-y-2 group">
               <div className="w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#FF6B00] to-[#B30000] rounded-full flex items-center justify-center mx-auto mb-3 xs:mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -190,7 +185,7 @@ export default function HeroSection({ onContentLoad }: HeroSectionProps) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Vimeo Player API Script */}
       <script src="https://player.vimeo.com/api/player.js" async />

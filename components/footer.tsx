@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Facebook, Twitter, Instagram, Youtube, Phone, Mail, MapPin, ExternalLink, FileText, Globe } from "lucide-react"
-
+import { FaWhatsapp } from "react-icons/fa"
 export default function Footer() {
   const quickLinks = [
     "About Mandir",
@@ -17,10 +17,8 @@ export default function Footer() {
   ]
 
   const trustMandal = [
-    "श्रीमान धूलजी भाई पंचाल - अध्यक्ष",
-    "श्रीमान नटवरलालजी पंचाल - महामंत्री",
-    "Panchal Samaj 14 Chokhra",
-    "Banswara, Dungarpur, Pratapgarh, Udaipur",
+    "अध्यक्ष - श्रीमान धूलजी भाई पंचाल",
+    "महामंत्री - श्रीमान नटवरलालजी पंचाल",
   ]
 
   return (
@@ -36,36 +34,14 @@ export default function Footer() {
       </div>
 
       {/* Tagline at top */}
-      <div className="bg-[#FFD700] text-[#B30000] text-center py-2">
+      {/* <div className="bg-[#FFD700] text-[#B30000] text-center py-2">
         <p className="text-lg font-bold">जय श्री मां त्रिपुरा सुंदरी</p>
-      </div>
+      </div> */}
 
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Temple Info */}
-          <div>
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="relative">
-                <Image
-                  src="/images/main-logo.png"
-                  alt="Tripura Sundari Mandir Logo"
-                  width={60}
-                  height={60}
-                  className="rounded-full border-2 border-[#FFD700]"
-                />
-                <div className="absolute -inset-1 border border-[#FFD700] rounded-full opacity-50 animate-spin-slow"></div>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">Shree Tripura Sundari Mandir</h3>
-                <p className="text-[#FFD700] text-sm">Panchal Samaj 14 Chokhra</p>
-              </div>
-            </div>
-            <p className="text-[#FFF4E6] mb-4 leading-relaxed">
-              One of the 51 sacred Shakti Peethas, connecting devotion with technology, serving our community with
-              traditional values and modern convenience.
-            </p>
-            <div className="text-center text-[#FFD700] font-bold text-lg">समर्पण • सेवा • संकल्प</div>
-          </div>
+
 
           {/* Quick Links */}
           <div>
@@ -100,8 +76,7 @@ export default function Footer() {
           {/* SEO Tools - NEW SECTION */}
           <div>
             <h4 className="text-xl font-bold mb-6 text-[#FFD700] flex items-center">
-              <FileText className="mr-2" size={20} />
-              SEO Tools
+              Follow us
             </h4>
             <div className="space-y-3">
               <Link
@@ -110,10 +85,55 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 text-sm group"
               >
-                <Globe className="mr-2 text-[#FFD700] group-hover:scale-110 transition-transform" size={16} />
-                <span>XML Sitemap</span>
-                <ExternalLink className="ml-1" size={12} />
+
               </Link>
+
+              <div className="mt-6">
+                <div className="flex space-x-4">
+
+                  {/* Facebook */}
+                  <Link
+                    href="https://www.facebook.com/profile.php?id=61579670115975"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
+                  >
+                    <Facebook size={16} />
+                  </Link>
+
+                  {/* Instagram */}
+                  <Link
+                    href="https://www.instagram.com/maa_tripura_sunadari_mandir?igsh=M2VtbWt1NjlldzEz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
+                  >
+                    <Instagram size={16} />
+                  </Link>
+
+                  {/* YouTube */}
+                  <Link
+                    href="https://m.youtube.com/@shreetripurasundari"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
+                  >
+                    <Youtube size={16} />
+                  </Link>
+
+                  {/* WhatsApp */}
+                  <Link
+                    href="https://whatsapp.com/channel/0029VaoNub9GU3BHZmvqjA00"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#FFF4E6] hover:text-[#25D366] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#25D366]"
+                  >
+                    {/* Lucide doesn't have WhatsApp → use text or custom icon */}
+                    <FaWhatsapp size={16} />
+                  </Link>
+
+                </div>
+              </div>
             </div>
           </div>
 
@@ -129,24 +149,34 @@ export default function Footer() {
                   <span className="text-[#FFF4E6] text-sm block">Rajasthan – 327001</span>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="text-[#FFD700]" size={18} />
-                <span className="text-[#FFF4E6] text-sm">+91 79 2550 1234</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="text-[#FFD700]" size={18} />
-                <span className="text-[#FFF4E6] text-sm">info@tripurasundari.org</span>
-              </div>
+              <a
+                href="tel:+918696851900"
+                className="flex items-center space-x-3 hover:text-[#FFD700]"
+              >
+                <Phone className="text-[#FFD700] flex-shrink-0" size={18} />
+                <span className="text-[#FFF4E6] text-sm">
+                  +91 8696851900
+                </span>
+              </a>
+              <a
+                href="mailto:shreetripurasundarimandir@gmail.com"
+                className="flex items-center space-x-3 hover:text-[#FFD700]"
+              >
+                <Mail className="text-[#FFD700] flex-shrink-0" size={18} />
+                <span className="text-sm break-all">
+                  shreetripurasundarimandir@gmail.com
+                </span>
+              </a>
 
               {/* Google Maps Link */}
               <div className="mt-4">
                 <Link
-                  href="https://g.co/kgs/ZEUPnyR"
+                  href="https://www.google.com/maps/place/Maa+Tripura+Sundri+Temple/@23.5323482,74.321633,727m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3966da0646045a3d:0xe998c21391584afc!8m2!3d23.5323482!4d74.321633!16s%2Fg%2F1tfj1l4c?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-[#FFD700] hover:text-white transition-colors duration-200 text-sm font-medium bg-white/10 px-3 py-2 rounded-lg hover:bg-white/20"
                 >
-                  <MapPin className="mr-2" size={16} />
+                  <MapPin className="mr-2" size={16} />   
                   View on Google Maps
                   <ExternalLink className="ml-1" size={12} />
                 </Link>
@@ -154,37 +184,10 @@ export default function Footer() {
             </div>
 
             {/* Social Media */}
-            <div className="mt-6">
-              <h5 className="font-bold text-[#FFD700] mb-3">Follow Us</h5>
-              <div className="flex space-x-4">
-                <Link
-                  href="#"
-                  className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
-                >
-                  <Facebook size={16} />
-                </Link>
-                <Link
-                  href="#"
-                  className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
-                >
-                  <Twitter size={16} />
-                </Link>
-                <Link
-                  href="#"
-                  className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
-                >
-                  <Instagram size={16} />
-                </Link>
-                <Link
-                  href="#"
-                  className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
-                >
-                  <Youtube size={16} />
-                </Link>
-              </div>
-            </div>
+
           </div>
         </div>
+
 
         {/* Bottom Section */}
         <div className="border-t border-[#FFD700] mt-8 pt-8">
