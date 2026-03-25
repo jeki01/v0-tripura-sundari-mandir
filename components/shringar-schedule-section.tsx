@@ -62,8 +62,8 @@ export default function ShringarScheduleSection() {
                     key={index}
                     onClick={() => setSelectedDay(index)}
                     className={`cursor-pointer transition ${index === selectedDay
-                        ? "bg-[#FFD700]/20"
-                        : "hover:bg-[#FFF4E6]"
+                      ? "bg-[#FFD700]/20"
+                      : "hover:bg-[#FFF4E6]"
                       }`}
                   >
                     <td className="p-2 md:p-3 text-[#B30000] text-sm">
@@ -162,18 +162,26 @@ export default function ShringarScheduleSection() {
               </h3>
 
               <p className="text-xs md:text-sm mb-2">
-                <strong>प्रबंधक:</strong> जिगेश पंचाल
+                <strong>प्रबंधक:</strong> जागेश पंचाल
               </p>
 
-              <div className="flex items-center gap-2 text-xs md:text-sm mb-2">
-                <Phone size={14} />
+              <a
+                href="tel:+918696851900"
+                className="flex items-center space-x-3 hover:text-[#FFD700]"
+              >
+                <Phone className="text-[#FFD700] flex-shrink-0" size={18} />
                 <span>+91 8696851900</span>
-              </div>
+              </a>
 
-              <div className="flex items-center gap-2 text-xs md:text-sm">
-                <Mail size={14} />
-                <span>whitedebbie@example.net</span>
-              </div>
+              <a
+                href="mailto:shreetripurasundarimandir@gmail.com"
+                className="flex items-center space-x-3 hover:text-[#FFD700]"
+              >
+                <Mail className="text-[#FFD700] flex-shrink-0" size={18} />
+                <span className="text-sm break-all">
+                  shreetripurasundarimandir@gmail.com
+                </span>
+              </a>
             </div>
 
             {/* Booking Button */}
