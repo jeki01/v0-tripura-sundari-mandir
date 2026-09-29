@@ -119,17 +119,46 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Clock, Sun, Snowflake } from "lucide-react"
+import { fetchContent, isManaged } from "@/lib/api"
+
+const DEFAULT_TIMINGS = [
+  { activity: "मंदिर खुलने का समय", summer: "5:00 AM", winter: "5:30 AM" },
+  { activity: "दर्शन प्रारंभ", summer: "6:00 AM", winter: "7:00 AM" },
+  { activity: "मंगला आरती", summer: "7:00 AM", winter: "7:30 AM" },
+  { activity: "भोग धारण", summer: "12:00 PM", winter: "12:00 PM" },
+  { activity: "विश्राम", summer: "1:00 - 2:30 PM", winter: "1:00 - 2:30 PM" },
+  { activity: "संध्या आरती", summer: "7:15 PM", winter: "6:30 PM" },
+  { activity: "मंदिर बंद होने का समय", summer: "9:00 PM", winter: "8:30 PM" },
+]
+
+const DEFAULT_WINTER_RANGE = "16 अक्टूबर – 28 फरवरी"
+const DEFAULT_SUMMER_RANGE = "1 मार्च – 15 अक्टूबर"
 
 export default function TempleTimingsSection() {
-  const timings = [
-    { activity: "मंदिर खुलने का समय", summer: "5:00 AM", winter: "5:30 AM" },
-    { activity: "दर्शन प्रारंभ", summer: "6:00 AM", winter: "7:00 AM" },
-    { activity: "मंगला आरती", summer: "7:00 AM", winter: "7:30 AM" },
-    { activity: "भोग धारण", summer: "12:00 PM", winter: "12:00 PM" },
-    { activity: "विश्राम", summer: "1:00 - 2:30 PM", winter: "1:00 - 2:30 PM" },
-    { activity: "संध्या आरती", summer: "7:15 PM", winter: "6:30 PM" },
-    { activity: "मंदिर बंद होने का समय", summer: "9:00 PM", winter: "8:30 PM" },
-  ]
+  const [timings, setTimings] = useState(DEFAULT_TIMINGS)
+  const [winterRange, setWinterRange] = useState(DEFAULT_WINTER_RANGE)
+  const [summerRange, setSummerRange] = useState(DEFAULT_SUMMER_RANGE)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchContent("temple-timings").then((c) => {
+      if (cancelled || !isManaged(c)) return
+      if (Array.isArray(c?.items) && c.items.length > 0) {
+        setTimings(
+          c.items.map((it: any) => ({ activity: it.activity || "", summer: it.summer || "", winter: it.winter || "" }))
+        )
+      }
+    })
+    fetchContent("temple-season-dates").then((c) => {
+      if (cancelled || !isManaged(c)) return
+      const items = c?.items && !Array.isArray(c.items) ? c.items : null
+      if (items?.winterRange) setWinterRange(items.winterRange)
+      if (items?.summerRange) setSummerRange(items.summerRange)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   // 🔥 Detect current season
   const getCurrentSeason = () => {
@@ -205,10 +234,10 @@ export default function TempleTimingsSection() {
               {/* Season Duration */}
               <div className="mt-3 text-sm space-y-1">
                 <p className="text-blue-600">
-                  ❄️ शीतकाल: 16 अक्टूबर – 28 फरवरी
+                  ❄️ शीतकाल: {winterRange}
                 </p>
                 <p className="text-orange-600">
-                  ☀️ ग्रीष्मकाल: 1 मार्च – 15 अक्टूबर
+                  ☀️ ग्रीष्मकाल: {summerRange}
                 </p>
               </div>
             </CardHeader>

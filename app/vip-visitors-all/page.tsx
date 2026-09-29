@@ -5,8 +5,13 @@ import NavigationHandler from "@/components/navigation-handler"
 import ScrollProgress from "@/components/scroll-progress"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { PageShell, EmptyNote } from "@/components/cms"
+import { fetchContent, isManaged } from "@/lib/api"
+import RecentVisitsGrid from "@/components/recent-visits-grid"
 
-export default function VipVisitorsAllPage() {
+export const dynamic = "force-dynamic"
+
+function StaticVisitors() {
   return (
     <div className="min-h-screen bg-[#FFF4E6]">
       <ScrollProgress />
@@ -22,5 +27,17 @@ export default function VipVisitorsAllPage() {
       </main>
       <Footer />
     </div>
+  )
+}
+
+export default async function VipVisitorsAllPage() {
+  const c = await fetchContent("recent-visits")
+  const items: any[] = Array.isArray(c?.items) ? c.items : []
+  if (!isManaged(c)) return <StaticVisitors />
+  return (
+    <PageShell heading={c?.title || "हाल की विज़िट (Recent Visits)"}>
+      {items.length === 0 && <EmptyNote />}
+      {items.length > 0 && <RecentVisitsGrid items={items} />}
+    </PageShell>
   )
 }

@@ -5,8 +5,13 @@ import NavigationHandler from "@/components/navigation-handler"
 import ScrollProgress from "@/components/scroll-progress"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { PageShell, RichBody } from "@/components/cms"
+import { fetchContent, isManaged } from "@/lib/api"
 
-export default function HistoryPage() {
+export const dynamic = "force-dynamic"
+
+// Original static page (used as fallback until admin adds content)
+function StaticHistory() {
   return (
     <div className="min-h-screen bg-[#FFF4E6]">
       <ScrollProgress />
@@ -22,5 +27,15 @@ export default function HistoryPage() {
       </main>
       <Footer />
     </div>
+  )
+}
+
+export default async function HistoryPage() {
+  const c = await fetchContent("history")
+  if (!isManaged(c)) return <StaticHistory />
+  return (
+    <PageShell heading={c.title || "मंदिर का इतिहास (History)"}>
+      <RichBody html={c.html} />
+    </PageShell>
   )
 }

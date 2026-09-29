@@ -2,8 +2,25 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import NavigationHandler from "@/components/navigation-handler"
 import ScrollProgress from "@/components/scroll-progress"
+import { PageShell, EmptyNote } from "@/components/cms"
+import { fetchContent, isManaged } from "@/lib/api"
+import FestivalsGrid from "@/components/festivals-grid"
 
-export default function Festivals() {
+export const dynamic = "force-dynamic"
+
+export default async function FestivalsPage() {
+  const c = await fetchContent("festivals")
+  const items: any[] = Array.isArray(c?.items) ? c.items : []
+  if (!isManaged(c)) return <Festivals />
+  return (
+    <PageShell heading={c?.title || "मंदिर के प्रमुख त्योहार (Festivals)"}>
+      {items.length === 0 && <EmptyNote />}
+      {items.length > 0 && <FestivalsGrid items={items} />}
+    </PageShell>
+  )
+}
+
+function Festivals() {
   return (
     <div className="min-h-screen bg-[#FFF4E6]">
       <ScrollProgress />

@@ -5,8 +5,33 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import NavigationHandler from "@/components/navigation-handler"
 import ScrollProgress from "@/components/scroll-progress"
+import { PageShell, EmptyNote } from "@/components/cms"
+import { fetchContent, isManaged } from "@/lib/api"
 
-export default function TempleImagesPage() {
+export const dynamic = "force-dynamic"
+
+export default async function GalleryPage() {
+  const c = await fetchContent("gallery")
+  const items: any[] = Array.isArray(c?.items) ? c.items : []
+  // Not yet managed from the dashboard → show the original page.
+  if (!isManaged(c)) return <TempleImagesPage />
+  return (
+    <PageShell heading={c?.title || "गैलरी (Gallery)"}>
+      {items.length === 0 && <EmptyNote text="अभी तक कोई इमेज नहीं जोड़ी गई।" />}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+        {items.map((g, i) => (
+          <figure key={i} className="bg-white rounded-xl overflow-hidden shadow-md">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={g.image} alt={g.caption || "gallery"} className="w-full h-44 object-cover" />
+            {g.caption && <figcaption className="p-2 text-xs text-center text-gray-600">{g.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </PageShell>
+  )
+}
+
+function TempleImagesPage() {
   const templeImages = [
     "/images/temple-1.jpg",
     "/images/temple-2.jpg",

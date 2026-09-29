@@ -1,16 +1,70 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Camera, Video, WifiOff, AlertTriangle } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { fetchContent, isManaged } from "@/lib/api"
 
 const IS_CURRENTLY_LIVE = true
 const YOUTUBE_CHANNEL_ID = "UClQYJEOUrS2WS4a5-8yD7cQ"
+const DEFAULT_STREAM_URL = `https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1`
+
+// Tolerate the common ways someone pastes a link from the dashboard: a full
+// <iframe> embed snippet, a youtu.be short link, a normal watch?v= link, or
+// YouTube's live permalink (youtube.com/live/VIDEO_ID) — besides an
+// already-correct embed URL, which is returned unchanged.
+function toEmbedUrl(value: string) {
+  const iframeMatch = /<iframe[^>]*\ssrc=["']([^"']+)["']/i.exec(value)
+  if (iframeMatch) return iframeMatch[1]
+
+  const shortMatch = /youtu\.be\/([\w-]+)/i.exec(value)
+  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}?autoplay=1&mute=1`
+
+  const liveMatch = /youtube\.com\/live\/([\w-]+)/i.exec(value)
+  if (liveMatch) return `https://www.youtube.com/embed/${liveMatch[1]}?autoplay=1&mute=1`
+
+  const watchMatch = /[?&]v=([\w-]+)/i.exec(value)
+  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}?autoplay=1&mute=1`
+
+  return value.trim()
+}
+
+const POLL_INTERVAL_MS = 60_000
 
 export default function LiveDarshanSection() {
   const [videoError, setVideoError] = useState(false)
+  const [streamUrl, setStreamUrl] = useState(DEFAULT_STREAM_URL)
+  const streamUrlRef = useRef(streamUrl)
+
+  useEffect(() => {
+    let cancelled = false
+
+    // Poll the dashboard's stream URL periodically and swap the iframe only when
+    // it actually changed — so a page already open picks up a stream switch
+    // without the visitor needing to refresh.
+    const check = async () => {
+      const c = await fetchContent("live-darshan")
+      if (cancelled || !isManaged(c)) return
+      const items = c?.items && !Array.isArray(c.items) ? c.items : null
+      const raw = items?.streamUrl?.trim() || items?.defaultUrl?.trim()
+      if (!raw) return
+      const resolved = toEmbedUrl(raw)
+      if (resolved !== streamUrlRef.current) {
+        streamUrlRef.current = resolved
+        setStreamUrl(resolved)
+        setVideoError(false)
+      }
+    }
+
+    check()
+    const id = setInterval(check, POLL_INTERVAL_MS)
+    return () => {
+      cancelled = true
+      clearInterval(id)
+    }
+  }, [])
 
   return (
     <section id="darshan-live" className="py-16 bg-[#FFF4E6]">
@@ -49,7 +103,7 @@ export default function LiveDarshanSection() {
                 {IS_CURRENTLY_LIVE && !videoError ? (
                   <iframe
                     className="absolute inset-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/live_stream?channel=${YOUTUBE_CHANNEL_ID}&autoplay=1&mute=1`}
+                    src={streamUrl}
                     title="Live Darshan"
                     allow="autoplay; encrypted-media"
                     allowFullScreen

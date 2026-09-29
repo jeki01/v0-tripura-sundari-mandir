@@ -5,6 +5,7 @@ import Footer from "@/components/footer"
 import NavigationHandler from "@/components/navigation-handler"
 import ScrollProgress from "@/components/scroll-progress"
 import { useEffect, useState } from "react"
+import SubscribeForm from "@/components/subscribe-form"
 
 export default function MediaHandlers() {
     const [siteUrl, setSiteUrl] = useState("")
@@ -106,17 +107,7 @@ export default function MediaHandlers() {
                         दैनिक दर्शन और मंदिर से जुड़े सभी अपडेट सीधे ईमेल पर प्राप्त करें।
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-3">
-                        <input
-                            type="email"
-                            placeholder="Enter your email address"
-                            className="border border-orange-300 rounded-lg px-4 py-2 w-full outline-none focus:ring-2 focus:ring-orange-400"
-                        />
-
-                        <button className="bg-[#B30000] text-white px-6 py-2 rounded-lg hover:bg-[#990000] transition w-full sm:w-auto">
-                            Subscribe
-                        </button>
-                    </div>
+                    <SubscribeForm source="mandir-newsletter" />
                 </section>
 
                 {/* ---------- WHATSAPP COMMUNITY ---------- */}

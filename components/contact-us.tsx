@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Phone, Mail, Navigation, MapPin } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 import Link from "next/link"
+import { API_BASE } from "@/lib/api"
 
 export default function ContactSection() {
     const [form, setForm] = useState({
@@ -13,15 +14,62 @@ export default function ContactSection() {
         phone: "",
         message: "",
     })
+    const [contactMsg, setContactMsg] = useState("")
+    const [newsletterEmail, setNewsletterEmail] = useState("")
+    const [subMsg, setSubMsg] = useState("")
+    const [busy, setBusy] = useState(false)
 
     const handleChange = (e: any) => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    const handleSubmit = (e: any) => {
+    // Reach out + opt-in subscribe
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        console.log(form)
-        alert("Form submitted 🙏")
+        setBusy(true); setContactMsg("")
+        try {
+            const res = await fetch(`${API_BASE}/subscriber/contact`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            })
+            const json = await res.json()
+            if (res.ok && json.success) {
+                if (form.email) {
+                    fetch(`${API_BASE}/subscriber`, {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email: form.email, name: form.name, source: "mandir-contact" }),
+                    }).catch(() => { })
+                }
+                setContactMsg("🙏 धन्यवाद! आपका संदेश भेज दिया गया है।")
+                setForm({ name: "", email: "", phone: "", message: "" })
+            } else {
+                setContactMsg(json.message || "संदेश नहीं भेजा जा सका")
+            }
+        } catch {
+            setContactMsg("कुछ गड़बड़ हुई, पुनः प्रयास करें")
+        } finally {
+            setBusy(false)
+        }
+    }
+
+    // Newsletter subscribe only — independent from the Reach Out form's own state,
+    // and tagged with its own source so admin can tell the two apart.
+    const handleSubscribe = async (e: any) => {
+        e.preventDefault()
+        if (!newsletterEmail) return
+        setSubMsg("")
+        try {
+            const res = await fetch(`${API_BASE}/subscriber`, {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: newsletterEmail, source: "mandir-newsletter" }),
+            })
+            const json = await res.json()
+            setSubMsg(res.ok && json.success ? "धन्यवाद! सदस्यता हो गई।" : (json.message || "सदस्यता विफल"))
+            if (res.ok && json.success) setNewsletterEmail("")
+        } catch {
+            setSubMsg("कुछ गड़बड़ हुई")
+        }
     }
 
     return (
@@ -93,10 +141,12 @@ export default function ContactSection() {
 
                                 <button
                                     type="submit"
-                                    className="w-full bg-[#B30000] text-white py-3 rounded-lg font-semibold hover:bg-[#FF6B00] transition"
+                                    disabled={busy}
+                                    className="w-full bg-[#B30000] text-white py-3 rounded-lg font-semibold hover:bg-[#FF6B00] transition disabled:opacity-60"
                                 >
-                                    Submit
+                                    {busy ? "भेजा जा रहा है..." : "Submit"}
                                 </button>
+                                {contactMsg && <p className="text-sm text-green-700 text-center">{contactMsg}</p>}
 
                             </form>
                         </CardContent>
@@ -169,17 +219,16 @@ export default function ContactSection() {
                                 <p className="font-semibold text-[#B30000] mb-2">
                                     News and updates
                                 </p>
-                                <form className="space-y-4">
+                                <form className="space-y-4" onSubmit={handleSubscribe}>
                                     <input
                                         type="email"
-                                        name="email"
+                                        name="newsletterEmail"
                                         placeholder="ईमेल"
-                                        value={form.email}
-                                        onChange={handleChange}
+                                        value={newsletterEmail}
+                                        onChange={(e) => setNewsletterEmail(e.target.value)}
                                         required
                                         className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                                     />
-
 
                                     <button
                                         type="submit"
@@ -187,6 +236,7 @@ export default function ContactSection() {
                                     >
                                         Subscribe
                                     </button>
+                                    {subMsg && <p className="text-sm text-green-700">{subMsg}</p>}
 
                                 </form>
                             </div>

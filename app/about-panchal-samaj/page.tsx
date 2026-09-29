@@ -1,13 +1,16 @@
 import PanchalSamajSection from "@/components/panchal-samaj-section"
-import TrustManagementSection from "@/components/trust-management-section"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import NavigationHandler from "@/components/navigation-handler"
 import ScrollProgress from "@/components/scroll-progress"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { PageShell, RichBody } from "@/components/cms"
+import { fetchContent, isManaged } from "@/lib/api"
 
-export default function CommunityPage() {
+export const dynamic = "force-dynamic"
+
+function StaticCommunity() {
   return (
     <div className="min-h-screen bg-[#FFF4E6]">
       <ScrollProgress />
@@ -20,9 +23,18 @@ export default function CommunityPage() {
           </Link>
         </div>
         <PanchalSamajSection />
-
       </main>
       <Footer />
     </div>
+  )
+}
+
+export default async function CommunityPage() {
+  const c = await fetchContent("about-panchal-samaj")
+  if (!isManaged(c)) return <StaticCommunity />
+  return (
+    <PageShell heading={c.title || "पंचाल समाज (Panchal Samaj)"}>
+      <RichBody html={c.html} />
+    </PageShell>
   )
 }
