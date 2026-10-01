@@ -30,7 +30,7 @@ export default function ShringarScheduleSection() {
 
   return (
     <section id="shringar-schedule" className="bg-gradient-to-b from-[#FFF4E6] to-[#FDEBCB] py-14 md:py-20">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading title="माँ त्रिपुरा का साप्ताहिक श्रृंगार" subtitle="Weekly Divine Shringar Schedule" />
 
         {/* Day selector */}
@@ -70,8 +70,8 @@ export default function ShringarScheduleSection() {
         </div>
 
         {/* Selected day */}
-        <div className="mx-auto grid max-w-5xl items-center gap-8 md:grid-cols-2 md:gap-12">
-          <div className="arch-frame relative mx-auto aspect-[9/14] w-full max-w-sm overflow-hidden border-[3px] border-[#E0A100] bg-[#2B0A0A] shadow-[0_0_0_6px_rgba(224,161,0,0.2),0_24px_40px_-18px_rgba(90,0,0,0.6)]">
+        <div className="mx-auto grid items-center gap-8 md:grid-cols-2 md:gap-12">
+          <div className="arch-frame relative mx-auto aspect-[9/14] w-full max-w-sm overflow-hidden border-[3px] border-[#E0A100] bg-[#2B0A0A]">
             <Image
               key={current.image}
               src={current.image}
@@ -111,7 +111,7 @@ export default function ShringarScheduleSection() {
         </div>
 
         {/* Note */}
-        <div className="temple-card mx-auto mt-12 flex max-w-5xl items-start gap-3 p-4 md:p-5">
+        <div className="temple-card mx-auto mt-12 flex items-start gap-3 p-4 md:p-5">
           <Heart className="mt-0.5 shrink-0 text-[#FF6B00]" size={18} />
           <p className="text-sm leading-relaxed text-[#3A2A1A]">
             नवरात्रि अष्टमी तथा कार्तिक पूर्णिमा के दिन श्रृंगार केवल मंदिर ट्रस्ट द्वारा किया जाता है।
@@ -119,7 +119,7 @@ export default function ShringarScheduleSection() {
         </div>
 
         {/* Booking */}
-        <div className="temple-card mx-auto mt-10 max-w-5xl overflow-hidden">
+        <div className="temple-card mx-auto mt-10 overflow-hidden">
           <div className="bg-gradient-to-r from-[#8F0000] via-[#B30000] to-[#D95500] px-6 py-4 text-center">
             <h3 className="font-display text-lg text-[#FFE27A] md:text-xl">श्रृंगार बुकिंग</h3>
           </div>

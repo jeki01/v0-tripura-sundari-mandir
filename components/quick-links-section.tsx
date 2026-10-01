@@ -59,15 +59,15 @@ const quickLinks = [
 export default function QuickLinksSection() {
   return (
     <section className="bg-jali py-12 md:py-16">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading title="झटपट पहुँच" subtitle="Quick Access" />
 
-        <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-3 md:gap-4">
+        <div className="mx-auto flex flex-wrap justify-center gap-3 md:gap-4">
           {quickLinks.map(({ title, titleHindi, icon: Icon, href }) => (
             <Link
               key={href + title}
               href={href}
-              className="group flex w-[calc(33.333%-0.5rem)] flex-col items-center rounded-2xl sm:w-[calc(25%-0.5625rem)] md:w-[calc(16.666%-0.8334rem)] border border-[#C8941A]/40 bg-white/80 px-2 py-4 text-center shadow-sm backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[#C8941A] hover:bg-white hover:shadow-[0_14px_24px_-12px_rgba(179,0,0,0.45)]"
+              className="group flex w-[calc(33.333%-0.5rem)] flex-col items-center rounded-2xl sm:w-[calc(25%-0.5625rem)] md:w-[calc(16.666%-0.8334rem)] border border-[#C8941A]/40 bg-white/80 px-2 py-4 text-center backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[#C8941A] hover:bg-white"
             >
               <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#B30000] to-[#FF6B00] text-[#FFE27A] ring-2 ring-[#FFD700]/70 ring-offset-2 ring-offset-white transition group-hover:scale-110 sm:h-14 sm:w-14">
                 <Icon size={22} />

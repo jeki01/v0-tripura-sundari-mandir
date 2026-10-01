@@ -16,8 +16,8 @@ export default function SectionSummaryCard({ title, description, icon: Icon, hre
     <Link href={href} className="block h-full">
       <Card
         className={cn(
-          "h-full flex flex-col justify-between transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg",
-          "bg-gradient-to-br p-4 rounded-xl shadow-md text-white",
+          "h-full flex flex-col justify-between transform transition-all duration-300 hover:scale-[1.02]",
+          "bg-gradient-to-br p-4 rounded-xl text-white",
           color,
         )}
       >

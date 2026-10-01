@@ -12,7 +12,7 @@ export default function ContactUsPage() {
       <ScrollProgress />
       <Header />
       <NavigationHandler />
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="site-container py-8 md:py-12">
         <div className="flex justify-end mb-8">
           <Link href="/" passHref>
             <Button className="bg-[#FF6B00] hover:bg-[#B30000] text-white">Back to Home</Button>

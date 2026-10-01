@@ -66,7 +66,7 @@ export default function LocationContactSection() {
 
   return (
     <section id="contact" className="py-16 bg-[#FDF0D5]">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
             <MapPin className="text-[#B30000] mr-3" size={32} />
@@ -77,7 +77,7 @@ export default function LocationContactSection() {
 
         {/* Travel Guide Section */}
         <div className="mb-12">
-          <Card className="border-4 border-[#FFD700] shadow-2xl bg-gradient-to-br from-[#FFF4E6] to-[#FFD700]/10">
+          <Card className="border-4 border-[#FFD700] bg-gradient-to-br from-[#FFF4E6] to-[#FFD700]/10">
             <CardHeader className="bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#B30000] text-center">
               <CardTitle className="text-3xl flex items-center justify-center">
                 <Navigation className="mr-3" size={28} />
@@ -90,7 +90,7 @@ export default function LocationContactSection() {
                 {travelOptions.map((option, index) => {
                   const IconComponent = option.icon
                   return (
-                    <Card key={index} className="border-2 border-[#FF6B00] hover:shadow-lg transition-shadow">
+                    <Card key={index} className="border-2 border-[#FF6B00]">
                       <CardContent className="p-6">
                         <div className="text-center mb-4">
                           <div
@@ -268,7 +268,7 @@ export default function LocationContactSection() {
 
         {/* Distance Chart */}
         <div className="mb-12">
-          <Card className="border-4 border-[#B30000] shadow-2xl">
+          <Card className="border-4 border-[#B30000]">
             <CardHeader className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white text-center">
               <CardTitle className="text-2xl flex items-center justify-center">
                 <Car className="mr-2" size={24} />

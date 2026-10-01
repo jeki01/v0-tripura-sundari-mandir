@@ -24,7 +24,7 @@ export default async function AboutPage() {
       <ScrollProgress />
       <Header />
       <NavigationHandler />
-      <main className="container mx-auto px-4 pb-12 pt-32 md:pt-36">
+      <main className="site-container pb-12 pt-32 md:pt-36">
         {hasContent ? (
           <AboutSection title={c?.title || undefined} subtitle={items.subtitle} html={items.body} images={items.images} />
         ) : (

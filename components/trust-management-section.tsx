@@ -31,7 +31,7 @@ export default function TrustManagementSection() {
       id="trust-management"
       className="py-20 bg-gradient-to-b from-[#FFF7EA] to-[#FDECD2]"
     >
-      <div className="container mx-auto px-4">
+      <div className="site-container">
 
         {/* ===========================
             HEADER
@@ -58,7 +58,7 @@ export default function TrustManagementSection() {
           {trustOfficials.map((official, index) => (
             <Card
               key={index}
-              className="border-4 border-[#FFD700]/80 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white rounded-2xl overflow-hidden"
+              className="border-4 border-[#FFD700]/80 transition-all duration-300 bg-white rounded-2xl overflow-hidden"
             >
               <CardHeader
                 className={`bg-gradient-to-r ${official.gradient} text-white text-center py-6`}
@@ -79,7 +79,7 @@ export default function TrustManagementSection() {
 
                   {/* Elegant Photo Frame */}
                   <div className="relative mx-auto mb-7 w-48 h-48">
-                    <div className="absolute inset-0 rounded-xl border-4 border-[#FFD700] shadow-lg"></div>
+                    <div className="absolute inset-0 rounded-xl border-4 border-[#FFD700]"></div>
                     <Image
                       src={official.image}
                       alt={official.name}
@@ -97,7 +97,7 @@ export default function TrustManagementSection() {
                   </p>
 
                   {/* Description Box */}
-                  <div className="bg-[#FFF6E3] p-4 rounded-lg border border-[#FFD700] shadow-sm mb-4">
+                  <div className="bg-[#FFF6E3] p-4 rounded-lg border border-[#FFD700] mb-4">
                     <p className="text-gray-700 text-sm leading-relaxed">
                       {official.description}
                     </p>
@@ -118,7 +118,7 @@ export default function TrustManagementSection() {
         {/* ===========================
             TRUST INFO SECTION
         ============================ */}
-        <Card className="border-4 border-[#B30000] shadow-2xl bg-[#FFF7EB] rounded-2xl">
+        <Card className="border-4 border-[#B30000] bg-[#FFF7EB] rounded-2xl">
           <CardHeader className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white text-center py-8 rounded-t-2xl">
             <CardTitle className="text-3xl flex items-center justify-center">
               <Building className="mr-3" size={30} />
@@ -299,7 +299,7 @@ function TrustMandalSectionTable() {
 
   return (
     <section className="py-12 bg-gradient-to-b from-[#FFF4E6] to-[#FDF0D5]">
-      <div className="container mx-auto px-4 space-y-10">
+      <div className="site-container space-y-10">
 
         {renderTable("अध्यक्ष - कार्यकाल", adhyaksh)}
         {renderTable("महामंत्री - कार्यकाल", mahamantri)}

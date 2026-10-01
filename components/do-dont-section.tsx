@@ -54,10 +54,10 @@ export default function DosDontsSection() {
 
   return (
     <section id="conduct-rules" className="w-full bg-jali py-14 md:py-20">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading title={heading} subtitle={subtitle} />
 
-        <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+        <div className="mx-auto grid gap-8 md:grid-cols-2">
           {/* Do's */}
           <div className="temple-card overflow-hidden">
             <div className="bg-gradient-to-r from-[#2E7D32] to-[#4C9F50] px-6 py-3">

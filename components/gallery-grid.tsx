@@ -56,7 +56,7 @@ export default function GalleryGrid({ items, columns = "md:grid-cols-3 lg:grid-c
             type="button"
             onClick={() => setOpen(i)}
             aria-label={it.caption ? `${it.caption} - बड़ा देखें` : `फ़ोटो ${i + 1} बड़ा देखें`}
-            className="group relative aspect-[4/3] overflow-hidden rounded-xl border-[3px] border-[#E0A100]/70 bg-[#2B0A0A] shadow-md transition hover:-translate-y-1 hover:shadow-xl"
+            className="group relative aspect-[4/3] overflow-hidden rounded-xl border-[3px] border-[#E0A100]/70 bg-[#2B0A0A] transition hover:-translate-y-1"
           >
             <Image
               src={it.src}

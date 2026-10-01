@@ -14,7 +14,7 @@ export default function PujasDonationSection() {
 
   return (
     <section id="pujas" className="py-16 bg-[#FDF0D5]">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
             <Heart className="text-[#B30000] mr-3" size={32} />
@@ -29,7 +29,7 @@ export default function PujasDonationSection() {
             <h3 className="text-2xl font-bold text-[#B30000] mb-6 text-center">Available Pujas</h3>
             <div className="grid md:grid-cols-2 gap-4">
               {pujas.map((puja, index) => (
-                <Card key={index} className="border-[#FF6B00] hover:shadow-lg transition-shadow">
+                <Card key={index} className="border-[#FF6B00]">
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-3">
                       <h4 className="font-bold text-[#B30000] text-lg">{puja.name}</h4>

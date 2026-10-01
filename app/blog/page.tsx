@@ -48,7 +48,7 @@ export default async function BlogListPage() {
       {blogs.length === 0 ? (
         <EmptyNote text="अभी तक कोई ब्लॉग प्रकाशित नहीं हुआ है।" />
       ) : (
-        <div className="mx-auto max-w-6xl space-y-10">
+        <div className="space-y-10">
           {/* Featured (latest) post */}
           <Link
             href={`/blog/${encodeURIComponent(featured.slug)}`}
@@ -67,12 +67,18 @@ export default async function BlogListPage() {
           </Link>
 
           {rest.length > 0 && (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div
+              className={
+                rest.length <= 2
+                  ? `grid gap-6 ${rest.length === 2 ? "md:grid-cols-2" : ""}`
+                  : "flex flex-wrap justify-center gap-6"
+              }
+            >
               {rest.map((b) => (
                 <Link
                   key={b.id}
                   href={`/blog/${encodeURIComponent(b.slug)}`}
-                  className="temple-card group flex flex-col overflow-hidden transition duration-300 hover:-translate-y-1"
+                  className={`temple-card group flex w-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 ${rest.length > 2 ? "md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]" : ""}`}
                 >
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl">
                     <Cover src={b.coverImage} title={b.title} sizes="(min-width: 1024px) 380px, (min-width: 768px) 45vw, 100vw" />

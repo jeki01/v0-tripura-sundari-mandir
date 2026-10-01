@@ -19,7 +19,7 @@ export function PageHero({ title, subtitle, eyebrow }: PageHeroProps) {
       <Mandala className="pointer-events-none absolute -right-24 -top-10 -z-10 hidden h-[26rem] w-[26rem] text-[#FFD700]/15 animate-spin-mandala md:block" />
       <Mandala className="pointer-events-none absolute -left-32 bottom-0 -z-10 hidden h-[22rem] w-[22rem] text-[#FFD700]/10 animate-spin-mandala md:block" />
 
-      <div className="container mx-auto px-4 pb-16 pt-32 text-center md:pb-20 md:pt-40">
+      <div className="site-container pb-16 pt-32 text-center md:pb-20 md:pt-40">
         <nav aria-label="Breadcrumb" className="mb-4 flex items-center justify-center gap-2 text-xs text-[#FFE9B8]/80">
           <Link href="/" className="hover:text-[#FFD700]">
             Home
@@ -57,7 +57,7 @@ export function PageShell({ heading, subtitle, eyebrow, children }: PageShellPro
         <div className="h-28" aria-hidden="true" />
       )}
       <main className="bg-jali">
-        <div className="container mx-auto px-4 py-12 md:py-16">{children}</div>
+        <div className="site-container py-12 md:py-16">{children}</div>
       </main>
       <Footer />
     </div>

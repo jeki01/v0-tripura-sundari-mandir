@@ -26,14 +26,14 @@ export default function TempleStructureSection({ divineImages }: TempleStructure
       <Mandala className="pointer-events-none absolute -left-40 top-10 -z-10 h-[38rem] w-[38rem] text-[#FFD700]/10 animate-spin-mandala" />
       <Mandala className="pointer-events-none absolute -right-48 bottom-0 -z-10 h-[40rem] w-[40rem] text-[#FFD700]/10 animate-spin-mandala" />
 
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading tone="light" title="माँ त्रिपुरा सुंदरी के दिव्य स्वरूप" subtitle="Divine Darshan of the 18-Armed Goddess" />
 
         {/* Arch-shaped niches, like a temple jharokha */}
-        <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-x-8 gap-y-12">
+        <div className="mx-auto flex flex-wrap justify-center gap-x-8 gap-y-12">
           {divineImages.map((image) => (
             <figure key={image.src} className="group w-full max-w-sm sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)]">
-              <div className="arch-frame relative aspect-[3/4] overflow-hidden border-[3px] border-[#E0A100] bg-black shadow-[0_0_0_6px_rgba(224,161,0,0.18),0_24px_40px_-18px_rgba(0,0,0,0.8)]">
+              <div className="arch-frame relative aspect-[3/4] overflow-hidden border-[3px] border-[#E0A100] bg-black">
                 <Image
                   src={image.src}
                   alt={image.alt}
@@ -57,7 +57,7 @@ export default function TempleStructureSection({ divineImages }: TempleStructure
         </div>
 
         {/* Significance */}
-        <div className="mx-auto mt-14 max-w-4xl rounded-2xl border border-[#E0A100]/50 bg-black/25 p-6 text-center backdrop-blur-sm md:p-8">
+        <div className="mx-auto mt-14 rounded-2xl border border-[#E0A100]/50 bg-black/25 p-6 text-center backdrop-blur-sm md:p-8">
           <h3 className="mb-3 flex items-center justify-center gap-2 font-display text-xl text-[#FFD700]">
             <Lotus size={22} />
             दिव्य दर्शन का महत्व
@@ -68,8 +68,8 @@ export default function TempleStructureSection({ divineImages }: TempleStructure
         </div>
 
         {/* Idol details + temple */}
-        <div className="mx-auto mt-12 grid max-w-6xl items-center gap-10 lg:grid-cols-2">
-          <div className="rounded-2xl border border-[#E0A100]/50 bg-gradient-to-br from-[#FFF9E8] to-[#FFEFC9] p-6 shadow-xl md:p-8">
+        <div className="mx-auto mt-12 grid items-center gap-10 lg:grid-cols-2">
+          <div className="rounded-2xl border border-[#E0A100]/50 bg-gradient-to-br from-[#FFF9E8] to-[#FFEFC9] p-6 md:p-8">
             <h3 className="mb-5 flex items-center gap-2 font-display text-xl text-[#8F0000]">
               <Lotus size={22} className="text-[#B30000]" />
               माँ त्रिपुरा सुंदरी की मूर्ति
@@ -87,7 +87,7 @@ export default function TempleStructureSection({ divineImages }: TempleStructure
           </div>
 
           <div className="relative mx-auto w-full max-w-xl">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border-[3px] border-[#E0A100] shadow-[0_0_0_6px_rgba(224,161,0,0.18),0_24px_40px_-18px_rgba(0,0,0,0.8)]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border-[3px] border-[#E0A100]">
               <Image
                 src="/images/temple-9.jpg"
                 alt="श्री त्रिपुरा सुंदरी मंदिर का गर्भगृह मंडप"

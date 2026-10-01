@@ -90,7 +90,7 @@ export default function Header() {
         ॥ जय श्री माँ त्रिपुरा सुंदरी ॥
       </div>
 
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" onClick={closeMenus} className="flex items-center gap-2 text-white">

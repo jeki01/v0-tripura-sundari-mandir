@@ -11,10 +11,10 @@ const travelOptions = [
 export default function HowToReachSection() {
   return (
     <section id="how-to-reach" className="bg-[#FFF4E6] py-14 md:py-20">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading title="मंदिर कैसे पहुँचें" subtitle="How to Reach" />
 
-        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {travelOptions.map(({ icon: Icon, title, details }) => (
             <div key={title} className="temple-card p-6 text-center transition duration-300 hover:-translate-y-1">
               <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#B30000] to-[#FF6B00] text-[#FFE27A] ring-2 ring-[#FFD700]/70 ring-offset-2 ring-offset-[#FFFDF6]">

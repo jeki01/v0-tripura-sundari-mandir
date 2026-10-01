@@ -91,13 +91,28 @@
     background-size: 60px 60px;
   }
 
+  /* One content width for every section, header, hero and footer so the left/right edges line up everywhere */
+  .site-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 80rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .site-container { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .site-container { padding-left: 2rem; padding-right: 2rem; }
+  }
+
   /* Gold + sindoor framed card, like a carved temple panel */
   .temple-card {
     position: relative;
     background: linear-gradient(180deg, #fffdf6, #fff6e2);
     border: 1px solid rgba(200, 148, 26, 0.55);
     border-radius: 1rem;
-    box-shadow: 0 0 0 4px #fff4e6, 0 0 0 5px rgba(200, 148, 26, 0.45), 0 14px 30px -14px rgba(120, 30, 0, 0.35);
   }
 
   /* Arch-shaped (jharokha) image window */
