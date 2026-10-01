@@ -9,6 +9,32 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-body)", "system-ui", "sans-serif"],
+        display: ["var(--font-latin-display)", "var(--font-hindi-display)", "Georgia", "serif"],
+      },
+      keyframes: {
+        flicker: {
+          "0%, 100%": { transform: "scaleY(1) scaleX(1) rotate(-1deg)", opacity: "1" },
+          "25%": { transform: "scaleY(1.08) scaleX(.94) rotate(1.5deg)", opacity: ".92" },
+          "50%": { transform: "scaleY(.95) scaleX(1.04) rotate(-1.5deg)", opacity: "1" },
+          "75%": { transform: "scaleY(1.05) scaleX(.97) rotate(1deg)", opacity: ".95" },
+        },
+        "fade-up": {
+          from: { opacity: "0", transform: "translateY(18px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { opacity: ".55" },
+          "50%": { opacity: ".9" },
+        },
+      },
+      animation: {
+        flicker: "flicker 1.8s ease-in-out infinite",
+        "fade-up": "fade-up .8s ease-out both",
+        "glow-pulse": "glow-pulse 4s ease-in-out infinite",
+        "spin-mandala": "spin 90s linear infinite",
+      },
       screens: {
         xs: "375px",
       },

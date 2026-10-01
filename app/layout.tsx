@@ -1,9 +1,29 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Mukta, Tiro_Devanagari_Hindi, Cinzel } from "next/font/google"
+import Script from "next/script"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+// Self-hosted at build time (no render-blocking request to Google Fonts)
+const body = Mukta({
+  subsets: ["devanagari", "latin"],
+  weight: ["400", "600"],
+  display: "swap",
+  variable: "--font-body",
+})
+const hindiDisplay = Tiro_Devanagari_Hindi({
+  subsets: ["devanagari"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-hindi-display",
+})
+const latinDisplay = Cinzel({
+  subsets: ["latin"],
+  weight: "500",
+  display: "swap",
+  preload: false,
+  variable: "--font-latin-display",
+})
 
 export const metadata: Metadata = {
   title: "Tripura Sundari Mandir & Panchal Samaj 14 Chokhra | Shakti Peeth in Banswara",
@@ -360,29 +380,23 @@ export default function RootLayout({
   return (
     <html lang="hi" className="scroll-smooth">
       <head>
-        {/* Google Tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVESPBE80M"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-SVESPBE80M');
-            `,
-          }}
-        />
         <link rel="icon" href="/images/main-logo.png" sizes="any" />
         <link rel="apple-touch-icon" href="/images/main-logo.png" />
         <meta name="theme-color" content="#B30000" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${body.variable} ${hindiDisplay.variable} ${latinDisplay.variable} font-sans antialiased`}>
         <div className="min-h-screen bg-[#FFF4E6]">{children}</div>
+        {/* Analytics loads after the page is interactive so it never competes with content */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-SVESPBE80M" strategy="lazyOnload" />
+        <Script id="gtag-init" strategy="lazyOnload">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-SVESPBE80M');`}
+        </Script>
       </body>
     </html>
   )

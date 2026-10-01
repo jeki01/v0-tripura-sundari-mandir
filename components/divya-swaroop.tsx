@@ -1,124 +1,105 @@
-"use client";
-
-import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
-import { Crown } from "lucide-react";
+import Image from "next/image"
+import { Lotus, Mandala, SectionHeading } from "@/components/ornaments"
 
 interface DivineImage {
-  src: string;
-  alt: string;
-  caption: string;
+  src: string
+  alt: string
+  caption: string
 }
 
 interface TempleStructureProps {
-  divineImages: DivineImage[];
+  divineImages: DivineImage[]
 }
+
+const idolDetails = [
+  ["सिंहवाहिनी मूर्ति", "अठारह भुजाओं वाली विशाल प्रतिमा"],
+  ["ऊंचाई", "लगभग 5 फीट ऊँची"],
+  ["अस्त्र-शस्त्र", "विभिन्न प्रकार के दिव्य आयुध"],
+  ["नौ दुर्गा", "शीतकालीन मूर्तियाँ"],
+  ["श्री यंत्र", "देवी के चरणों के पास स्थापित"],
+  ["प्रभामंडल", "सुनहरा तेजोमय प्रकाश"],
+]
 
 export default function TempleStructureSection({ divineImages }: TempleStructureProps) {
   return (
-    <section id="contact" className="py-16 bg-[#FFF4E6]">
+    <section id="divya-swaroop" className="relative isolate overflow-hidden bg-gradient-to-b from-[#3A0808] via-[#4A0A0A] to-[#2B0A0A] py-16 md:py-24">
+      <Mandala className="pointer-events-none absolute -left-40 top-10 -z-10 h-[38rem] w-[38rem] text-[#FFD700]/10 animate-spin-mandala" />
+      <Mandala className="pointer-events-none absolute -right-48 bottom-0 -z-10 h-[40rem] w-[40rem] text-[#FFD700]/10 animate-spin-mandala" />
+
       <div className="container mx-auto px-4">
+        <SectionHeading tone="light" title="माँ त्रिपुरा सुंदरी के दिव्य स्वरूप" subtitle="Divine Darshan of the 18-Armed Goddess" />
 
-
- <div className="text-center mb-10">
-                <h2 className="text-2xl font-bold text-[#B30000] mb-2 flex items-center justify-center">
-                  <Crown className="mr-2" size={24} />
-                  माँ त्रिपुरा सुंदरी के दिव्य स्वरूप
-                </h2>
-                <p className="text-[#FF6B00]">Divine Darshan of 18-Armed Goddess</p>
-              </div>
-
-        <Card className="rounded-2xl shadow-md bg-white/90">
-          <CardContent className="p-8">
-
-            {/* Divine Image Gallery */}
-            <div className="mb-12">
-             
-
-              {/* Image Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {divineImages.map((image, index) => (
-                  <div key={index} className="group">
-                    <div className="relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
-
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        width={400}
-                        height={300}
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110 rounded-xl"
-                      />
-
-                      {/* Crown Icon */}
-                      <div className="absolute top-3 right-3 bg-[#FFD700]/90 text-[#B30000] p-2 rounded-full shadow">
-                        <Crown size={16} />
-                      </div>
-
-                      {/* Om Symbol */}
-                      <div className="absolute top-3 left-3 bg-[#B30000]/90 text-[#FFD700] w-8 h-8 rounded-full flex items-center justify-center font-bold shadow">
-                        ॐ
-                      </div>
-                    </div>
-
-                    {/* Caption */}
-                    <div className="mt-4 text-center">
-                      <h4 className="font-bold text-[#B30000] text-sm mb-1">{image.caption}</h4>
-                      <div className="w-20 h-0.5 bg-[#FFD700] mx-auto rounded-full"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Divine Description */}
-              <div className="bg-[#FFF9E8] p-6 rounded-xl border border-[#FFD700]/40 shadow-sm">
-                <div className="text-center">
-                  <h4 className="text-xl font-bold text-[#B30000] mb-3 flex items-center justify-center">
-                    <Crown className="mr-2" size={20} />
-                    दिव्य दर्शन का महत्व
-                  </h4>
-                  <p className="text-gray-700 leading-relaxed max-w-4xl mx-auto">
-                    ये पावन छवियां माँ त्रिपुरा सुंदरी के दिव्य स्वरूप को दर्शाती हैं...
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Temple Structure Details */}
-            <div className="grid lg:grid-cols-2 gap-10">
-
-              {/* Text Details */}
-              <div className="bg-[#FFF9E8] p-6 rounded-xl border border-[#FF6B00]/30 shadow-sm">
-                <h3 className="text-xl font-bold text-[#B30000] mb-4 flex items-center">
-                  <Crown className="mr-2" size={20} />
-                  माँ त्रिपुरा सुंदरी की मूर्ति
-                </h3>
-
-                <div className="space-y-3 text-gray-700">
-                  <p>• <strong>सिंहवाहिनी मूर्ति:</strong> अठारह भुजाओं वाली विशाल प्रतिमा</p>
-                  <p>• <strong>ऊंचाई:</strong> लगभग 5 फीट ऊँची</p>
-                  <p>• <strong>अस्त्र-शस्त्र:</strong> विभिन्न प्रकार के दिव्य आयुध</p>
-                  <p>• <strong>नौ दुर्गा:</strong> शीतकालीन मूर्तियाँ</p>
-                  <p>• <strong>श्री यंत्र:</strong> देवी के चरणों के पास स्थापित</p>
-                  <p>• <strong>प्रभामंडल:</strong> सुनहरा तेजोमय प्रकाश</p>
-                </div>
-              </div>
-
-              {/* Temple Image */}
-              <div className="flex items-center justify-center">
+        {/* Arch-shaped niches, like a temple jharokha */}
+        <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-x-8 gap-y-12">
+          {divineImages.map((image) => (
+            <figure key={image.src} className="group w-full max-w-sm sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)]">
+              <div className="arch-frame relative aspect-[3/4] overflow-hidden border-[3px] border-[#E0A100] bg-black shadow-[0_0_0_6px_rgba(224,161,0,0.18),0_24px_40px_-18px_rgba(0,0,0,0.8)]">
                 <Image
-                  src="/images/temple-1.jpg"
-                  alt="Temple Structure"
-                  width={420}
-                  height={320}
-                  className="rounded-xl shadow-md border border-[#FFD700]/40"
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes="(min-width: 1024px) 384px, (min-width: 640px) 45vw, 90vw"
+                  quality={72}
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  priority={false}
                 />
+                <span className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <span className="absolute left-1/2 top-3 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-[#B30000] font-display text-lg text-[#FFD700] ring-2 ring-[#FFD700]/80">
+                  ॐ
+                </span>
               </div>
+              <figcaption className="mt-5 text-center">
+                <span className="font-display text-base text-[#FFE9B8]">{image.caption}</span>
+                <span className="mx-auto mt-2 block h-0.5 w-16 rounded-full bg-gradient-to-r from-transparent via-[#FFD700] to-transparent" />
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        {/* Significance */}
+        <div className="mx-auto mt-14 max-w-4xl rounded-2xl border border-[#E0A100]/50 bg-black/25 p-6 text-center backdrop-blur-sm md:p-8">
+          <h3 className="mb-3 flex items-center justify-center gap-2 font-display text-xl text-[#FFD700]">
+            <Lotus size={22} />
+            दिव्य दर्शन का महत्व
+          </h3>
+          <p className="leading-relaxed text-[#FFE9B8]/90">
+            ये पावन छवियां माँ त्रिपुरा सुंदरी के दिव्य स्वरूप को दर्शाती हैं...
+          </p>
+        </div>
+
+        {/* Idol details + temple */}
+        <div className="mx-auto mt-12 grid max-w-6xl items-center gap-10 lg:grid-cols-2">
+          <div className="rounded-2xl border border-[#E0A100]/50 bg-gradient-to-br from-[#FFF9E8] to-[#FFEFC9] p-6 shadow-xl md:p-8">
+            <h3 className="mb-5 flex items-center gap-2 font-display text-xl text-[#8F0000]">
+              <Lotus size={22} className="text-[#B30000]" />
+              माँ त्रिपुरा सुंदरी की मूर्ति
+            </h3>
+            <ul className="space-y-3 text-[#3A2A1A]">
+              {idolDetails.map(([label, value]) => (
+                <li key={label} className="flex gap-3">
+                  <span className="mt-2 h-2 w-2 shrink-0 rotate-45 bg-[#E0A100]" />
+                  <span>
+                    <strong className="text-[#8F0000]">{label}:</strong> {value}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-xl">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border-[3px] border-[#E0A100] shadow-[0_0_0_6px_rgba(224,161,0,0.18),0_24px_40px_-18px_rgba(0,0,0,0.8)]">
+              <Image
+                src="/images/temple-9.jpg"
+                alt="श्री त्रिपुरा सुंदरी मंदिर का गर्भगृह मंडप"
+                fill
+                sizes="(min-width: 1024px) 576px, 100vw"
+                quality={72}
+                className="object-cover"
+              />
             </div>
-
-          </CardContent>
-        </Card>
-
+          </div>
+        </div>
       </div>
     </section>
-  );
+  )
 }
