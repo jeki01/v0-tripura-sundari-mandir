@@ -24,6 +24,10 @@ const config: Config = {
           from: { opacity: "0", transform: "translateY(18px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(5px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
         "glow-pulse": {
           "0%, 100%": { opacity: ".55" },
           "50%": { opacity: ".9" },
@@ -32,6 +36,7 @@ const config: Config = {
       animation: {
         flicker: "flicker 1.8s ease-in-out infinite",
         "fade-up": "fade-up .8s ease-out both",
+        "fade-in": "fade-in .18s ease-out",
         "glow-pulse": "glow-pulse 4s ease-in-out infinite",
         "spin-mandala": "spin 90s linear infinite",
       },

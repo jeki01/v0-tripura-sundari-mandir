@@ -21,7 +21,7 @@ export function PageShell({ heading, children }: { heading?: string; children: R
   )
 }
 
-const proseClass =
+export const proseClass =
   "prose prose-sm md:prose-base max-w-none text-gray-800 [&_h2]:text-[#B30000] [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:mt-6 [&_h3]:text-[#B30000] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_a]:text-blue-600 [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-orange-300 [&_blockquote]:pl-4 [&_blockquote]:text-gray-600 [&_p]:leading-relaxed [&_p]:mb-3 [&_img]:rounded-lg"
 
 export function RichBody({ html }: { html: string }) {
