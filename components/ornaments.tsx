@@ -43,7 +43,7 @@ interface SectionHeadingProps {
   title: ReactNode
   subtitle?: ReactNode
   tone?: "dark" | "light"
-  as?: "h2" | "h3"
+  as?: "h1" | "h2" | "h3"
   className?: string
 }
 

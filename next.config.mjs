@@ -12,6 +12,8 @@ const nextConfig = {
     deviceSizes: [360, 480, 640, 768, 1024, 1280, 1536, 1920],
     imageSizes: [32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    // Images uploaded from the admin portal live on the storage service
+    remotePatterns: [{ protocol: "https", hostname: "storage.shreetripurasundari.com" }],
   },
   compress: true,
   poweredByHeader: false,
