@@ -111,3 +111,17 @@ export function formatPrice(price?: string | null): string {
   const p = String(price ?? "").trim()
   return /^\d[\d,.]*$/.test(p) ? `₹${p}` : p
 }
+
+// ---- Shringar booking (public: availability only, never other people's details) ----
+export type ShringarAvailability = { from: string; to: string; unavailable: string[] }
+
+export async function fetchShringarAvailability(): Promise<ShringarAvailability | null> {
+  try {
+    const res = await fetch(`${API_BASE}/shringar/availability`, { cache: "no-store" })
+    if (!res.ok) return null
+    const json = await res.json()
+    return json?.data || null
+  } catch {
+    return null
+  }
+}
