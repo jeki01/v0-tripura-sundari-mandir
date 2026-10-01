@@ -97,3 +97,17 @@ export function formatHindiDate(d?: string | null): string {
   if (isNaN(date.getTime())) return ""
   return date.toLocaleDateString("hi-IN", { year: "numeric", month: "long", day: "numeric" })
 }
+
+// WhatsApp click-to-chat link; assumes an Indian number when no country code is given
+export function whatsappLink(number?: string | null, text?: string): string | null {
+  let digits = String(number || "").replace(/\D/g, "")
+  if (digits.length < 10) return null
+  if (digits.length === 10) digits = "91" + digits
+  return `https://wa.me/${digits}${text ? `?text=${encodeURIComponent(text)}` : ""}`
+}
+
+// "251" -> "₹251"; anything already containing text/symbols is shown as written
+export function formatPrice(price?: string | null): string {
+  const p = String(price ?? "").trim()
+  return /^\d[\d,.]*$/.test(p) ? `₹${p}` : p
+}
