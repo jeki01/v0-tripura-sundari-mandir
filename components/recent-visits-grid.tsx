@@ -24,7 +24,7 @@ export default function RecentVisitsGrid({ items }: { items: VisitItem[] }) {
             key={i}
             type="button"
             onClick={() => setSelected(i)}
-            className="bg-white rounded-2xl p-5 shadow-md text-center text-left hover:shadow-xl transition-shadow cursor-pointer"
+            className="bg-white rounded-2xl p-5 text-center text-left cursor-pointer"
           >
             {v.photo ? (
               // eslint-disable-next-line @next/next/no-img-element

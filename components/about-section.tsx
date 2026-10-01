@@ -18,7 +18,7 @@ export default function AboutSection({ title, subtitle, html, images = [] }: Abo
 
   return (
     <section id="about-mandir" className="bg-jali py-6 md:py-10">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading as="h1" title={title || "मंदिर का परिचय"} subtitle={subtitle} />
 
         <div className={`mx-auto grid max-w-6xl items-start gap-8 lg:gap-10 ${hasImages ? "lg:grid-cols-[3fr_2fr]" : "max-w-4xl"}`}>
@@ -31,7 +31,7 @@ export default function AboutSection({ title, subtitle, html, images = [] }: Abo
               {gallery.map((src, i) => (
                 <div
                   key={`${src}-${i}`}
-                  className={`relative aspect-[3/2] overflow-hidden rounded-xl border-[3px] border-[#E0A100] bg-[#2B0A0A] shadow-lg ${
+                  className={`relative aspect-[3/2] overflow-hidden rounded-xl border-[3px] border-[#E0A100] bg-[#2B0A0A] ${
                     gallery.length % 2 === 1 && i === 0 ? "col-span-2" : ""
                   }`}
                 >

@@ -71,7 +71,7 @@ export default function PanchalSamajSection() {
 
   return (
     <section id="panchal-samaj" className="py-16 bg-[#FFF4E6]">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-6">
@@ -95,7 +95,7 @@ export default function PanchalSamajSection() {
                     alt="Panchal Samaj 14 Chokhra Logo"
                     width={200}
                     height={200}
-                    className="mx-auto rounded-full border-4 border-[#FF6B00] shadow-lg"
+                    className="mx-auto rounded-full border-4 border-[#FF6B00]"
                   />
                 </div>
                 <div className="space-y-4">
@@ -165,7 +165,7 @@ export default function PanchalSamajSection() {
             {characteristics.map((item, index) => {
               const IconComponent = item.icon
               return (
-                <Card key={index} className="border-[#FF6B00] hover:shadow-lg transition-shadow">
+                <Card key={index} className="border-[#FF6B00]">
                   <CardContent className="p-6">
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#FF6B00] to-[#B30000] rounded-full flex items-center justify-center mr-3">

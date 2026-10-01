@@ -14,11 +14,11 @@ export default function AerialVideo() {
 
   return (
     <section id="aerial-view" className="bg-jali py-14 md:py-20">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading title="आकाश से दर्शन" subtitle="श्री त्रिपुरा सुंदरी मंदिर परिसर का हवाई दृश्य" />
 
-        <div className="temple-card mx-auto max-w-5xl p-2 sm:p-3">
-          <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
+        <div className="temple-card mx-auto p-2 sm:p-3">
+          <div className="relative aspect-video overflow-hidden rounded-xl bg-black lg:aspect-[2/1]">
             {playing ? (
               <iframe
                 src={VIMEO_SRC}
@@ -38,7 +38,7 @@ export default function AerialVideo() {
                   src="/images/temple-5.jpg"
                   alt="मंदिर परिसर का हवाई दृश्य"
                   fill
-                  sizes="(min-width: 1024px) 960px, 100vw"
+                  sizes="(min-width: 1024px) 1216px, 100vw"
                   quality={70}
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />

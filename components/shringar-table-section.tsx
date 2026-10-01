@@ -100,7 +100,7 @@ export default function ShringarTableSection() {
 
   return (
     <section id="shringar-schedule" className="py-12 bg-[#FDF0D5]">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         {/* Section Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
@@ -112,7 +112,7 @@ export default function ShringarTableSection() {
 
         <div className="max-w-4xl mx-auto">
           {/* Simple Schedule Table */}
-          <Card className="border-4 border-[#FFD700] shadow-2xl">
+          <Card className="border-4 border-[#FFD700]">
             <CardHeader className="bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#B30000] text-center">
               <CardTitle className="text-2xl flex items-center justify-center">
                 <Calendar className="mr-2" size={24} />
@@ -212,7 +212,7 @@ export default function ShringarTableSection() {
           {isExpanded && (
             <div className="mt-8 space-y-8 animate-in slide-in-from-top duration-500">
               {/* Selected Day Display */}
-              <Card className="border-4 border-[#B30000] shadow-2xl">
+              <Card className="border-4 border-[#B30000]">
                 <CardHeader className={`bg-gradient-to-r ${shringarSchedule[selectedDay].bgColor} text-center`}>
                   <CardTitle
                     className={`text-3xl ${shringarSchedule[selectedDay].textColor} flex items-center justify-center`}
@@ -227,7 +227,7 @@ export default function ShringarTableSection() {
                 <CardContent className="p-8">
                   <div className="grid lg:grid-cols-2 gap-8 items-center">
                     <div className="relative">
-                      <div className="relative overflow-hidden rounded-2xl border-4 border-[#FFD700] shadow-2xl">
+                      <div className="relative overflow-hidden rounded-2xl border-4 border-[#FFD700]">
                         <Image
                           src={shringarSchedule[selectedDay].image || "/placeholder.svg"}
                           alt={`माँ त्रिपुरा सुंदरी - ${shringarSchedule[selectedDay].day} श्रृंगार`}
@@ -300,7 +300,7 @@ export default function ShringarTableSection() {
               </Card>
 
               {/* Special Notes */}
-              <Card className="border-4 border-[#FFD700] shadow-2xl bg-gradient-to-br from-[#FFF4E6] to-[#FFD700]/10">
+              <Card className="border-4 border-[#FFD700] bg-gradient-to-br from-[#FFF4E6] to-[#FFD700]/10">
                 <CardHeader className="bg-[#FFD700] text-[#B30000] text-center">
                   <CardTitle className="text-2xl flex items-center justify-center">
                     <Calendar className="mr-2" size={24} />
@@ -328,7 +328,7 @@ export default function ShringarTableSection() {
               </Card>
 
               {/* Booking Section */}
-              <Card className="border-4 border-[#B30000] shadow-2xl">
+              <Card className="border-4 border-[#B30000]">
                 <CardHeader className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white text-center">
                   <CardTitle className="text-2xl flex items-center justify-center">
                     <Sparkles className="mr-2" size={24} />🌸 मंदिर श्रृंगार बुकिंग

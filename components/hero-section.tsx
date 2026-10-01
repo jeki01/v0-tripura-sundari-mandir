@@ -28,7 +28,7 @@ export default function HeroSection() {
         <Diya />
       </div>
 
-      <div className="container relative mx-auto px-4 pb-28 pt-36 sm:pt-40 md:pb-40 md:pt-48">
+      <div className="site-container relative pb-28 pt-36 sm:pt-40 md:pb-40 md:pt-48">
         <div className="max-w-3xl animate-fade-up">
           <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#FFD700]/50 bg-black/25 px-4 py-1.5 text-xs tracking-[0.18em] text-[#FFE9B8] backdrop-blur-sm sm:text-sm">
             <Lotus size={18} className="text-[#FFD700]" />

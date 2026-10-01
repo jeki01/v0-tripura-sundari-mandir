@@ -36,7 +36,7 @@ export default async function Footer() {
         <p className="text-lg font-bold">जय श्री मां त्रिपुरा सुंदरी</p>
       </div> */}
 
-      <div className="container mx-auto px-4 py-12 relative z-10">
+      <div className="site-container py-12 relative z-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Temple Info */}
 

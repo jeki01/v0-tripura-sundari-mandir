@@ -14,7 +14,7 @@ import { SITE_URL, fetchBlogBySlug, fetchPublishedBlogs, formatHindiDate } from 
 export const dynamic = "force-dynamic"
 
 const articleClass =
-  "text-[17px] leading-[1.9] text-[#2F2218] [&_h2]:font-display [&_h2]:text-[#8F0000] [&_h2]:text-2xl [&_h2]:mt-10 [&_h2]:mb-3 [&_h3]:text-[#B30000] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-7 [&_h3]:mb-2 [&_p]:mb-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-5 [&_ul]:space-y-1.5 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-5 [&_ol]:space-y-1.5 [&_a]:text-[#B30000] [&_a]:underline [&_blockquote]:my-7 [&_blockquote]:border-l-4 [&_blockquote]:border-[#E0A100] [&_blockquote]:bg-[#FFF4E6] [&_blockquote]:rounded-r-xl [&_blockquote]:px-5 [&_blockquote]:py-4 [&_blockquote]:font-display [&_blockquote]:text-xl [&_blockquote]:text-[#6B0000] [&_img]:my-7 [&_img]:w-full [&_img]:rounded-2xl [&_img]:shadow-lg [&_strong]:text-[#6B0000] [&>p:first-of-type]:text-lg [&>p:first-of-type]:text-[#4A3826]"
+  "text-[17px] leading-[1.9] text-[#2F2218] [&_h2]:font-display [&_h2]:text-[#8F0000] [&_h2]:text-2xl [&_h2]:mt-10 [&_h2]:mb-3 [&_h3]:text-[#B30000] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-7 [&_h3]:mb-2 [&_p]:mb-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-5 [&_ul]:space-y-1.5 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-5 [&_ol]:space-y-1.5 [&_a]:text-[#B30000] [&_a]:underline [&_blockquote]:my-7 [&_blockquote]:border-l-4 [&_blockquote]:border-[#E0A100] [&_blockquote]:bg-[#FFF4E6] [&_blockquote]:rounded-r-xl [&_blockquote]:px-5 [&_blockquote]:py-4 [&_blockquote]:font-display [&_blockquote]:text-xl [&_blockquote]:text-[#6B0000] [&_img]:my-7 [&_img]:w-full [&_img]:rounded-2xl [&_strong]:text-[#6B0000] [&>p:first-of-type]:text-lg [&>p:first-of-type]:text-[#4A3826]"
 
 function readingMinutes(html: string) {
   const words = (html || "").replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length
@@ -52,7 +52,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       <NavigationHandler />
 
       <main className="bg-jali pb-16 pt-32 md:pt-36">
-        <article className="mx-auto max-w-3xl px-4">
+        <article className="site-container">
+         <div className="mx-auto max-w-4xl">
           <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#B30000] hover:underline">
             <ArrowLeft size={16} /> सभी ब्लॉग
           </Link>
@@ -89,8 +90,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           </header>
 
           {blog.coverImage && (
-            <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-3xl border-[3px] border-[#E0A100]/70 shadow-xl">
-              <CmsImage src={blog.coverImage} alt={blog.title} sizes="(min-width: 768px) 768px, 100vw" priority className="object-cover" />
+            <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-3xl border-[3px] border-[#E0A100]/70">
+              <CmsImage src={blog.coverImage} alt={blog.title} sizes="(min-width: 896px) 896px, 100vw" priority className="object-cover" />
             </div>
           )}
 
@@ -103,17 +104,25 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               <ShareButtons title={blog.title} url={url} label="अच्छा लगा? साझा करें" />
             </div>
           </div>
+         </div>
         </article>
 
         {more.length > 0 && (
-          <section className="mx-auto mt-16 max-w-5xl px-4">
+          <section className="site-container mt-16">
+         <div className="mx-auto max-w-4xl">
             <h2 className="mb-6 flex items-center justify-center gap-2 text-center font-display text-2xl text-[#8F0000]">
               <Lotus size={26} className="text-[#B30000]" />
               और ब्लॉग पढ़ें
             </h2>
-            <div className="grid gap-6 md:grid-cols-3">
+            <div
+              className={
+                more.length <= 2
+                  ? `grid gap-6 ${more.length === 2 ? "sm:grid-cols-2" : ""}`
+                  : "flex flex-wrap justify-center gap-6"
+              }
+            >
               {more.map((b) => (
-                <Link key={b.id} href={`/blog/${encodeURIComponent(b.slug)}`} className="temple-card group flex flex-col overflow-hidden transition duration-300 hover:-translate-y-1">
+                <Link key={b.id} href={`/blog/${encodeURIComponent(b.slug)}`} className={`temple-card group flex w-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 ${more.length > 2 ? "sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)]" : ""}`}>
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl bg-gradient-to-br from-[#5A0000] to-[#B30000]">
                     {b.coverImage && <CmsImage src={b.coverImage} alt={b.title} sizes="(min-width: 768px) 320px, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />}
                   </div>
@@ -124,6 +133,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 </Link>
               ))}
             </div>
+         </div>
           </section>
         )}
       </main>

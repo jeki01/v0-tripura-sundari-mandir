@@ -74,11 +74,11 @@ export default function ContactSection({ socialLinks = [] }: { socialLinks?: Soc
 
     return (
         <section id="contact" className="bg-jali py-14 md:py-20">
-            <div className="container mx-auto px-4">
+            <div className="site-container">
 
                 <SectionHeading title="संपर्क करें" subtitle="हमसे जुड़ने के लिए नीचे विवरण भरें" />
 
-                <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-8 mx-auto">
 
                     {/* Form */}
                     <div className="temple-card">

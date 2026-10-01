@@ -93,10 +93,10 @@ export default function LiveDarshanSection({ socialLinks = [] }: { socialLinks?:
 
   return (
     <section id="darshan-live" className="bg-jali py-14 md:py-20">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading title="लाइव दर्शन" subtitle="श्री त्रिपुरा सुंदरी मंदिर - गर्भगृह से सीधा प्रसारण" />
 
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto">
           <div className="temple-card overflow-hidden">
             <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#8F0000] via-[#B30000] to-[#D95500] px-4 py-3 text-center">
               <Camera className="text-[#FFE27A]" size={20} />

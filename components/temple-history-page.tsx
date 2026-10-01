@@ -84,7 +84,7 @@ export default function TempleHistoryPage() {
 
   return (
     <section id="temple-history" className="py-16 bg-gradient-to-b from-[#FFF4E6] to-[#FDF0D5]">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         {/* Page Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-6">
@@ -105,7 +105,7 @@ export default function TempleHistoryPage() {
 
         <div className="max-w-6xl mx-auto space-y-12">
           {/* Historical Images Gallery Section */}
-          <Card className="border-4 border-[#FFD700] shadow-2xl bg-gradient-to-br from-[#FFF4E6] to-[#FFD700]/10">
+          <Card className="border-4 border-[#FFD700] bg-gradient-to-br from-[#FFF4E6] to-[#FFD700]/10">
             <div className="bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#B30000] p-6">
               <div className="flex items-center justify-center">
                 <Camera className="mr-3" size={32} />
@@ -117,7 +117,7 @@ export default function TempleHistoryPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {historicalImages.map((image, index) => (
                   <div key={index} className="group">
-                    <div className="relative overflow-hidden rounded-xl border-4 border-[#B30000] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div className="relative overflow-hidden rounded-xl border-4 border-[#B30000] transition-all duration-300 transform hover:-translate-y-2">
                       <Image
                         src={image.src || "/placeholder.svg"}
                         alt={image.alt}
@@ -186,7 +186,7 @@ export default function TempleHistoryPage() {
           </Card>
 
           {/* Temple Structure Section with Divine Images */}
-          <Card className="border-4 border-[#FF6B00] shadow-2xl">
+          <Card className="border-4 border-[#FF6B00]">
             <div className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white p-6">
               <div className="flex items-center">
                 <Building className="mr-3" size={32} />
@@ -207,7 +207,7 @@ export default function TempleHistoryPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                   {divineImages.map((image, index) => (
                     <div key={index} className="group">
-                      <div className="relative overflow-hidden rounded-xl border-4 border-[#FFD700] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                      <div className="relative overflow-hidden rounded-xl border-4 border-[#FFD700] transition-all duration-300 transform hover:-translate-y-2">
                         <Image
                           src={image.src || "/placeholder.svg"}
                           alt={image.alt}
@@ -294,7 +294,7 @@ export default function TempleHistoryPage() {
                     alt="Modern Temple Structure"
                     width={400}
                     height={300}
-                    className="rounded-lg border-4 border-[#FFD700] shadow-lg"
+                    className="rounded-lg border-4 border-[#FFD700]"
                   />
                 </div>
               </div>
@@ -302,7 +302,7 @@ export default function TempleHistoryPage() {
           </Card>
 
           {/* Three Forms Section */}
-          <Card className="border-4 border-[#FFD700] shadow-2xl">
+          <Card className="border-4 border-[#FFD700]">
             <div className="bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#B30000] p-6">
               <div className="flex items-center">
                 <Crown className="mr-3" size={32} />
@@ -352,7 +352,7 @@ export default function TempleHistoryPage() {
           </Card>
 
           {/* Philosophy Section */}
-          <Card className="border-4 border-[#B30000] shadow-2xl">
+          <Card className="border-4 border-[#B30000]">
             <div className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white p-6">
               <div className="flex items-center">
                 <Star className="mr-3" size={32} />
@@ -389,7 +389,7 @@ export default function TempleHistoryPage() {
           </Card>
 
           {/* Establishment History */}
-          <Card className="border-4 border-[#FF6B00] shadow-2xl">
+          <Card className="border-4 border-[#FF6B00]">
             <div className="bg-gradient-to-r from-[#FF6B00] to-[#FFD700] text-[#B30000] p-6">
               <div className="flex items-center">
                 <Calendar className="mr-3" size={32} />
@@ -439,7 +439,7 @@ export default function TempleHistoryPage() {
           </Card>
 
           {/* Reconstruction History */}
-          <Card className="border-4 border-[#B30000] shadow-2xl">
+          <Card className="border-4 border-[#B30000]">
             <div className="bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white p-6">
               <div className="flex items-center">
                 <Hammer className="mr-3" size={32} />
@@ -519,7 +519,7 @@ export default function TempleHistoryPage() {
           </Card>
 
           {/* Modern Development */}
-          <Card className="border-4 border-[#FFD700] shadow-2xl">
+          <Card className="border-4 border-[#FFD700]">
             <div className="bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#B30000] p-6">
               <div className="flex items-center">
                 <MapPin className="mr-3" size={32} />
@@ -575,7 +575,7 @@ export default function TempleHistoryPage() {
           </Card>
 
           {/* Conclusion */}
-          <Card className="border-4 border-[#B30000] shadow-2xl bg-gradient-to-br from-[#FFF4E6] to-[#FDF0D5]">
+          <Card className="border-4 border-[#B30000] bg-gradient-to-br from-[#FFF4E6] to-[#FDF0D5]">
             <CardContent className="p-8 text-center">
               <div className="flex items-center justify-center mb-6">
                 <BookOpen className="text-[#B30000] mr-3" size={32} />

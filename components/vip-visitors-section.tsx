@@ -82,7 +82,7 @@ export default function VipVisitorsSection() {
 
   return (
     <section id="vip-visitors" className="py-8 bg-[#FDF0D5]">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <div className="max-w-6xl mx-auto">
           {/* Compact VIP Visitors Preview */}
           <Card className="border-4 border-[#FFD700] shadow-xl bg-gradient-to-br from-[#FFF4E6] to-[#FFD700]/10">

@@ -41,10 +41,10 @@ export default function FaqSection() {
 
   return (
     <section id="faq" className="bg-[#FFF4E6] py-14 md:py-20">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading title={heading} />
 
-        <div className="temple-card mx-auto max-w-3xl divide-y divide-[#C8941A]/25 p-2 sm:p-4">
+        <div className="temple-card mx-auto divide-y divide-[#C8941A]/25 p-2 sm:p-4">
           {faqs.map((item, index) => {
             const open = openIndex === index;
             return (

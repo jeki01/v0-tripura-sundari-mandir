@@ -67,7 +67,7 @@ export default function TempleTimingsSection() {
 
   return (
     <section id="temple-timings" className="bg-[#FFF4E6] py-14 md:py-20">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <SectionHeading
           title="मंदिर समय सारणी"
           subtitle={`आज का समय: ${isSummer ? "ग्रीष्मकाल" : "शीतकाल"}`}
@@ -101,7 +101,7 @@ export default function TempleTimingsSection() {
           </div>
         </div>
 
-        <div className="temple-card mx-auto max-w-2xl overflow-hidden">
+        <div className="temple-card mx-auto overflow-hidden">
           <div className="bg-gradient-to-r from-[#8F0000] via-[#B30000] to-[#D95500] px-6 py-5 text-center text-white">
             <h3 className="font-display text-xl text-[#FFE27A]">श्री त्रिपुरा सुंदरी मंदिर</h3>
             <div className="mt-2 space-y-0.5 text-sm text-[#FFE9B8]">
