@@ -42,9 +42,6 @@ export default function HeroSection() {
           </h1>
 
           <p className="mt-5 text-lg text-[#FFE9B8] sm:text-2xl">आस्था, संस्कृति और सेवा का संगम</p>
-          <p className="mt-2 max-w-xl text-sm text-white/80 sm:text-base">
-            श्री त्रिपुरा सुंदरी मंदिर और पंचाल समाज 14 चोखरा का आधिकारिक डिजिटल पोर्टल
-          </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
