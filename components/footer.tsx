@@ -11,7 +11,6 @@ export default async function Footer() {
     { label: "Online Pujas", href: "#online-pujas" },
     { label: "Donations", href: "/donation" },
     { label: "E-Store", href: "/estore" },
-    { label: "Services", href: "/services-all" },
     { label: "Events", href: "/events" },
     { label: "VIP Visitors", href: "/vip-visitors-all" },
     { label: "Contact", href: "/#contact" },

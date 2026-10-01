@@ -69,12 +69,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.7,
     },
-    {
-      url: `${baseUrl}/#notice-portal`,
-      lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 0.7,
-    },
 
     // Trust and Management
     {

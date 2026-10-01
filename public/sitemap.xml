@@ -100,13 +100,6 @@
     <priority>0.7</priority>
   </url>
 
-  <url>
-    <loc>https://shreetripurasundari.com/#notice-portal</loc>
-    <lastmod>2025-01-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
   <!-- Gallery & Events -->
   <url>
     <loc>https://shreetripurasundari.com/#events-gallery</loc>
