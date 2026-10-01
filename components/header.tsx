@@ -60,11 +60,11 @@ export default function Header() {
   }
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition ${isScrolled ? "bg-[#B30000]" : "bg-gradient-to-r from-[#B30000]/90 to-[#FF6B00]/90"}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b-2 border-[#FFD700]/60 ${isScrolled ? "bg-[#8F0000] shadow-lg shadow-black/30" : "bg-gradient-to-r from-[#7A0000] via-[#B30000] to-[#D95500]"}`}>
 
       {/* Top Tagline */}
-      <div className="bg-[#FFD700] text-center py-1 text-[#B30000] text-sm font-bold">
-        जय श्री मां त्रिपुरा सुंदरी
+      <div className="bg-gradient-to-r from-[#E0A100] via-[#FFE27A] to-[#E0A100] text-center py-1 text-[#6B0000] text-sm font-display tracking-wide">
+        ॥ जय श्री माँ त्रिपुरा सुंदरी ॥
       </div>
 
       <style>
@@ -87,12 +87,12 @@ export default function Header() {
             className="flex items-center gap-2 text-white cursor-pointer"
             onClick={() => handleRoute("/")}
           >
-            <Image src="/images/main-logo.png" alt="logo" width={40} height={40} />
-            <span className="font-bold">श्री त्रिपुरा सुंदरी मंदिर</span>
+            <Image src="/images/main-logo.png" alt="श्री त्रिपुरा सुंदरी मंदिर" width={40} height={40} priority className="rounded-full ring-2 ring-[#FFD700]/70" />
+            <span className="font-display text-lg sm:text-xl">श्री त्रिपुरा सुंदरी मंदिर</span>
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-10 text-white">
+          <nav className="hidden lg:flex items-center gap-10 text-white font-medium tracking-wide">
 
             {/* Home */}
             <button

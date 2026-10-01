@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { ChevronDown } from "lucide-react";
+import { SectionHeading } from "@/components/ornaments";
 import { fetchContent, isManaged } from "@/lib/api";
 
 const DEFAULT_FAQS = [
@@ -39,51 +40,33 @@ export default function FaqSection() {
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
   return (
-    <section id="faq" className="py-16 bg-[#FFF4E6]">
+    <section id="faq" className="bg-[#FFF4E6] py-14 md:py-20">
+      <div className="container mx-auto px-4">
+        <SectionHeading title={heading} />
 
-      {/* Title outside card */}
-      <div className="text-center mb-10">
-        <h2 className="text-2xl text-[#B30000]">
-          {heading}
-        </h2>
-      </div>
-
-      {/* Single Card */}
-      <Card className="rounded-2xl shadow-md bg-white/90 max-w-3xl mx-auto">
-        <CardContent className="p-8">
-
-          <div className="space-y-4">
-            {faqs.map((item, index) => (
-              <div
-                key={index}
-                className="cursor-pointer"
-                onClick={() => toggle(index)}
-              >
-                {/* Question Row */}
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-[14px] text-gray-700">
-                    {item.q}
-                  </span>
-                  <span className="text-lg text-[#B30000]">
-                    {openIndex === index ? "−" : "+"}
-                  </span>
-                </div>
-
-                {/* Answer */}
-                {openIndex === index && (
-                  <p className="mt-1 text-[13px] text-gray-600 leading-relaxed">
-                    {item.a}
-                  </p>
-                )}
-
-                {/* Divider */}
-                <div className="h-px bg-gray-200 mt-3"></div>
+        <div className="temple-card mx-auto max-w-3xl divide-y divide-[#C8941A]/25 p-2 sm:p-4">
+          {faqs.map((item, index) => {
+            const open = openIndex === index;
+            return (
+              <div key={index}>
+                <button
+                  type="button"
+                  aria-expanded={open}
+                  onClick={() => toggle(index)}
+                  className="flex w-full items-center justify-between gap-4 px-3 py-4 text-left"
+                >
+                  <span className={`text-[15px] font-medium ${open ? "text-[#B30000]" : "text-[#3A2A1A]"}`}>{item.q}</span>
+                  <ChevronDown
+                    size={20}
+                    className={`shrink-0 text-[#B30000] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {open && <p className="px-3 pb-4 text-sm leading-relaxed text-[#5A4636]">{item.a}</p>}
               </div>
-            ))}
-          </div>
-
-        </CardContent>
-      </Card>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }

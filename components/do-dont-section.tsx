@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 import { fetchContent, isManaged } from "@/lib/api";
+import { SectionHeading } from "@/components/ornaments";
 
 const DEFAULT_SUBTITLE = "श्री त्रिपुरा सुंदरी मंदिर – दर्शन के दौरान आवश्यक निर्देश";
 
@@ -52,41 +53,39 @@ export default function DosDontsSection() {
   }, []);
 
   return (
-    <section className="w-full py-16 bg-[#FFF4E6]">
+    <section id="conduct-rules" className="w-full bg-jali py-14 md:py-20">
+      <div className="container mx-auto px-4">
+        <SectionHeading title={heading} subtitle={subtitle} />
 
-      {/* Title */}
-      <div className="text-center mb-10">
-        <h2 className="text-3xl text-[#B30000] mb-2">{heading}</h2>
-        <p className="text-[#FF6B00]">{subtitle}</p>
-      </div>
-
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 px-4">
-
-        {/* Do's Card */}
-        <div className="bg-white/90 p-6 rounded-xl shadow-md">
-          <h3 className="text-xl text-[#2A2A2A] mb-4">Do’s</h3>
-
-          <div className="space-y-3 text-[15px] text-gray-700">
-            {dos.map((rule, i) => (
-              <p key={i} className="flex items-start gap-2">
-                <CheckCircle className="text-green-600 mt-1 shrink-0" size={18} />
-                {rule}
-              </p>
-            ))}
+        <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+          {/* Do's */}
+          <div className="temple-card overflow-hidden">
+            <div className="bg-gradient-to-r from-[#2E7D32] to-[#4C9F50] px-6 py-3">
+              <h3 className="font-display text-xl text-white">Do’s</h3>
+            </div>
+            <div className="space-y-3 p-6 text-[15px] text-[#3A2A1A]">
+              {dos.map((rule, i) => (
+                <p key={i} className="flex items-start gap-2">
+                  <CheckCircle className="mt-1 shrink-0 text-green-700" size={18} />
+                  {rule}
+                </p>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Don'ts Card */}
-        <div className="bg-white/90 p-6 rounded-xl shadow-md">
-          <h3 className="text-xl text-[#2A2A2A] mb-4">Don’ts</h3>
-
-          <div className="space-y-3 text-[15px] text-gray-700">
-            {donts.map((rule, i) => (
-              <p key={i} className="flex items-start gap-2">
-                <XCircle className="text-red-600 mt-1 shrink-0" size={18} />
-                {rule}
-              </p>
-            ))}
+          {/* Don'ts */}
+          <div className="temple-card overflow-hidden">
+            <div className="bg-gradient-to-r from-[#8F0000] to-[#B30000] px-6 py-3">
+              <h3 className="font-display text-xl text-white">Don’ts</h3>
+            </div>
+            <div className="space-y-3 p-6 text-[15px] text-[#3A2A1A]">
+              {donts.map((rule, i) => (
+                <p key={i} className="flex items-start gap-2">
+                  <XCircle className="mt-1 shrink-0 text-red-700" size={18} />
+                  {rule}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </div>

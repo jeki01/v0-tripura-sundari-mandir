@@ -67,6 +67,11 @@
     @apply bg-background text-foreground;
   }
 
+  /* Anchor jumps should clear the fixed header */
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
   /* Mobile-first responsive typography */
   html {
     font-size: 14px;
@@ -80,6 +85,36 @@
 }
 
 @layer utilities {
+  /* Subtle carved-stone lattice (jali) texture */
+  .bg-jali {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23B30000' stroke-opacity='.08' stroke-width='1'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30Z'/%3E%3Ccircle cx='30' cy='30' r='9'/%3E%3Cpath d='M0 0 L60 60 M60 0 L0 60' stroke-opacity='.045'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+
+  /* Gold + sindoor framed card, like a carved temple panel */
+  .temple-card {
+    position: relative;
+    background: linear-gradient(180deg, #fffdf6, #fff6e2);
+    border: 1px solid rgba(200, 148, 26, 0.55);
+    border-radius: 1rem;
+    box-shadow: 0 0 0 4px #fff4e6, 0 0 0 5px rgba(200, 148, 26, 0.45), 0 14px 30px -14px rgba(120, 30, 0, 0.35);
+  }
+
+  /* Arch-shaped (jharokha) image window */
+  .arch-frame {
+    border-top-left-radius: 999px;
+    border-top-right-radius: 999px;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+  }
+
+  .text-gold-gradient {
+    background-image: linear-gradient(180deg, #fff3b0 0%, #ffd700 45%, #e09a00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .animate-spin-slow {
     animation: spin 8s linear infinite;
   }

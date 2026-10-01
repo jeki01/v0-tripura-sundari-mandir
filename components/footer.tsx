@@ -1,19 +1,17 @@
-"use client"
-
-import Image from "next/image"
 import Link from "next/link"
 import { Facebook, Twitter, Instagram, Youtube, Phone, Mail, MapPin, ExternalLink, FileText, Globe } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
+import { OrnamentDivider, TempleSkyline } from "@/components/ornaments"
 export default function Footer() {
   const quickLinks = [
-    "About Mandir",
-    "Live Darshan",
-    "Online Pujas",
-    "Donations",
-    "Services",
-    "Events",
-    "VIP Visitors",
-    "Contact",
+    { label: "About Mandir", href: "/about" },
+    { label: "Live Darshan", href: "/#darshan-live" },
+    { label: "Online Pujas", href: "#online-pujas" },
+    { label: "Donations", href: "#donations" },
+    { label: "Services", href: "/services-all" },
+    { label: "Events", href: "/events" },
+    { label: "VIP Visitors", href: "/vip-visitors-all" },
+    { label: "Contact", href: "/#contact" },
   ]
 
   const trustMandal = [
@@ -22,15 +20,13 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="relative bg-gradient-to-r from-[#B30000] to-[#FF6B00] text-white overflow-hidden">
-      {/* Temple Silhouette Background */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 opacity-10">
-        <Image
-          src="/images/footer-silhouette.png"
-          alt="Temple Silhouette"
-          fill
-          className="object-cover object-bottom"
-        />
+    <footer className="relative overflow-hidden bg-gradient-to-b from-[#5A0000] via-[#7A0000] to-[#2B0A0A] text-white">
+      {/* Temple skyline (inline SVG, no image request) */}
+      <TempleSkyline className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 w-full text-black/25" />
+
+      <div className="relative z-10 pt-10">
+        <OrnamentDivider tone="light" />
+        <p className="mt-3 text-center font-display text-lg text-[#FFD700]">॥ जय श्री माँ त्रिपुरा सुंदरी ॥</p>
       </div>
 
       {/* Tagline at top */}
@@ -39,7 +35,7 @@ export default function Footer() {
       </div> */}
 
       <div className="container mx-auto px-4 py-12 relative z-10">
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Temple Info */}
 
 
@@ -48,13 +44,13 @@ export default function Footer() {
             <h4 className="text-xl font-bold mb-6 text-[#FFD700]">Quick Links</h4>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
-                <li key={link}>
+                <li key={link.label}>
                   <Link
-                    href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
+                    href={link.href}
                     className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 text-sm flex items-center"
                   >
                     <div className="w-2 h-2 bg-[#FFD700] rounded-full mr-2"></div>
-                    {link}
+                    {link.label}
                   </Link>
                 </li>
               ))}

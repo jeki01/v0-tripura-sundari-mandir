@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { SectionHeading } from "@/components/ornaments"
 import { Phone, Mail, Navigation, MapPin } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 import Link from "next/link"
@@ -73,30 +73,22 @@ export default function ContactSection() {
     }
 
     return (
-        <section id="contact" className="py-16 bg-[#FFF4E6]">
+        <section id="contact" className="bg-jali py-14 md:py-20">
             <div className="container mx-auto px-4">
 
-                {/* Heading */}
-                <div className="text-center mb-10">
-                    <h2 className="text-3xl font-bold text-[#B30000] mb-2">
-                        संपर्क करें
-                    </h2>
-                    <p className="text-gray-600">
-                        हमसे जुड़ने के लिए नीचे विवरण भरें
-                    </p>
-                </div>
+                <SectionHeading title="संपर्क करें" subtitle="हमसे जुड़ने के लिए नीचे विवरण भरें" />
 
                 <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
 
                     {/* Form */}
-                    <Card className="shadow-lg rounded-xl">
-                        <CardHeader>
-                            <CardTitle className="text-[#B30000]">
+                    <div className="temple-card">
+                        <div className="p-6 pb-2">
+                            <h3 className="font-display text-xl text-[#8F0000]">
                                 Reach Out
-                            </CardTitle>
-                        </CardHeader>
+                            </h3>
+                        </div>
 
-                        <CardContent>
+                        <div className="p-6 pt-2">
                             <form onSubmit={handleSubmit} className="space-y-4">
 
                                 <input
@@ -106,7 +98,7 @@ export default function ContactSection() {
                                     value={form.name}
                                     onChange={handleChange}
                                     required
-                                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                                    className="w-full rounded-lg border border-[#C8941A]/50 bg-white p-3 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                                 />
 
                                 <input
@@ -116,7 +108,7 @@ export default function ContactSection() {
                                     value={form.email}
                                     onChange={handleChange}
                                     required
-                                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                                    className="w-full rounded-lg border border-[#C8941A]/50 bg-white p-3 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                                 />
 
                                 <input
@@ -126,7 +118,7 @@ export default function ContactSection() {
                                     value={form.phone}
                                     onChange={handleChange}
                                     required
-                                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                                    className="w-full rounded-lg border border-[#C8941A]/50 bg-white p-3 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                                 />
 
                                 <textarea
@@ -136,31 +128,31 @@ export default function ContactSection() {
                                     value={form.message}
                                     onChange={handleChange}
                                     required
-                                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                                    className="w-full rounded-lg border border-[#C8941A]/50 bg-white p-3 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                                 />
 
                                 <button
                                     type="submit"
                                     disabled={busy}
-                                    className="w-full bg-[#B30000] text-white py-3 rounded-lg font-semibold hover:bg-[#FF6B00] transition disabled:opacity-60"
+                                    className="w-full rounded-lg bg-gradient-to-b from-[#B30000] to-[#8F0000] py-3 font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
                                 >
                                     {busy ? "भेजा जा रहा है..." : "Submit"}
                                 </button>
                                 {contactMsg && <p className="text-sm text-green-700 text-center">{contactMsg}</p>}
 
                             </form>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
 
                     {/* Contact Info */}
-                    <Card className="shadow-lg rounded-xl">
-                        <CardHeader>
-                            <CardTitle className="text-[#B30000]">
+                    <div className="temple-card">
+                        <div className="p-6 pb-2">
+                            <h3 className="font-display text-xl text-[#8F0000]">
                                 संपर्क विवरण
-                            </CardTitle>
-                        </CardHeader>
+                            </h3>
+                        </div>
 
-                        <CardContent className="space-y-4">
+                        <div className="space-y-4 p-6 pt-2">
 
                             {/* Address */}
                             <div className="flex items-start gap-3">
@@ -191,7 +183,7 @@ export default function ContactSection() {
                             {/* Social Media */}
                             <div className="pt-4">
                                 <p className="font-semibold text-[#B30000] mb-2">
-                                    Soscial Media
+                                    Social Media
                                 </p>
 
                                 <div className="flex gap-4 text-sm">
@@ -227,12 +219,12 @@ export default function ContactSection() {
                                         value={newsletterEmail}
                                         onChange={(e) => setNewsletterEmail(e.target.value)}
                                         required
-                                        className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                                        className="w-full rounded-lg border border-[#C8941A]/50 bg-white p-3 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                                     />
 
                                     <button
                                         type="submit"
-                                        className="w-full bg-[#B30000] text-white py-3 rounded-lg font-semibold hover:bg-[#FF6B00] transition"
+                                        className="w-full rounded-lg bg-gradient-to-b from-[#B30000] to-[#8F0000] py-3 font-semibold text-white transition hover:brightness-110"
                                     >
                                         Subscribe
                                     </button>
@@ -241,15 +233,16 @@ export default function ContactSection() {
                                 </form>
                             </div>
 
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
 
-                    <Card className="rounded-xl shadow-sm overflow-hidden">
-                        <CardContent className="p-0">
+                    <div className="temple-card overflow-hidden md:col-span-2">
+                        <div>
 
                             {/* Map */}
                             <div className="relative">
                                 <iframe
+                                    title="मंदिर का स्थान - Google Maps"
                                     src="https://www.google.com/maps?q=Maa+Tripura+Sundari+Temple+Banswara&output=embed"
                                     width="100%"
                                     height="320"
@@ -271,8 +264,8 @@ export default function ContactSection() {
                                 </div>
                             </div>
 
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section >
