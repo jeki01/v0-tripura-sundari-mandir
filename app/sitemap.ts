@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Services
     { url: `${baseUrl}/estore`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${baseUrl}/shringar`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.7 },
     { url: `${baseUrl}/donation`, lastModified: currentDate, changeFrequency: "monthly", priority: 0.7 },
 
     // Main Temple Sections
