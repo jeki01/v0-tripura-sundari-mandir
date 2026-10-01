@@ -76,7 +76,7 @@ export default function PanchalSamajSection() {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-6">
             <Users className="text-[#B30000] mr-3" size={32} />
-            <h2 className="text-4xl font-bold text-[#B30000]">पंचाल समाज का परिचय</h2>
+            <h1 className="text-4xl font-bold text-[#B30000]">पंचाल समाज का परिचय</h1>
           </div>
           <p className="text-[#FF6B00] text-lg max-w-3xl mx-auto">
             भारत की पारंपरिक लुहार जाति की एक विशिष्ट उपजाति - भगवान विश्वकर्मा के अनुयायी

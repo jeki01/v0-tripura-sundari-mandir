@@ -30,24 +30,27 @@ export default function SubscribeForm({ source = "mandir" }: { source?: string }
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3">
+    <form onSubmit={submit} className="mx-auto flex max-w-xl flex-col gap-3 sm:flex-row">
       <input
         type="email"
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="अपना ईमेल पता दर्ज करें"
-        className="border border-orange-300 rounded-lg px-4 py-2 w-full outline-none focus:ring-2 focus:ring-orange-400"
+        aria-label="ईमेल पता"
+        className="w-full rounded-full border border-[#C8941A]/60 bg-white px-5 py-3 text-[#3A2A1A] outline-none focus:ring-2 focus:ring-[#FF6B00]"
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="bg-[#B30000] text-white px-6 py-2 rounded-lg hover:bg-[#990000] transition w-full sm:w-auto disabled:opacity-60"
+        className="w-full rounded-full bg-gradient-to-b from-[#B30000] to-[#8F0000] px-8 py-3 font-semibold text-white shadow transition hover:brightness-110 disabled:opacity-60 sm:w-auto"
       >
         {status === "loading" ? "..." : "Subscribe"}
       </button>
       {msg && (
-        <span className={`text-sm self-center ${status === "ok" ? "text-green-700" : "text-red-600"}`}>{msg}</span>
+        <p role="status" className={`text-sm sm:basis-full ${status === "ok" ? "text-green-700" : "text-red-600"}`}>
+          {msg}
+        </p>
       )}
     </form>
   )
