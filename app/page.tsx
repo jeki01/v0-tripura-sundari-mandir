@@ -12,6 +12,10 @@ import HowToReachSection from "@/components/HowToReachSection"
 import ContactSection from "@/components/contact-us"
 import DosDontsSection from "@/components/do-dont-section"
 import FaqSection from "@/components/faqs-section"
+import { fetchSocialLinks } from "@/lib/api"
+
+// Static page re-generated at most once a minute (footer/contact links come from the DB)
+export const revalidate = 60
 
 const divineImages = [
   {
@@ -41,7 +45,8 @@ const divineImages = [
   },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const socialLinks = await fetchSocialLinks()
   return (
     <div className="min-h-screen bg-[#FFF4E6]">
       <ScrollProgress />
@@ -53,9 +58,9 @@ export default function HomePage() {
         <TempleTimingsSection />
         <TempleStructureSection divineImages={divineImages} />
         <ShringarScheduleSection />
-        <LiveDarshanSection />
+        <LiveDarshanSection socialLinks={socialLinks} />
         <HowToReachSection />
-        <ContactSection />
+        <ContactSection socialLinks={socialLinks} />
         <DosDontsSection />
         <FaqSection />
       </main>

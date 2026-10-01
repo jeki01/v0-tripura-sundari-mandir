@@ -3,11 +3,11 @@
 import { useState } from "react"
 import { SectionHeading } from "@/components/ornaments"
 import { Phone, Mail, Navigation, MapPin } from "lucide-react"
-import { FaWhatsapp } from "react-icons/fa"
 import Link from "next/link"
-import { API_BASE } from "@/lib/api"
+import { API_BASE, type SocialLink } from "@/lib/api"
+import { SocialIcon, platformMeta } from "@/components/social-icons"
 
-export default function ContactSection() {
+export default function ContactSection({ socialLinks = [] }: { socialLinks?: SocialLink[] }) {
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -186,24 +186,20 @@ export default function ContactSection() {
                                     Social Media
                                 </p>
 
-                                <div className="flex gap-4 text-sm">
-
-                                    <Link href="https://www.facebook.com/profile.php?id=61579670115975" target="_blank" className="hover:text-blue-600">
-                                        Facebook
-                                    </Link>
-
-                                    <Link href="https://www.instagram.com/maa_tripura_sunadari_mandir" target="_blank" className="hover:text-pink-500">
-                                        Instagram
-                                    </Link>
-
-                                    <Link href="https://m.youtube.com/@shreetripurasundari" target="_blank" className="hover:text-red-600">
-                                        YouTube
-                                    </Link>
-
-                                    <Link href="https://whatsapp.com/channel/0029VaoNub9GU3BHZmvqjA00" target="_blank" className="hover:text-green-600 flex items-center gap-1">
-                                        <FaWhatsapp /> WhatsApp
-                                    </Link>
-
+                                <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                                    {socialLinks.length === 0 && <span className="text-gray-500">—</span>}
+                                    {socialLinks.map((l, i) => (
+                                        <Link
+                                            key={`${l.url}-${i}`}
+                                            href={l.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-1.5 text-[#3A2A1A] transition hover:text-[#B30000]"
+                                        >
+                                            <SocialIcon platform={l.platform} size={14} />
+                                            {l.label || platformMeta(l.platform).name}
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
 
