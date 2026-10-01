@@ -1,40 +1,26 @@
 import TempleHistoryPage from "@/components/temple-history-page"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import NavigationHandler from "@/components/navigation-handler"
-import ScrollProgress from "@/components/scroll-progress"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { PageShell, RichBody } from "@/components/cms"
 import { fetchContent, isManaged } from "@/lib/api"
 
 export const dynamic = "force-dynamic"
 
-// Original static page (used as fallback until admin adds content)
-function StaticHistory() {
-  return (
-    <div className="min-h-screen bg-[#FFF4E6]">
-      <ScrollProgress />
-      <Header />
-      <NavigationHandler />
-      <main className="container mx-auto px-4 py-8 md:py-12">
-        <div className="flex justify-end mb-8">
-          <Link href="/" passHref>
-            <Button className="bg-[#FF6B00] hover:bg-[#B30000] text-white">Back to Home</Button>
-          </Link>
-        </div>
-        <TempleHistoryPage />
-      </main>
-      <Footer />
-    </div>
-  )
+export const metadata = {
+  title: "मंदिर का इतिहास | श्री त्रिपुरा सुंदरी मंदिर, बांसवाड़ा",
+  description: "श्री त्रिपुरा सुंदरी मंदिर (तारताई माता) का प्राचीन इतिहास, वास्तुशिल्प और आध्यात्मिक महत्व।",
 }
 
 export default async function HistoryPage() {
   const c = await fetchContent("history")
-  if (!isManaged(c)) return <StaticHistory />
+  // Until the section is saved from the admin portal, show the original written history
+  if (!isManaged(c)) {
+    return (
+      <PageShell>
+        <TempleHistoryPage />
+      </PageShell>
+    )
+  }
   return (
-    <PageShell heading={c.title || "मंदिर का इतिहास (History)"}>
+    <PageShell heading={c.title || "मंदिर का इतिहास"} subtitle="श्री त्रिपुरा सुंदरी मंदिर की गौरवशाली गाथा" eyebrow="History">
       <RichBody html={c.html} />
     </PageShell>
   )

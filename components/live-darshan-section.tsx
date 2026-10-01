@@ -5,7 +5,7 @@ import { Camera, WifiOff, AlertTriangle } from "lucide-react"
 import { SectionHeading } from "@/components/ornaments"
 import Image from "next/image"
 import Link from "next/link"
-import { fetchContent, isManaged } from "@/lib/api"
+import { fetchContent, isManaged, type SocialLink } from "@/lib/api"
 
 const IS_CURRENTLY_LIVE = true
 const YOUTUBE_CHANNEL_ID = "UClQYJEOUrS2WS4a5-8yD7cQ"
@@ -33,7 +33,7 @@ function toEmbedUrl(value: string) {
 
 const POLL_INTERVAL_MS = 60_000
 
-export default function LiveDarshanSection() {
+export default function LiveDarshanSection({ socialLinks = [] }: { socialLinks?: SocialLink[] }) {
   const [videoError, setVideoError] = useState(false)
   const [streamUrl, setStreamUrl] = useState(DEFAULT_STREAM_URL)
   const [inView, setInView] = useState(false)
@@ -131,16 +131,12 @@ export default function LiveDarshanSection() {
                   <p className="mt-2 max-w-md text-sm text-gray-300">
                     तकनीकी समस्या के कारण लाइव दर्शन उपलब्ध नहीं है। कृपया हमारे सोशल मीडिया चैनल पर अन्य वीडियो देखें।
                   </p>
-                  <div className="mt-4 flex gap-4 text-sm">
-                    <Link href="https://www.youtube.com/@shreetripurasundari" target="_blank" className="text-red-400 hover:underline">
-                      YouTube
-                    </Link>
-                    <Link href="https://www.instagram.com/maa_tripura_sunadari_mandir" target="_blank" className="text-pink-400 hover:underline">
-                      Instagram
-                    </Link>
-                    <Link href="https://www.facebook.com/profile.php?id=61579670115975" target="_blank" className="text-blue-400 hover:underline">
-                      Facebook
-                    </Link>
+                  <div className="mt-4 flex flex-wrap justify-center gap-4 text-sm">
+                    {socialLinks.map((l, i) => (
+                      <Link key={`${l.url}-${i}`} href={l.url} target="_blank" className="text-[#FFE27A] hover:underline">
+                        {l.label}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}

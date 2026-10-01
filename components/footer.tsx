@@ -1,13 +1,16 @@
 import Link from "next/link"
-import { Facebook, Twitter, Instagram, Youtube, Phone, Mail, MapPin, ExternalLink, FileText, Globe } from "lucide-react"
-import { FaWhatsapp } from "react-icons/fa"
+import { Phone, Mail, MapPin, ExternalLink } from "lucide-react"
+import { fetchSocialLinks } from "@/lib/api"
+import { SocialIcon, platformMeta } from "@/components/social-icons"
 import { OrnamentDivider, TempleSkyline } from "@/components/ornaments"
-export default function Footer() {
+export default async function Footer() {
+  const socialLinks = await fetchSocialLinks()
   const quickLinks = [
     { label: "About Mandir", href: "/about" },
     { label: "Live Darshan", href: "/#darshan-live" },
     { label: "Online Pujas", href: "#online-pujas" },
-    { label: "Donations", href: "#donations" },
+    { label: "Donations", href: "/donation" },
+    { label: "E-Store", href: "/estore" },
     { label: "Services", href: "/services-all" },
     { label: "Events", href: "/events" },
     { label: "VIP Visitors", href: "/vip-visitors-all" },
@@ -75,59 +78,21 @@ export default function Footer() {
               Follow us
             </h4>
             <div className="space-y-3">
-              <Link
-                href="/sitemap.xml"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 text-sm group"
-              >
-
-              </Link>
-
-              <div className="mt-6">
-                <div className="flex space-x-4">
-
-                  {/* Facebook */}
-                  <Link
-                    href="https://www.facebook.com/profile.php?id=61579670115975"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
-                  >
-                    <Facebook size={16} />
-                  </Link>
-
-                  {/* Instagram */}
-                  <Link
-                    href="https://www.instagram.com/maa_tripura_sunadari_mandir?igsh=M2VtbWt1NjlldzEz"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
-                  >
-                    <Instagram size={16} />
-                  </Link>
-
-                  {/* YouTube */}
-                  <Link
-                    href="https://m.youtube.com/@shreetripurasundari"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
-                  >
-                    <Youtube size={16} />
-                  </Link>
-
-                  {/* WhatsApp */}
-                  <Link
-                    href="https://whatsapp.com/channel/0029VaoNub9GU3BHZmvqjA00"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#FFF4E6] hover:text-[#25D366] transition-colors duration-200 p-2 rounded-full border border-[#FFD700]/30 hover:border-[#25D366]"
-                  >
-                    {/* Lucide doesn't have WhatsApp → use text or custom icon */}
-                    <FaWhatsapp size={16} />
-                  </Link>
-
+              <div>
+                <div className="flex flex-wrap gap-3">
+                  {socialLinks.map((l, i) => (
+                    <Link
+                      key={`${l.url}-${i}`}
+                      href={l.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={l.label || platformMeta(l.platform).name}
+                      title={l.label || platformMeta(l.platform).name}
+                      className="text-[#FFF4E6] hover:text-[#FFD700] transition-colors duration-200 p-2.5 rounded-full border border-[#FFD700]/30 hover:border-[#FFD700]"
+                    >
+                      <SocialIcon platform={l.platform} size={16} />
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
