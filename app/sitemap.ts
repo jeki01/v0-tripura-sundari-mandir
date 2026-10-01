@@ -13,6 +13,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
 
+    // Services
+    { url: `${baseUrl}/estore`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${baseUrl}/donation`, lastModified: currentDate, changeFrequency: "monthly", priority: 0.7 },
+
     // Main Temple Sections
     {
       url: `${baseUrl}/#about-mandir`,
