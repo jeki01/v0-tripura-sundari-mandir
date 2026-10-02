@@ -2,10 +2,16 @@ import Image from "next/image"
 import Link from "next/link"
 import { Play, Clock } from "lucide-react"
 import { ArchEdge, Diya, Lotus, Mandala } from "@/components/ornaments"
+import HeroVideo from "@/components/hero-video"
+import { fetchContent } from "@/lib/api"
 
 const highlights = ["51 शक्तिपीठों में से एक", "18 भुजाओं वाली सिंहवाहिनी माँ", "सामान्य दर्शन निःशुल्क"]
 
-export default function HeroSection() {
+export default async function HeroSection() {
+  // Background video uploaded from the admin (Mandir management -> home page background video); none = photo only
+  const videoContent = await fetchContent("hero-video", { revalidate: 60 })
+  const videoUrl: string = (videoContent?.items && !Array.isArray(videoContent.items) && videoContent.items.video) || ""
+
   return (
     <section id="home" className="relative isolate overflow-hidden bg-[#2B0A0A] text-white">
       {/* LCP image: served resized/AVIF through next/image and preloaded */}
@@ -18,6 +24,7 @@ export default function HeroSection() {
         quality={70}
         className="-z-20 object-cover object-[58%_30%]"
       />
+      {videoUrl && <HeroVideo src={videoUrl} />}
 
       {/* Warm temple-glow overlays keep the text readable */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#2B0A0A]/75 via-[#4A0000]/45 to-[#2B0A0A]/90 md:bg-gradient-to-r md:from-[#2B0A0A]/92 md:via-[#6B0000]/50 md:to-transparent" />
