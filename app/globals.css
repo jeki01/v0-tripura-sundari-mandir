@@ -123,11 +123,18 @@
     border-bottom-right-radius: 0.75rem;
   }
 
+  /* Gold gradient text. background-clip:text only paints inside the element's box, so the marks that stick out
+     of a tight line box in Devanagari (matras above and below the line, the top bar) used to be cut off.
+     The padding gives the gradient room to paint them; the equal negative margin keeps the layout unchanged. */
   .text-gold-gradient {
     background-image: linear-gradient(180deg, #fff3b0 0%, #ffd700 45%, #e09a00 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    padding: 0.3em 0.12em;
+    margin: -0.3em -0.12em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   .animate-spin-slow {

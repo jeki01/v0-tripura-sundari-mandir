@@ -42,7 +42,7 @@ export default async function HeroSection() {
             शक्तिपीठ · उमराई, बांसवाड़ा, राजस्थान
           </p>
 
-          <h1 className="font-display text-gold-gradient text-4xl leading-[1.15] drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-7xl">
+          <h1 className="font-display text-gold-gradient text-4xl leading-[1.25] drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-7xl">
             जय श्री माँ
             <br />
             त्रिपुरा सुंदरी
