@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, ExternalLink, Heart, Mail, Phone, Sparkles } from "lucide-react"
@@ -145,14 +146,16 @@ export default function ShringarScheduleSection() {
 
             <div className="flex flex-col items-center justify-center text-center">
               <Sparkles className="mb-3 text-[#E0A100]" size={28} />
-              <a
-                href="tel:+918696851900"
+              <Link
+                href="/shringar"
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#FFE27A] to-[#E0A100] px-6 py-2.5 text-sm font-bold text-[#6B0000] shadow transition hover:-translate-y-0.5"
               >
                 <ExternalLink size={16} />
                 बुकिंग करें
-              </a>
-              <p className="mt-3 text-xs text-[#7A5A3A]">* बुकिंग के लिए पहले संपर्क करें</p>
+              </Link>
+              <p className="mt-3 max-w-xs text-xs leading-relaxed text-[#7A5A3A]">
+                उपलब्ध तिथियाँ देखकर यहीं बुकिंग करें, या बुकिंग के लिए सीधे मंदिर टीम से संपर्क करें।
+              </p>
             </div>
           </div>
         </div>
