@@ -15,8 +15,6 @@ export default function ContactSection({ socialLinks = [] }: { socialLinks?: Soc
         message: "",
     })
     const [contactMsg, setContactMsg] = useState("")
-    const [newsletterEmail, setNewsletterEmail] = useState("")
-    const [subMsg, setSubMsg] = useState("")
     const [busy, setBusy] = useState(false)
 
     const handleChange = (e: any) => {
@@ -50,25 +48,6 @@ export default function ContactSection({ socialLinks = [] }: { socialLinks?: Soc
             setContactMsg("कुछ गड़बड़ हुई, पुनः प्रयास करें")
         } finally {
             setBusy(false)
-        }
-    }
-
-    // Newsletter subscribe only — independent from the Reach Out form's own state,
-    // and tagged with its own source so admin can tell the two apart.
-    const handleSubscribe = async (e: any) => {
-        e.preventDefault()
-        if (!newsletterEmail) return
-        setSubMsg("")
-        try {
-            const res = await fetch(`${API_BASE}/subscriber`, {
-                method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: newsletterEmail, source: "mandir-newsletter" }),
-            })
-            const json = await res.json()
-            setSubMsg(res.ok && json.success ? "धन्यवाद! सदस्यता हो गई।" : (json.message || "सदस्यता विफल"))
-            if (res.ok && json.success) setNewsletterEmail("")
-        } catch {
-            setSubMsg("कुछ गड़बड़ हुई")
         }
     }
 
@@ -201,32 +180,6 @@ export default function ContactSection({ socialLinks = [] }: { socialLinks?: Soc
                                         </Link>
                                     ))}
                                 </div>
-                            </div>
-
-                            <div className="pt-4">
-                                <p className="font-semibold text-[#B30000] mb-2">
-                                    News and updates
-                                </p>
-                                <form className="space-y-4" onSubmit={handleSubscribe}>
-                                    <input
-                                        type="email"
-                                        name="newsletterEmail"
-                                        placeholder="ईमेल"
-                                        value={newsletterEmail}
-                                        onChange={(e) => setNewsletterEmail(e.target.value)}
-                                        required
-                                        className="w-full rounded-lg border border-[#C8941A]/50 bg-white p-3 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                                    />
-
-                                    <button
-                                        type="submit"
-                                        className="w-full rounded-lg bg-gradient-to-b from-[#B30000] to-[#8F0000] py-3 font-semibold text-white transition hover:brightness-110"
-                                    >
-                                        Subscribe
-                                    </button>
-                                    {subMsg && <p className="text-sm text-green-700">{subMsg}</p>}
-
-                                </form>
                             </div>
 
                         </div>
