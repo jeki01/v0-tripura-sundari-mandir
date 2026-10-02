@@ -11,6 +11,7 @@ import {
   HandHeart,
   HelpCircle,
   Landmark,
+  MessageSquareWarning,
   MapPin,
   Mountain,
   Newspaper,
@@ -50,6 +51,7 @@ const quickLinks = [
   { titleHindi: "ई-स्टोर", title: "E-Store", icon: ShoppingBag, href: "/estore" },
   { titleHindi: "दान", title: "Donation", icon: HandHeart, href: "/donation" },
   { titleHindi: "श्रृंगार बुकिंग", title: "Book Shringar", icon: Flower2, href: "/shringar" },
+  { titleHindi: "शिकायत निवारण", title: "Grievance", icon: MessageSquareWarning, href: "/grievance" },
   // Visitors menu
   { titleHindi: "विशिष्ट अतिथि", title: "Visitors", icon: Users, href: "/vip-visitors-all" },
   { titleHindi: "बांसवाड़ा", title: "About Banswara", icon: Landmark, href: "/about-banswara" },

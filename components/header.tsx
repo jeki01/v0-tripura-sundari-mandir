@@ -30,6 +30,7 @@ const serviceMenu: MenuItem[] = [
   { name: "E-Store", href: "/estore" },
   { name: "Donation", href: "/donation" },
   { name: "Book Shringar", href: "/shringar" },
+  { name: "Grievance Redressal", href: "/grievance" },
 ]
 
 const visitorsMenu: MenuItem[] = [

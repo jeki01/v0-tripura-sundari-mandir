@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { PageShell, EmptyNote } from "@/components/cms"
 import { fetchContent, isManaged } from "@/lib/api"
 import RecentVisitsGrid from "@/components/recent-visits-grid"
+import TestimonialSection from "@/components/testimonial-section"
 
 export const dynamic = "force-dynamic"
 
@@ -24,6 +25,7 @@ function StaticVisitors() {
           </Link>
         </div>
         <VipVisitorsSection />
+        <TestimonialSection />
       </main>
       <Footer />
     </div>
@@ -38,6 +40,7 @@ export default async function VipVisitorsAllPage() {
     <PageShell heading={c?.title || "हाल की विज़िट (Recent Visits)"}>
       {items.length === 0 && <EmptyNote />}
       {items.length > 0 && <RecentVisitsGrid items={items} />}
+      <TestimonialSection />
     </PageShell>
   )
 }

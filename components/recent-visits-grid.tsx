@@ -9,6 +9,7 @@ interface VisitItem {
   date?: string
   photo?: string
   description?: string
+  remarks?: string
   images?: string[]
 }
 
@@ -33,6 +34,11 @@ export default function RecentVisitsGrid({ items }: { items: VisitItem[] }) {
             <h3 className="text-lg font-semibold text-[#B30000] text-center">{v.name}</h3>
             {v.designation && <p className="text-sm text-gray-600 text-center">{v.designation}</p>}
             {v.date && <p className="text-xs text-gray-500 mt-1 text-center">{v.date}</p>}
+            {v.remarks && (
+              <p className="mt-3 line-clamp-3 border-t border-[#C8941A]/30 pt-3 text-center text-sm italic leading-relaxed text-[#5A4636]">
+                &ldquo;{v.remarks}&rdquo;
+              </p>
+            )}
           </button>
         ))}
       </div>
@@ -65,6 +71,12 @@ export default function RecentVisitsGrid({ items }: { items: VisitItem[] }) {
               </div>
               {active.description && (
                 <p className="text-gray-700 leading-relaxed whitespace-pre-line">{active.description}</p>
+              )}
+              {active.remarks && (
+                <blockquote className="rounded-r-xl border-l-4 border-[#E0A100] bg-[#FFF4E6] px-4 py-3">
+                  <p className="mb-1 text-xs font-semibold tracking-wide text-[#8F0000]">टिप्पणी / अभिप्राय</p>
+                  <p className="whitespace-pre-line italic leading-relaxed text-[#3A2A1A]">&ldquo;{active.remarks}&rdquo;</p>
+                </blockquote>
               )}
               {Array.isArray(active.images) && active.images.length > 0 && (
                 <div>
