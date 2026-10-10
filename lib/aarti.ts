@@ -1,7 +1,7 @@
 import { fetchContent, httpsStorageUrl } from "@/lib/api"
 
-// आरती एवं स्तुति: YouTube videos (content key "aarti-videos") and written articles (key "aarti-articles"),
-// both managed in the admin (Mandir management). Each entry has its own id, which is its web address:
+// आरती एवं स्तुति: YouTube videos and written articles, managed together in the admin (Mandir management ->
+// आरती एवं स्तुति, content key "aarti-stuti"). Each entry has its own id, which is its web address:
 // /aarti-stuti/video/<id> and /aarti-stuti/article/<id>.
 export const AARTI_CATEGORIES = ["आरती", "मंत्र", "साधना", "स्तोत्र", "भक्ति"] as const
 
@@ -61,61 +61,72 @@ function hashId(text: string): string {
 
 const isOn = (it: any) => it && it.status !== "off"
 
-function normalize(raw: any, kind: AartiItem["kind"]): AartiItem[] {
-  const list: any[] = raw && Array.isArray(raw.items) ? raw.items : []
-  const out: AartiItem[] = []
-  for (const it of list) {
-    if (!isOn(it)) continue
-    const title = str(it.title)
-    if (!title) continue
-    const category = str(it.category)
-    const topic = str(it.topic)
-    const date = str(it.date).slice(0, 10)
-    if (kind === "video") {
-      const youtubeId = parseYouTube(str(it.url))
-      if (!youtubeId) continue // not a usable YouTube link
-      const description = str(it.description)
-      out.push({
-        kind,
-        id: str(it.id) || hashId(`v${title}${youtubeId}`),
-        title,
-        category,
-        summary: description || topic,
-        topic,
-        date,
-        image: youtubeThumb(youtubeId),
-        youtubeId,
-        body: description,
-        search: `${title} ${category} ${topic} ${description}`.toLowerCase(),
-      })
-    } else {
-      const body = str(it.body)
-      const text = stripHtml(body)
-      out.push({
-        kind,
-        id: str(it.id) || hashId(`a${title}`),
-        title,
-        category,
-        summary: topic || text.slice(0, 160),
-        topic,
-        date,
-        image: it.image ? httpsStorageUrl(str(it.image)) : "",
-        youtubeId: "",
-        body,
-        search: `${title} ${category} ${topic} ${text.slice(0, 4000)}`.toLowerCase(),
-      })
+// One saved entry -> what the pages use. `fallbackKind` is for entries saved by the first version, which kept
+// videos and articles in two separate lists and had no "type" on the entry.
+function toItem(it: any, fallbackKind: AartiItem["kind"]): AartiItem | null {
+  if (!isOn(it)) return null
+  const title = str(it.title)
+  if (!title) return null
+  const kind: AartiItem["kind"] = it.type === "video" || it.type === "article" ? it.type : fallbackKind
+  const category = str(it.category)
+  const topic = str(it.topic)
+  const date = str(it.date).slice(0, 10)
+  const own = it.image ? httpsStorageUrl(str(it.image)) : ""
+  if (kind === "video") {
+    const youtubeId = parseYouTube(str(it.url))
+    if (!youtubeId) return null // not a usable YouTube link
+    const description = str(it.description)
+    return {
+      kind,
+      id: str(it.id) || hashId(`v${title}${youtubeId}`),
+      title,
+      category,
+      summary: topic || description,
+      topic,
+      date,
+      image: own || youtubeThumb(youtubeId),
+      youtubeId,
+      body: description,
+      search: `${title} ${category} ${topic} ${description}`.toLowerCase(),
     }
   }
-  return out
+  const body = str(it.body)
+  const text = stripHtml(body)
+  return {
+    kind,
+    id: str(it.id) || hashId(`a${title}`),
+    title,
+    category,
+    summary: topic || text.slice(0, 160),
+    topic,
+    date,
+    image: own,
+    youtubeId: "",
+    body,
+    search: `${title} ${category} ${topic} ${text.slice(0, 4000)}`.toLowerCase(),
+  }
 }
 
-// Everything published, newest first (entries without a date keep the order the admin gave them, after dated ones)
+const listOf = (raw: any): any[] => (raw && Array.isArray(raw.items) ? raw.items : [])
+
+// Everything published, newest first (entries without a date keep the order the admin gave them, after dated ones).
+// The list is "aarti-stuti" (articles and videos together). Until that has been saved once, the two older lists
+// ("aarti-videos", "aarti-articles") are shown instead.
 export async function fetchAartiItems(): Promise<AartiItem[]> {
-  const [videos, articles] = await Promise.all([
-    fetchContent("aarti-videos", { revalidate: 60 }),
-    fetchContent("aarti-articles", { revalidate: 60 }),
-  ])
-  const all = [...normalize(videos, "video"), ...normalize(articles, "article")]
+  const main = await fetchContent("aarti-stuti", { revalidate: 60 })
+  let all: AartiItem[]
+  if (main && Array.isArray(main.items)) {
+    all = main.items.map((it: any) => toItem(it, "article")).filter((x: AartiItem | null): x is AartiItem => !!x)
+  } else {
+    const [videos, articles] = await Promise.all([
+      fetchContent("aarti-videos", { revalidate: 60 }),
+      fetchContent("aarti-articles", { revalidate: 60 }),
+    ])
+    all = [
+      ...listOf(videos).map((it) => toItem(it, "video")),
+      ...listOf(articles).map((it) => toItem(it, "article")),
+    ].filter((x): x is AartiItem => !!x)
+  }
   return all
     .map((x, i) => ({ x, i }))
     .sort((a, b) => b.x.date.localeCompare(a.x.date) || a.i - b.i)

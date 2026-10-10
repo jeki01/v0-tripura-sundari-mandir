@@ -104,7 +104,7 @@ export default async function AartiDetailPage({ params }: Props) {
 
             {isVideo ? (
               <div className="mt-8">
-                <YouTubePlayer id={item.youtubeId} title={item.title} />
+                <YouTubePlayer id={item.youtubeId} title={item.title} poster={item.image} />
                 <a
                   href={`https://www.youtube.com/watch?v=${item.youtubeId}`}
                   target="_blank"
