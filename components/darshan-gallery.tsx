@@ -1,8 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect, useState } from "react"
-import { Check, Copy, Download, Share2 } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { Check, ChevronLeft, ChevronRight, Copy, Download, Share2 } from "lucide-react"
 import { hindiDateLine, type DarshanContent } from "@/lib/darshan"
 
 const SITE_URL = "https://shreetripurasundari.com"
@@ -74,6 +74,19 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
   const [busy, setBusy] = useState<string | null>(null)
   const [done, setDone] = useState<string | null>(null)
   const [menu, setMenu] = useState<number | null>(null)
+  const [current, setCurrent] = useState(0)
+  const track = useRef<HTMLUListElement>(null)
+
+  const onScroll = () => {
+    const el = track.current
+    if (!el || !el.clientWidth) return
+    setCurrent(Math.min(images.length - 1, Math.max(0, Math.round(el.scrollLeft / el.clientWidth))))
+  }
+  const go = (i: number) => {
+    const el = track.current
+    if (!el) return
+    el.scrollTo({ left: Math.min(images.length - 1, Math.max(0, i)) * el.clientWidth, behavior: "smooth" })
+  }
 
   useEffect(() => {
     setDateLine(hindiDateLine())
@@ -172,68 +185,110 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
 
       {images.length > 0 ? (
         <>
-          <ul
-            className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden"
-            aria-label="आज के दर्शन की इमेज"
-          >
-            {images.map((url, i) => (
-              <li
-                key={url + i}
-                className="temple-card w-[82%] shrink-0 snap-center overflow-hidden sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]"
-              >
-                <div className="relative aspect-[4/5] w-full bg-[#FFE9B8]">
-                  <Image
-                    src={url}
-                    alt={`माँ त्रिपुरा सुंदरी के आज के दर्शन — ${dateLine} (${i + 1}/${images.length})`}
-                    fill
-                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 82vw"
-                    className="object-cover"
-                    priority={i === 0}
-                  />
+          {/* one arch-shaped frame; the pictures slide inside it */}
+          <div className="mx-auto w-full max-w-[340px] sm:max-w-[400px]">
+            <div className="rounded-t-[999px] rounded-b-3xl bg-gradient-to-b from-[#FFD700] via-[#C8941A] to-[#8F0000] p-[5px] shadow-[0_10px_30px_-12px_rgba(143,0,0,0.5)]">
+              <div className="overflow-hidden rounded-t-[999px] rounded-b-[1.25rem] bg-[#FFF6E2]">
+                <div className="relative">
+                  <ul
+                    ref={track}
+                    onScroll={onScroll}
+                    className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    aria-label="आज के दर्शन की इमेज"
+                  >
+                    {images.map((url, i) => (
+                      <li key={url + i} className="relative aspect-[3/4] w-full shrink-0 snap-center bg-[#FFE9B8]">
+                        <Image
+                          src={url}
+                          alt={`माँ त्रिपुरा सुंदरी के आज के दर्शन — ${dateLine} (${i + 1}/${images.length})`}
+                          fill
+                          sizes="(min-width: 640px) 400px, 340px"
+                          className="object-cover"
+                          priority={i === 0}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+
+                  {images.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => go(current - 1)}
+                        disabled={current === 0}
+                        aria-label="पिछला दर्शन"
+                        className="absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-[#8F0000] shadow transition active:scale-95 disabled:opacity-30"
+                      >
+                        <ChevronLeft size={20} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => go(current + 1)}
+                        disabled={current === images.length - 1}
+                        aria-label="अगला दर्शन"
+                        className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-[#8F0000] shadow transition active:scale-95 disabled:opacity-30"
+                      >
+                        <ChevronRight size={20} />
+                      </button>
+                    </>
+                  )}
                 </div>
+
+                {images.length > 1 && (
+                  <div className="flex justify-center gap-1 pt-2" role="tablist" aria-label="दर्शन चुनें">
+                    {images.map((_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        role="tab"
+                        aria-selected={i === current}
+                        aria-label={`दर्शन ${i + 1}`}
+                        onClick={() => go(i)}
+                        className="flex items-center justify-center px-0.5"
+                      >
+                        <span className={`block h-2 rounded-full transition-all ${i === current ? "w-6 bg-[#B30000]" : "w-2 bg-[#C8941A]/50"}`} />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
                 <div data-share-root className="relative flex items-center gap-2 p-3">
                   <button
                     type="button"
-                    onClick={() => download(url, i)}
-                    disabled={busy === `d${i}`}
+                    onClick={() => download(images[current], current)}
+                    disabled={busy === `d${current}`}
                     className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#B30000] to-[#FF6B00] px-3 py-2 text-sm font-medium text-white transition active:scale-95 disabled:opacity-60"
                   >
-                    {done === `d${i}` ? <Check size={18} /> : <Download size={18} />}
+                    {done === `d${current}` ? <Check size={18} /> : <Download size={18} />}
                     डाउनलोड
                   </button>
                   <button
                     type="button"
-                    onClick={() => share(url, i)}
-                    disabled={busy === `s${i}`}
+                    onClick={() => share(images[current], current)}
+                    disabled={busy === `s${current}`}
                     aria-label="शेयर करें"
-                    aria-expanded={menu === i}
+                    aria-expanded={menu === current}
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#C8941A] bg-white text-[#8F0000] transition hover:bg-[#FFF4E6] active:scale-95 disabled:opacity-60"
                   >
                     <Share2 size={18} />
                   </button>
-                  {menu === i && (
+                  {menu === current && (
                     <div className="absolute bottom-full right-3 z-10 mb-1 w-52 overflow-hidden rounded-xl border border-[#C8941A]/60 bg-white shadow-lg">
-                      <button type="button" onClick={() => whatsapp(url)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                      <button type="button" onClick={() => whatsapp(images[current])} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
                         <span className="text-[#1FAF38]"><WhatsAppIcon /></span> WhatsApp
                       </button>
-                      <button type="button" onClick={() => instagram(url, i)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                      <button type="button" onClick={() => instagram(images[current], current)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
                         <span className="text-[#E1306C]"><InstagramIcon /></span> Instagram
                       </button>
-                      <button type="button" onClick={() => copyLink(url)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                      <button type="button" onClick={() => copyLink(images[current])} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
                         <Copy size={18} className="text-[#8F0000]" /> लिंक कॉपी करें
                       </button>
                     </div>
                   )}
                 </div>
-              </li>
-            ))}
-          </ul>
-
-          {images.length > 1 && (
-            <p className="mb-3 text-center text-xs text-[#C25400] sm:hidden" aria-hidden="true">
-              ← और दर्शन देखने के लिए स्वाइप करें →
-            </p>
-          )}
+              </div>
+            </div>
+          </div>
 
           <p role="status" aria-live="polite" className="mt-3 min-h-[1.25rem] text-center text-sm text-[#8F0000]">
             {note}
