@@ -3,6 +3,7 @@ import Footer from "@/components/footer"
 import ScrollProgress from "@/components/scroll-progress"
 import HeroSection from "@/components/hero-section"
 import QuickLinksSection from "@/components/quick-links-section"
+import AajKeDarshan from "@/components/aaj-ke-darshan"
 import TempleTimingsSection from "@/components/temple-timings-section"
 import TempleStructureSection from "@/components/divya-swaroop"
 import ShringarScheduleSection from "@/components/shringar-schedule-section"
@@ -53,6 +54,7 @@ export default async function HomePage() {
       <main role="main">
         <HeroSection />
         <QuickLinksSection />
+        <AajKeDarshan />
         <TempleTimingsSection />
         <TempleStructureSection divineImages={divineImages} />
         <ShringarScheduleSection />
