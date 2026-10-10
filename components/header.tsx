@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Menu, X, ChevronDown } from "lucide-react"
+import NoticeBar from "@/components/notice-bar"
 
 type MenuItem = { name: string; href: string }
 
@@ -129,7 +130,7 @@ export default function Header() {
                 </button>
 
                 {activeDropdown === menu.id && (
-                  <div className="absolute mt-3 w-56 bg-white rounded-lg shadow-xl p-2 animate-fade-in">
+                  <div className="absolute z-20 mt-3 w-56 bg-white rounded-lg shadow-xl p-2 animate-fade-in">
                     {menu.items.map((item) => (
                       <Link
                         key={item.href}
@@ -193,6 +194,9 @@ export default function Header() {
           </div>
         )}
       </div>
+
+      {/* running notices (nothing is shown when there are none) */}
+      <NoticeBar />
     </header>
   )
 }

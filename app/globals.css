@@ -151,6 +151,20 @@
     }
   }
 
+  /* Notice line under the header: two copies of the text side by side, moved by exactly one copy */
+  @keyframes notice-ticker {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .notice-ticker {
+    animation: notice-ticker var(--notice-secs, 30s) linear infinite;
+  }
+
   /* Mobile touch targets */
   .touch-target {
     min-height: 44px;
@@ -221,6 +235,10 @@
 
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
+  .notice-ticker {
+    animation: none;
+  }
+
   .animate-spin-slow,
   .animate-pulse,
   .animate-bounce {
