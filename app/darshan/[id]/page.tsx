@@ -14,16 +14,17 @@ import { fetchDarshan, findDarshanImage, hindiDateLine } from "@/lib/darshan"
 // the storage service, not a resized copy).
 export const revalidate = 60
 
-type Props = { params: { id: string } }
+type Props = { params: Promise<{ id: string }> }
 
 const absolute = (url: string) => (url.startsWith("/") ? SITE_URL + url : httpsStorageUrl(url))
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
   const darshan = await fetchDarshan()
-  const src = findDarshanImage(darshan.images, params.id)
+  const src = findDarshanImage(darshan.images, id)
   if (!src) return { robots: { index: false } }
   const image = absolute(src)
-  const url = `${SITE_URL}/darshan/${params.id}`
+  const url = `${SITE_URL}/darshan/${id}`
   const title = "आज के दर्शन — श्री त्रिपुरा सुंदरी मंदिर"
   const description = `${darshan.caption} 🙏 ${darshan.closing}`
   return {
@@ -43,8 +44,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DarshanPage({ params }: Props) {
+  const { id } = await params
   const darshan = await fetchDarshan()
-  const src = findDarshanImage(darshan.images, params.id)
+  const src = findDarshanImage(darshan.images, id)
   // an older picture that has since been replaced: show the current darshan instead
   if (!src) {
     if (darshan.images.length) redirect("/#aaj-ke-darshan")
@@ -71,7 +73,7 @@ export default async function DarshanPage({ params }: Props) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={image} alt={`माँ त्रिपुरा सुंदरी के आज के दर्शन`} className="block aspect-[3/4] w-full object-cover" />
                 <div className="p-3 text-left">
-                  <DarshanSingleActions src={image} link={`${SITE_URL}/darshan/${params.id}`} caption={darshan.caption} closing={darshan.closing} />
+                  <DarshanSingleActions src={image} link={`${SITE_URL}/darshan/${id}`} caption={darshan.caption} closing={darshan.closing} />
                 </div>
               </div>
             </div>

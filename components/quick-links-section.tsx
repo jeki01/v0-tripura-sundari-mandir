@@ -13,6 +13,7 @@ import {
   Landmark,
   MessageSquareWarning,
   MapPin,
+  Music,
   Mountain,
   Newspaper,
   PartyPopper,
@@ -40,6 +41,7 @@ const quickLinks = [
   { titleHindi: "संपर्क", title: "Contact", icon: Phone, href: "/contact" },
   { titleHindi: "कार्यक्रम", title: "Events", icon: Calendar, href: "/events" },
   { titleHindi: "त्योहार", title: "Festivals", icon: PartyPopper, href: "/festivals" },
+  { titleHindi: "आरती एवं स्तुति", title: "Aarti & Stuti", icon: Music, href: "/aarti-stuti" },
   { titleHindi: "पंचाल समाज", title: "Panchal Samaj", icon: Hammer, href: "/about-panchal-samaj" },
   // Media menu
   { titleHindi: "गैलरी", title: "Gallery", icon: Camera, href: "/temple-images" },

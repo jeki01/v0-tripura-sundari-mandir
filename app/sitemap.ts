@@ -13,6 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
 
+    { url: `${baseUrl}/aarti-stuti`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.8 },
+
     // Services
     { url: `${baseUrl}/estore`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.7 },
     { url: `${baseUrl}/shringar`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.7 },

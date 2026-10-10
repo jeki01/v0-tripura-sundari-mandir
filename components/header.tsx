@@ -16,6 +16,7 @@ const templeMenu: MenuItem[] = [
   { name: "Contact", href: "/contact" },
   { name: "Events", href: "/events" },
   { name: "Festivals", href: "/festivals" },
+  { name: "Aarti & Stuti", href: "/aarti-stuti" },
   { name: "Panchal Samaj", href: "/about-panchal-samaj" },
 ]
 

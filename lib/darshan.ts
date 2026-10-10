@@ -97,3 +97,12 @@ export function previewImageUrl(src: string, siteUrl: string): string {
   } catch {}
   return src
 }
+
+// "२०२६-१०-१०" style date saved by the admin -> "१० अक्टूबर २०२६". Written by hand (not toLocaleDateString) so the
+// server and the browser always print exactly the same text.
+export function hindiDate(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "")
+  if (!m) return ""
+  const month = MONTHS[Number(m[2]) - 1]
+  return month ? `${toDevanagari(Number(m[3]))} ${month} ${toDevanagari(m[1])}` : ""
+}
