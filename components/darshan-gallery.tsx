@@ -3,8 +3,9 @@
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Check, ChevronLeft, ChevronRight, Copy, Download, Share2 } from "lucide-react"
-import { hindiDateLine, todayIso, type DarshanContent } from "@/lib/darshan"
+import { darshanId, hindiDateLine, shareMessage, type DarshanContent } from "@/lib/darshan"
 import { makePoster } from "@/lib/darshan-poster"
+import { fileNameFor, loadFile, openPlain, saveFile } from "@/lib/darshan-files"
 
 const SITE_URL = "https://shreetripurasundari.com"
 
@@ -24,47 +25,6 @@ function InstagramIcon({ size = 18 }: { size?: number }) {
       <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
     </svg>
   )
-}
-
-const fileNameFor = (url: string, n: number) => {
-  const ext = (/\.(jpe?g|png|webp|gif)(\?|$)/i.exec(url)?.[1] || "jpg").toLowerCase().replace("jpeg", "jpg")
-  return `tripura-sundari-darshan-${n}.${ext}`
-}
-
-// Fetch the picture as a file. Needs the image host to allow cross-origin reads; when it does not, callers fall back.
-async function loadFile(url: string, name: string): Promise<File | null> {
-  try {
-    const res = await fetch(url, { mode: "cors" })
-    if (!res.ok) return null
-    const blob = await res.blob()
-    if (!blob.type.startsWith("image/")) return null
-    return new File([blob], name, { type: blob.type })
-  } catch {
-    return null
-  }
-}
-
-function saveFile(file: File) {
-  const href = URL.createObjectURL(file)
-  const a = document.createElement("a")
-  a.href = href
-  a.download = file.name
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  setTimeout(() => URL.revokeObjectURL(href), 4000)
-}
-
-// When the picture cannot be read by the page, open it so the visitor can press-and-hold / save it
-function openPlain(url: string, name: string) {
-  const a = document.createElement("a")
-  a.href = url
-  a.download = name
-  a.target = "_blank"
-  a.rel = "noopener"
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
 }
 
 export default function DarshanGallery({ darshan, initialDate }: { darshan: DarshanContent; initialDate: string }) {
@@ -112,10 +72,9 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     window.setTimeout(() => setDone((d) => (d === id ? null : d)), 2500)
   }
 
-  // What is shared is the whole section: heading, verse, caption, date, closing line and a link back to it
-  // the day in the address makes each day's link new, so chat apps show that day's picture in the preview
-  const sectionLink = `${SITE_URL}/?darshan=${todayIso()}#aaj-ke-darshan`
-  const shareText = `🙏 आज के दर्शन 🙏\n\n${verse}\n\n${caption}\n\n📅 ${dateLine}\n🙏 ${closing} 🙏\n\n${sectionLink}`
+  // Every picture has its own address (/darshan/<id>) whose page carries that picture in its link preview
+  const linkFor = (url: string) => `${SITE_URL}/darshan/${darshanId(url)}`
+  const messageFor = (url: string) => shareMessage(caption, dateLine, closing, linkFor(url))
 
   // The section as one picture (built from the picture on screen); kept so the menu choices reuse it
   const posterRef = useRef<{ key: string; file: File | null } | null>(null)
@@ -153,8 +112,8 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     tick(id)
   }
 
-  const whatsapp = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank", "noopener")
+  const whatsapp = (url: string) => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(messageFor(url))}`, "_blank", "noopener")
     setMenu(null)
   }
 
@@ -167,37 +126,27 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     flash("दर्शन की इमेज डाउनलोड हो गई है — अब Instagram खोलकर इसे Story या Post में जोड़ें।")
   }
 
-  const copyLink = async () => {
+  const copyLink = async (url: string) => {
     setMenu(null)
     try {
-      await navigator.clipboard.writeText(shareText)
-      flash("पूरा दर्शन संदेश (लिंक सहित) कॉपी हो गया।")
+      await navigator.clipboard.writeText(linkFor(url))
+      flash("इस दर्शन का लिंक कॉपी हो गया।")
     } catch {
-      flash(sectionLink)
+      flash(linkFor(url))
     }
   }
 
-  // The share icon shares the whole section. On phones it opens the phone's own share sheet with the section
-  // picture and text (WhatsApp, Instagram, ...). Where file sharing is not available it opens a small menu.
+  // The share icon shares this picture's own link: chat apps open it as a card with the picture, title and
+  // description (like a product link). Browsers without a share sheet get a small menu instead.
   const share = async (url: string, i: number) => {
-    const id = `s${i}`
     if (menu === i) return setMenu(null)
-    setBusy(id)
     try {
-      const file = await poster(url, i)
-      if (file && typeof navigator.canShare === "function" && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], text: shareText })
-        return
-      }
-      // no file sharing (or the picture could not be read): still share the text and the link to the section
-      if (!file && typeof navigator.share === "function" && /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) {
-        await navigator.share({ title: "आज के दर्शन", text: shareText })
+      if (typeof navigator.share === "function") {
+        await navigator.share({ title: "आज के दर्शन", text: messageFor(url) })
         return
       }
     } catch (e: any) {
       if (e?.name === "AbortError") return // the visitor closed the share sheet
-    } finally {
-      setBusy(null)
     }
     setMenu(i)
   }
@@ -295,8 +244,7 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                   <button
                     type="button"
                     onClick={() => share(images[current], current)}
-                    disabled={busy === `s${current}`}
-                    aria-label="पूरा आज के दर्शन शेयर करें"
+                    aria-label="इस दर्शन को शेयर करें"
                     aria-expanded={menu === current}
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#C8941A] bg-white text-[#8F0000] transition hover:bg-[#FFF4E6] active:scale-95 disabled:opacity-60"
                   >
@@ -304,14 +252,14 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                   </button>
                   {menu === current && (
                     <div className="absolute bottom-full right-3 z-10 mb-1 w-60 overflow-hidden rounded-xl border border-[#C8941A]/60 bg-white shadow-lg">
-                      <button type="button" onClick={whatsapp} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                      <button type="button" onClick={() => whatsapp(images[current])} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
                         <span className="text-[#1FAF38]"><WhatsAppIcon /></span> WhatsApp
                       </button>
                       <button type="button" onClick={() => instagram(images[current], current)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
                         <span className="text-[#E1306C]"><InstagramIcon /></span> Instagram
                       </button>
-                      <button type="button" onClick={copyLink} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
-                        <Copy size={18} className="text-[#8F0000]" /> संदेश + लिंक कॉपी करें
+                      <button type="button" onClick={() => copyLink(images[current])} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                        <Copy size={18} className="text-[#8F0000]" /> लिंक कॉपी करें
                       </button>
                     </div>
                   )}

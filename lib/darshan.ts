@@ -62,13 +62,30 @@ export function hindiDateLine(now: Date = new Date()): string {
   return `${toDevanagari(day)} ${MONTHS[month - 1]} ${toDevanagari(year)}, ${WEEKDAYS[weekday]}`
 }
 
+// Address part of one picture: its file name without extension ("1791660004795-786868689"), so every uploaded
+// picture gets its own page at /darshan/<id>. A picture that is replaced the next day gets a new file and so a new address.
+export function darshanId(url: string): string {
+  const file = url.split(/[?#]/)[0].split("/").pop() || ""
+  return file.replace(/\.[a-z0-9]+$/i, "").replace(/[^A-Za-z0-9_-]/g, "-").slice(0, 80) || "darshan"
+}
+
+export function findDarshanImage(images: string[], id: string): string | null {
+  return images.find((u) => darshanId(u) === id) ?? null
+}
+
+// The message sent along with a shared picture: one short paragraph ending with the picture's own link
+export function shareMessage(caption: string, date: string, closing: string, link: string): string {
+  const head = [caption, date && `📅 ${date}`].filter(Boolean).join(" — ")
+  return `🙏 ${head}। ${closing} 🙏\n${link}`
+}
+
 // Today's date in India as YYYY-MM-DD. Put on the shared link so each day's link is new and WhatsApp / Facebook
 // do not show an older day's preview picture from their cache.
 export function todayIso(now: Date = new Date()): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).format(now)
 }
 
-// Address of the picture to use in link previews (og:image). Storage pictures go through the site's image
+// Address of the picture to use in link previews (home page) (og:image). Storage pictures go through the site's image
 // optimizer at a modest size, because WhatsApp skips very large preview pictures.
 export function previewImageUrl(src: string, siteUrl: string): string {
   if (src.startsWith("/")) return siteUrl + src
