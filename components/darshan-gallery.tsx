@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Check, ChevronLeft, ChevronRight, Copy, Download, Share2 } from "lucide-react"
 import { hindiDateLine, type DarshanContent } from "@/lib/darshan"
+import { makePoster } from "@/lib/darshan-poster"
 
 const SITE_URL = "https://shreetripurasundari.com"
 
@@ -111,7 +112,34 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     window.setTimeout(() => setDone((d) => (d === id ? null : d)), 2500)
   }
 
-  const shareText = `🙏 जय माँ त्रिपुरे 🙏\n${caption}\n📅 ${dateLine}\n${SITE_URL}/#aaj-ke-darshan`
+  // What is shared is the whole section: heading, verse, caption, date, closing line and a link back to it
+  const sectionLink = `${SITE_URL}/#aaj-ke-darshan`
+  const shareText = `🙏 आज के दर्शन 🙏\n\n${verse}\n\n${caption}\n\n📅 ${dateLine}\n🙏 ${closing} 🙏\n\n${sectionLink}`
+
+  // The section as one picture (built from the picture on screen); kept so the menu choices reuse it
+  const posterRef = useRef<{ key: string; file: File | null } | null>(null)
+  const verseRef = useRef<HTMLParagraphElement>(null)
+  const captionRef = useRef<HTMLParagraphElement>(null)
+  const poster = async (url: string, i: number): Promise<File | null> => {
+    const key = `${url}|${dateLine}|${verse}|${caption}|${closing}`
+    if (posterRef.current?.key === key) return posterRef.current.file
+    const image = await loadFile(url, fileNameFor(url, i + 1))
+    const file = image
+      ? await makePoster({
+          image,
+          title: "आज के दर्शन",
+          verse,
+          caption,
+          date: dateLine,
+          closing,
+          site: "shreetripurasundari.com",
+          displayFont: verseRef.current ? getComputedStyle(verseRef.current).fontFamily : "",
+          bodyFont: captionRef.current ? getComputedStyle(captionRef.current).fontFamily : "",
+        })
+      : null
+    posterRef.current = { key, file }
+    return file
+  }
 
   const download = async (url: string, i: number) => {
     const id = `d${i}`
@@ -124,44 +152,45 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     tick(id)
   }
 
-  const absolute = (url: string) => (url.startsWith("/") ? SITE_URL + url : url)
-
-  const whatsapp = (url: string) => {
-    // the picture's own address is in the message, so WhatsApp shows the picture itself
-    window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText}\n${absolute(url)}`)}`, "_blank", "noopener")
+  const whatsapp = () => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank", "noopener")
     setMenu(null)
   }
 
-  // Instagram has no web share link: save the picture and tell the visitor to add it from Instagram
+  // Instagram has no web share link: save the section picture and tell the visitor to add it from Instagram
   const instagram = async (url: string, i: number) => {
-    const name = fileNameFor(url, i + 1)
     setMenu(null)
-    const file = await loadFile(url, name)
+    const file = (await poster(url, i)) || (await loadFile(url, fileNameFor(url, i + 1)))
     if (file) saveFile(file)
-    else openPlain(url, name)
-    flash("इमेज डाउनलोड हो गई है — अब Instagram खोलकर इसे Story या Post में जोड़ें।")
+    else openPlain(url, fileNameFor(url, i + 1))
+    flash("दर्शन की इमेज डाउनलोड हो गई है — अब Instagram खोलकर इसे Story या Post में जोड़ें।")
   }
 
-  const copyLink = async (url: string) => {
+  const copyLink = async () => {
     setMenu(null)
     try {
-      await navigator.clipboard.writeText(absolute(url))
-      flash("इमेज का लिंक कॉपी हो गया।")
+      await navigator.clipboard.writeText(shareText)
+      flash("पूरा दर्शन संदेश (लिंक सहित) कॉपी हो गया।")
     } catch {
-      flash(absolute(url))
+      flash(sectionLink)
     }
   }
 
-  // The share icon: on phones it opens the phone's own share sheet with the picture attached (WhatsApp,
-  // Instagram, ...). Where that is not available it opens a small menu with the same choices.
+  // The share icon shares the whole section. On phones it opens the phone's own share sheet with the section
+  // picture and text (WhatsApp, Instagram, ...). Where file sharing is not available it opens a small menu.
   const share = async (url: string, i: number) => {
     const id = `s${i}`
     if (menu === i) return setMenu(null)
     setBusy(id)
     try {
-      const file = await loadFile(url, fileNameFor(url, i + 1))
+      const file = await poster(url, i)
       if (file && typeof navigator.canShare === "function" && navigator.canShare({ files: [file] })) {
         await navigator.share({ files: [file], text: shareText })
+        return
+      }
+      // no file sharing (or the picture could not be read): still share the text and the link to the section
+      if (!file && typeof navigator.share === "function" && /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) {
+        await navigator.share({ title: "आज के दर्शन", text: shareText })
         return
       }
     } catch (e: any) {
@@ -175,8 +204,8 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
   return (
     <div className="mx-auto max-w-5xl">
       <div className="mb-6 text-center">
-        <p className="font-display whitespace-pre-line text-lg leading-relaxed text-[#8F0000] sm:text-xl md:text-2xl">{verse}</p>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#5C2A0A] sm:text-base">{caption}</p>
+        <p ref={verseRef} className="font-display whitespace-pre-line text-lg leading-relaxed text-[#8F0000] sm:text-xl md:text-2xl">{verse}</p>
+        <p ref={captionRef} className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#5C2A0A] sm:text-base">{caption}</p>
         <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#C8941A]/60 bg-white/80 px-4 py-1.5 font-display text-base text-[#8F0000] sm:text-lg">
           <span aria-hidden="true">📅</span>
           <span suppressHydrationWarning>{dateLine}</span>
@@ -266,22 +295,22 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                     type="button"
                     onClick={() => share(images[current], current)}
                     disabled={busy === `s${current}`}
-                    aria-label="शेयर करें"
+                    aria-label="पूरा आज के दर्शन शेयर करें"
                     aria-expanded={menu === current}
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#C8941A] bg-white text-[#8F0000] transition hover:bg-[#FFF4E6] active:scale-95 disabled:opacity-60"
                   >
                     <Share2 size={18} />
                   </button>
                   {menu === current && (
-                    <div className="absolute bottom-full right-3 z-10 mb-1 w-52 overflow-hidden rounded-xl border border-[#C8941A]/60 bg-white shadow-lg">
-                      <button type="button" onClick={() => whatsapp(images[current])} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                    <div className="absolute bottom-full right-3 z-10 mb-1 w-60 overflow-hidden rounded-xl border border-[#C8941A]/60 bg-white shadow-lg">
+                      <button type="button" onClick={whatsapp} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
                         <span className="text-[#1FAF38]"><WhatsAppIcon /></span> WhatsApp
                       </button>
                       <button type="button" onClick={() => instagram(images[current], current)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
                         <span className="text-[#E1306C]"><InstagramIcon /></span> Instagram
                       </button>
-                      <button type="button" onClick={() => copyLink(images[current])} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
-                        <Copy size={18} className="text-[#8F0000]" /> लिंक कॉपी करें
+                      <button type="button" onClick={copyLink} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                        <Copy size={18} className="text-[#8F0000]" /> संदेश + लिंक कॉपी करें
                       </button>
                     </div>
                   )}
