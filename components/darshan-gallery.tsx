@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Check, ChevronLeft, ChevronRight, Copy, Download, Share2 } from "lucide-react"
-import { hindiDateLine, type DarshanContent } from "@/lib/darshan"
+import { hindiDateLine, todayIso, type DarshanContent } from "@/lib/darshan"
 import { makePoster } from "@/lib/darshan-poster"
 
 const SITE_URL = "https://shreetripurasundari.com"
@@ -113,7 +113,8 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
   }
 
   // What is shared is the whole section: heading, verse, caption, date, closing line and a link back to it
-  const sectionLink = `${SITE_URL}/#aaj-ke-darshan`
+  // the day in the address makes each day's link new, so chat apps show that day's picture in the preview
+  const sectionLink = `${SITE_URL}/?darshan=${todayIso()}#aaj-ke-darshan`
   const shareText = `🙏 आज के दर्शन 🙏\n\n${verse}\n\n${caption}\n\n📅 ${dateLine}\n🙏 ${closing} 🙏\n\n${sectionLink}`
 
   // The section as one picture (built from the picture on screen); kept so the menu choices reuse it

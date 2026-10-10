@@ -61,3 +61,22 @@ export function hindiDateLine(now: Date = new Date()): string {
   const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay()
   return `${toDevanagari(day)} ${MONTHS[month - 1]} ${toDevanagari(year)}, ${WEEKDAYS[weekday]}`
 }
+
+// Today's date in India as YYYY-MM-DD. Put on the shared link so each day's link is new and WhatsApp / Facebook
+// do not show an older day's preview picture from their cache.
+export function todayIso(now: Date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).format(now)
+}
+
+// Address of the picture to use in link previews (og:image). Storage pictures go through the site's image
+// optimizer at a modest size, because WhatsApp skips very large preview pictures.
+export function previewImageUrl(src: string, siteUrl: string): string {
+  if (src.startsWith("/")) return siteUrl + src
+  try {
+    const u = new URL(src)
+    if (u.protocol === "https:" && u.hostname === "storage.shreetripurasundari.com") {
+      return `${siteUrl}/_next/image?url=${encodeURIComponent(src)}&w=1024&q=65`
+    }
+  } catch {}
+  return src
+}

@@ -12,10 +12,31 @@ import HowToReachSection from "@/components/HowToReachSection"
 import ContactSection from "@/components/contact-us"
 import DosDontsSection from "@/components/do-dont-section"
 import FaqSection from "@/components/faqs-section"
-import { fetchSocialLinks } from "@/lib/api"
+import type { Metadata } from "next"
+import { fetchSocialLinks, SITE_URL } from "@/lib/api"
+import { fetchDarshan, previewImageUrl } from "@/lib/darshan"
 
 // Static page re-generated at most once a minute (footer/contact links come from the DB)
 export const revalidate = 60
+
+// When today's darshan has been uploaded, links to the home page (WhatsApp, Facebook, ...) preview that picture
+export async function generateMetadata(): Promise<Metadata> {
+  const darshan = await fetchDarshan()
+  if (!darshan.images.length) return {}
+  const image = previewImageUrl(darshan.images[0], SITE_URL)
+  const title = "आज के दर्शन — श्री त्रिपुरा सुंदरी मंदिर"
+  return {
+    openGraph: {
+      title,
+      description: darshan.caption,
+      url: SITE_URL,
+      siteName: "Shree Tripura Sundari Mandir & Panchal Samaj",
+      type: "website",
+      images: [{ url: image, alt: title }],
+    },
+    twitter: { card: "summary_large_image", title, description: darshan.caption, images: [image] },
+  }
+}
 
 const divineImages = [
   {
