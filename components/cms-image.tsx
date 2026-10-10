@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { httpsStorageUrl } from "@/lib/api"
 
 // Hosts configured in next.config.mjs `images.remotePatterns`
 const OPTIMIZED_HOSTS = new Set(["storage.shreetripurasundari.com"])
@@ -23,6 +24,7 @@ interface CmsImageProps {
 
 // Renders an admin-supplied image URL (normally from the storage service) inside a
 // `relative` parent. Hosts we haven't whitelisted are shown as-is instead of failing.
-export default function CmsImage({ src, alt, sizes, className, priority }: CmsImageProps) {
+export default function CmsImage({ src: rawSrc, alt, sizes, className, priority }: CmsImageProps) {
+  const src = httpsStorageUrl(rawSrc)
   return <Image src={src} alt={alt} fill sizes={sizes} quality={75} priority={priority} className={className} unoptimized={!canOptimize(src)} />
 }

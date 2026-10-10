@@ -1,4 +1,4 @@
-import { fetchContent } from "@/lib/api"
+import { fetchContent, httpsStorageUrl } from "@/lib/api"
 import { safeHref } from "@/lib/footer"
 
 // "आज के दर्शन" on the home page. The temple uploads 3-5 pictures each day in the admin (Mandir management ->
@@ -28,7 +28,7 @@ export function mergeDarshan(raw: any): DarshanContent {
   if (!c) return d
   const images = (Array.isArray(c.images) ? c.images : [])
     .filter((u: unknown): u is string => typeof u === "string")
-    .map((u: string) => safeHref(u))
+    .map((u: string) => httpsStorageUrl(safeHref(u)))
     .filter((u: string) => /^(https?:\/\/|\/)/i.test(u))
     .slice(0, MAX_DARSHAN_IMAGES)
   return {

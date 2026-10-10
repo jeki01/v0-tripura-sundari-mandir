@@ -29,6 +29,12 @@ export async function fetchContent(key: string, opts?: { revalidate?: number }) 
   }
 }
 
+// The storage service answers on https; addresses saved with "http://" (the upload API used to hand those out)
+// would be blocked as mixed content and refused by the image optimizer, so they are upgraded.
+export function httpsStorageUrl(url: string): string {
+  return typeof url === "string" ? url.replace(/^http:\/\/(storage\.shreetripurasundari\.com)(?=[/:?#]|$)/i, "https://$1") : url
+}
+
 export function hasContent(c: any) {
   return !!(c && (c.html || (Array.isArray(c.items) && c.items.length) || (c.items && !Array.isArray(c.items) && Object.keys(c.items).length)))
 }

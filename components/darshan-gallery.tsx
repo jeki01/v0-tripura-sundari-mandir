@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { Check, Download, Share2 } from "lucide-react"
+import { Check, Copy, Download, Share2 } from "lucide-react"
 import { hindiDateLine, type DarshanContent } from "@/lib/darshan"
 
 const SITE_URL = "https://shreetripurasundari.com"
@@ -73,10 +73,21 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
   const [note, setNote] = useState("")
   const [busy, setBusy] = useState<string | null>(null)
   const [done, setDone] = useState<string | null>(null)
+  const [menu, setMenu] = useState<number | null>(null)
 
   useEffect(() => {
     setDateLine(hindiDateLine())
   }, [])
+
+  // close the share menu when tapping anywhere else
+  useEffect(() => {
+    if (menu === null) return
+    const close = (e: Event) => {
+      if (!(e.target as Element | null)?.closest?.("[data-share-root]")) setMenu(null)
+    }
+    document.addEventListener("pointerdown", close)
+    return () => document.removeEventListener("pointerdown", close)
+  }, [menu])
 
   const flash = (message: string) => {
     setNote(message)
@@ -100,21 +111,44 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     tick(id)
   }
 
+  const absolute = (url: string) => (url.startsWith("/") ? SITE_URL + url : url)
+
   const whatsapp = (url: string) => {
     // the picture's own address is in the message, so WhatsApp shows the picture itself
-    window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText}\n${url.startsWith("/") ? SITE_URL + url : url}`)}`, "_blank", "noopener")
+    window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText}\n${absolute(url)}`)}`, "_blank", "noopener")
+    setMenu(null)
   }
 
+  // Instagram has no web share link: save the picture and tell the visitor to add it from Instagram
   const instagram = async (url: string, i: number) => {
-    const id = `i${i}`
     const name = fileNameFor(url, i + 1)
-    setBusy(id)
+    setMenu(null)
     const file = await loadFile(url, name)
+    if (file) saveFile(file)
+    else openPlain(url, name)
+    flash("इमेज डाउनलोड हो गई है — अब Instagram खोलकर इसे Story या Post में जोड़ें।")
+  }
+
+  const copyLink = async (url: string) => {
+    setMenu(null)
     try {
-      // phones: the share sheet lists Instagram (Story / Message / Post) and hands it the picture itself
+      await navigator.clipboard.writeText(absolute(url))
+      flash("इमेज का लिंक कॉपी हो गया।")
+    } catch {
+      flash(absolute(url))
+    }
+  }
+
+  // The share icon: on phones it opens the phone's own share sheet with the picture attached (WhatsApp,
+  // Instagram, ...). Where that is not available it opens a small menu with the same choices.
+  const share = async (url: string, i: number) => {
+    const id = `s${i}`
+    if (menu === i) return setMenu(null)
+    setBusy(id)
+    try {
+      const file = await loadFile(url, fileNameFor(url, i + 1))
       if (file && typeof navigator.canShare === "function" && navigator.canShare({ files: [file] })) {
         await navigator.share({ files: [file], text: shareText })
-        tick(id)
         return
       }
     } catch (e: any) {
@@ -122,26 +156,7 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     } finally {
       setBusy(null)
     }
-    // computers / browsers without file sharing: Instagram has no web share link, so save the picture
-    // and tell the visitor to add it from Instagram
-    if (file) saveFile(file)
-    else openPlain(url, name)
-    flash("इमेज डाउनलोड हो गई है — अब Instagram खोलकर इसे Story या Post में जोड़ें।")
-    tick(id)
-  }
-
-  const shareAll = async () => {
-    // one tap on phones: share every picture of the day at once
-    try {
-      const files = (await Promise.all(images.map((u, i) => loadFile(u, fileNameFor(u, i + 1))))).filter((f): f is File => !!f)
-      if (files.length && typeof navigator.canShare === "function" && navigator.canShare({ files })) {
-        await navigator.share({ files, text: shareText })
-        return
-      }
-    } catch (e: any) {
-      if (e?.name === "AbortError") return
-    }
-    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank", "noopener")
+    setMenu(i)
   }
 
   return (
@@ -176,33 +191,39 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                     priority={i === 0}
                   />
                 </div>
-                <div className="grid grid-cols-3 gap-2 p-3">
+                <div data-share-root className="relative flex items-center gap-2 p-3">
                   <button
                     type="button"
                     onClick={() => download(url, i)}
                     disabled={busy === `d${i}`}
-                    className="flex min-h-[44px] flex-col items-center justify-center gap-0.5 rounded-xl bg-gradient-to-br from-[#B30000] to-[#FF6B00] px-1 py-1.5 text-xs font-medium text-white transition active:scale-95 disabled:opacity-60 sm:text-sm"
+                    className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#B30000] to-[#FF6B00] px-3 py-2 text-sm font-medium text-white transition active:scale-95 disabled:opacity-60"
                   >
                     {done === `d${i}` ? <Check size={18} /> : <Download size={18} />}
                     डाउनलोड
                   </button>
                   <button
                     type="button"
-                    onClick={() => whatsapp(url)}
-                    className="flex min-h-[44px] flex-col items-center justify-center gap-0.5 rounded-xl bg-[#1FAF38] px-1 py-1.5 text-xs font-medium text-white transition active:scale-95 sm:text-sm"
+                    onClick={() => share(url, i)}
+                    disabled={busy === `s${i}`}
+                    aria-label="शेयर करें"
+                    aria-expanded={menu === i}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#C8941A] bg-white text-[#8F0000] transition hover:bg-[#FFF4E6] active:scale-95 disabled:opacity-60"
                   >
-                    <WhatsAppIcon />
-                    WhatsApp
+                    <Share2 size={18} />
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => instagram(url, i)}
-                    disabled={busy === `i${i}`}
-                    className="flex min-h-[44px] flex-col items-center justify-center gap-0.5 rounded-xl bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#FCAF45] px-1 py-1.5 text-xs font-medium text-white transition active:scale-95 disabled:opacity-60 sm:text-sm"
-                  >
-                    {done === `i${i}` ? <Check size={18} /> : <InstagramIcon />}
-                    Instagram
-                  </button>
+                  {menu === i && (
+                    <div className="absolute bottom-full right-3 z-10 mb-1 w-52 overflow-hidden rounded-xl border border-[#C8941A]/60 bg-white shadow-lg">
+                      <button type="button" onClick={() => whatsapp(url)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                        <span className="text-[#1FAF38]"><WhatsAppIcon /></span> WhatsApp
+                      </button>
+                      <button type="button" onClick={() => instagram(url, i)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                        <span className="text-[#E1306C]"><InstagramIcon /></span> Instagram
+                      </button>
+                      <button type="button" onClick={() => copyLink(url)} className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#5C2A0A] hover:bg-[#FFF4E6]">
+                        <Copy size={18} className="text-[#8F0000]" /> लिंक कॉपी करें
+                      </button>
+                    </div>
+                  )}
                 </div>
               </li>
             ))}
@@ -214,16 +235,6 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
             </p>
           )}
 
-          <div className="mt-2 flex justify-center">
-            <button
-              type="button"
-              onClick={shareAll}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[#C8941A] bg-white px-5 py-2 text-sm font-medium text-[#8F0000] transition hover:bg-[#FFF4E6] active:scale-95"
-            >
-              <Share2 size={18} />
-              सभी दर्शन शेयर करें
-            </button>
-          </div>
           <p role="status" aria-live="polite" className="mt-3 min-h-[1.25rem] text-center text-sm text-[#8F0000]">
             {note}
           </p>
