@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { Check, ChevronLeft, ChevronRight, Copy, Download, Share2 } from "lucide-react"
 import { darshanId, hindiDateLine, shareMessage, type DarshanContent } from "@/lib/darshan"
 import { makePoster } from "@/lib/darshan-poster"
-import { fileNameFor, loadFile, openPlain, saveFile } from "@/lib/darshan-files"
+import { downloadImage, fileNameFor, loadFile, openPlain, saveFile } from "@/lib/darshan-files"
 
 const SITE_URL = "https://shreetripurasundari.com"
 
@@ -32,7 +32,6 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
   // the date is the visitor's "today" in India: recomputed in the browser so a cached page never shows yesterday
   const [dateLine, setDateLine] = useState(initialDate)
   const [note, setNote] = useState("")
-  const [busy, setBusy] = useState<string | null>(null)
   const [done, setDone] = useState<string | null>(null)
   const [menu, setMenu] = useState<number | null>(null)
   const [current, setCurrent] = useState(0)
@@ -101,15 +100,10 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
     return file
   }
 
-  const download = async (url: string, i: number) => {
-    const id = `d${i}`
-    const name = fileNameFor(url, i + 1)
-    setBusy(id)
-    const file = await loadFile(url, name)
-    if (file) saveFile(file)
-    else openPlain(url, name)
-    setBusy(null)
-    tick(id)
+  // starts the download at once (no waiting for the picture to be fetched first)
+  const download = (url: string, i: number) => {
+    downloadImage(url, fileNameFor(url, i + 1))
+    tick(`d${i}`)
   }
 
   const whatsapp = (url: string) => {
@@ -235,7 +229,6 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                   <button
                     type="button"
                     onClick={() => download(images[current], current)}
-                    disabled={busy === `d${current}`}
                     className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#B30000] to-[#FF6B00] px-3 py-2 text-sm font-medium text-white transition active:scale-95 disabled:opacity-60"
                   >
                     {done === `d${current}` ? <Check size={18} /> : <Download size={18} />}

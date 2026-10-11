@@ -28,14 +28,18 @@ export function saveFile(file: File) {
   setTimeout(() => URL.revokeObjectURL(href), 4000)
 }
 
-// When the picture cannot be read by the page, open it so the visitor can press-and-hold / save it
-export function openPlain(url: string, name: string) {
+// Starts a real file download of the picture right away. The browser asks this site's /api/download-image, which
+// answers with "attachment", so the file is saved instead of the picture being opened (works whatever the storage
+// service's cross-origin settings are).
+export function downloadImage(url: string, name: string) {
   const a = document.createElement("a")
-  a.href = url
+  a.href = `/api/download-image?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`
   a.download = name
-  a.target = "_blank"
   a.rel = "noopener"
   document.body.appendChild(a)
   a.click()
   a.remove()
 }
+
+// kept for callers that used it when the picture could not be read by the page
+export const openPlain = downloadImage

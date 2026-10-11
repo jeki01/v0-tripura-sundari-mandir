@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Check, Download, Share2 } from "lucide-react"
 import { hindiDateLine, shareMessage } from "@/lib/darshan"
-import { fileNameFor, loadFile, openPlain, saveFile } from "@/lib/darshan-files"
+import { downloadImage, fileNameFor } from "@/lib/darshan-files"
 
 // Download / share buttons of the single-picture page (/darshan/<id>)
 export default function DarshanSingleActions({ src, link, caption, closing }: { src: string; link: string; caption: string; closing: string }) {
@@ -13,11 +13,8 @@ export default function DarshanSingleActions({ src, link, caption, closing }: { 
     window.setTimeout(() => setDone(null), 2500)
   }
 
-  const download = async () => {
-    const name = fileNameFor(src, 1)
-    const file = await loadFile(src, name)
-    if (file) saveFile(file)
-    else openPlain(src, name)
+  const download = () => {
+    downloadImage(src, fileNameFor(src, 1))
     flash("download")
   }
 
