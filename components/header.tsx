@@ -88,10 +88,8 @@ export default function Header() {
         isScrolled ? "bg-[#8F0000] shadow-lg shadow-black/30" : "bg-gradient-to-r from-[#7A0000] via-[#B30000] to-[#D95500]"
       }`}
     >
-      {/* Top Tagline */}
-      <div className="bg-gradient-to-r from-[#E0A100] via-[#FFE27A] to-[#E0A100] text-center py-1 text-[#6B0000] text-sm font-display tracking-wide">
-        ॥ जय श्री माँ त्रिपुरा सुंदरी ॥
-      </div>
+      {/* Top strip: the running notice when there is one, otherwise the tagline */}
+      <NoticeBar />
 
       <div className="site-container">
         <div className="flex justify-between items-center h-16">
@@ -195,9 +193,6 @@ export default function Header() {
           </div>
         )}
       </div>
-
-      {/* running notices (nothing is shown when there are none) */}
-      <NoticeBar />
     </header>
   )
 }
