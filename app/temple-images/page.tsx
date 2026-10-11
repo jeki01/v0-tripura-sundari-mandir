@@ -1,6 +1,9 @@
 import { PageShell, EmptyNote } from "@/components/cms"
 import GalleryGrid, { type GalleryItem } from "@/components/gallery-grid"
-import { fetchContent, isManaged } from "@/lib/api"
+import GalleryTabs from "@/components/gallery-tabs"
+import VideoGrid, { type VideoItem } from "@/components/video-grid"
+import { fetchContent, httpsStorageUrl, isManaged } from "@/lib/api"
+import { parseGalleryVideo } from "@/lib/gallery-video"
 
 export const dynamic = "force-dynamic"
 
@@ -23,15 +26,32 @@ const DEFAULT_IMAGES = [
   "/images/historical/sm_5.jpg", "/images/historical/big_3.jpg",
 ]
 
-export default async function GalleryPage() {
+export default async function GalleryPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+  const { tab } = await searchParams
   const c = await fetchContent("gallery")
   const managed = isManaged(c)
+  const all: any[] = managed ? (Array.isArray(c?.items) ? c.items : []) : []
+
+  // each entry is a photo (default) or a video (YouTube / Instagram Reel link)
+  const isVideo = (g: any) => g?.type === "video"
   const items: GalleryItem[] = managed
-    ? (Array.isArray(c?.items) ? c.items : []).filter((g: any) => g?.image).map((g: any) => ({ src: g.image, caption: g.caption }))
+    ? all.filter((g) => !isVideo(g) && g?.image).map((g) => ({ src: g.image, caption: g.caption }))
     : DEFAULT_IMAGES.map((src) => ({ src }))
+  const videos: VideoItem[] = []
+  for (const g of all.filter(isVideo)) {
+    const video = parseGalleryVideo(String(g.url || ""), g.thumb ? httpsStorageUrl(String(g.thumb)) : undefined)
+    if (video) videos.push({ video, caption: g.caption || undefined })
+  }
+
   return (
-    <PageShell heading={c?.title || "गैलरी"} subtitle="मंदिर की सुंदर तस्वीरों का संग्रह" eyebrow="Gallery">
-      {items.length === 0 ? <EmptyNote text="अभी तक कोई इमेज नहीं जोड़ी गई।" /> : <GalleryGrid items={items} />}
+    <PageShell heading={c?.title || "गैलरी"} subtitle="मंदिर की सुंदर तस्वीरें और वीडियो" eyebrow="Gallery">
+      <GalleryTabs
+        initial={tab === "video" ? "video" : "image"}
+        imageCount={items.length}
+        videoCount={videos.length}
+        images={items.length === 0 ? <EmptyNote text="अभी तक कोई इमेज नहीं जोड़ी गई।" /> : <GalleryGrid items={items} />}
+        videos={videos.length === 0 ? <EmptyNote text="अभी तक कोई वीडियो नहीं जोड़ा गया।" /> : <VideoGrid items={videos} />}
+      />
     </PageShell>
   )
 }
