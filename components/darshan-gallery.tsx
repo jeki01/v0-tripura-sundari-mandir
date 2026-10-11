@@ -147,15 +147,6 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
 
   return (
     <div className="mx-auto max-w-5xl">
-      <div className="mb-6 text-center">
-        <p ref={verseRef} className="font-display whitespace-pre-line text-lg leading-relaxed text-[#8F0000] sm:text-xl md:text-2xl">{verse}</p>
-        <p ref={captionRef} className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#5C2A0A] sm:text-base">{caption}</p>
-        <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#C8941A]/60 bg-white/80 px-4 py-1.5 font-display text-base text-[#8F0000] sm:text-lg">
-          <span aria-hidden="true">📅</span>
-          <span suppressHydrationWarning>{dateLine}</span>
-        </p>
-      </div>
-
       {images.length > 0 ? (
         <>
           {/* one arch-shaped frame; the pictures slide inside it */}
@@ -271,6 +262,15 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
           <p className="mt-2 text-sm text-[#C25400]">Today&apos;s darshan will be available here shortly.</p>
         </div>
       )}
+
+      <div className="mt-4 text-center">
+        <p ref={verseRef} className="font-display whitespace-pre-line text-lg leading-relaxed text-[#8F0000] sm:text-xl md:text-2xl">{verse}</p>
+        <p ref={captionRef} className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#5C2A0A] sm:text-base">{caption}</p>
+        <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#C8941A]/60 bg-white/80 px-4 py-1.5 font-display text-base text-[#8F0000] sm:text-lg">
+          <span aria-hidden="true">📅</span>
+          <span suppressHydrationWarning>{dateLine}</span>
+        </p>
+      </div>
 
       {closing && <p className="mt-8 text-center font-display text-xl text-[#8F0000] md:text-2xl">🙏 {closing} 🙏</p>}
     </div>
