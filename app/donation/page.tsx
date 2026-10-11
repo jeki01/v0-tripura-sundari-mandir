@@ -3,7 +3,9 @@ import { PageShell, EmptyNote } from "@/components/cms"
 import CmsImage from "@/components/cms-image"
 import CopyButton from "@/components/copy-button"
 import { Lotus } from "@/components/ornaments"
+import UpiPay from "@/components/upi-pay"
 import { extractPhone, fetchContent } from "@/lib/api"
+import { DEFAULT_UPI_ID, DEFAULT_UPI_NAME } from "@/lib/upi"
 
 export const dynamic = "force-dynamic"
 
@@ -60,6 +62,20 @@ export default async function DonationPage() {
           </div>
         )}
 
+        {/* Pay directly by UPI: type an amount, the UPI app opens with the temple, the amount and the donation comment filled in */}
+        {!accounts.some((a) => (a.upiId || "").toLowerCase() === DEFAULT_UPI_ID.toLowerCase()) && (
+          <section className="temple-card mx-auto max-w-md overflow-hidden text-center">
+            <h2 className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#8F0000] via-[#B30000] to-[#D95500] px-5 py-3.5 font-display text-lg text-[#FFE27A]">
+              <Smartphone size={20} />
+              UPI से सीधे दान करें
+            </h2>
+            <div className="p-5">
+              <p className="mb-3 text-sm text-[#5A4636]">राशि लिखकर अपने UPI ऐप (Google Pay, PhonePe, Paytm आदि) से तुरंत दान करें।</p>
+              <UpiPay upiId={DEFAULT_UPI_ID} name={DEFAULT_UPI_NAME} />
+            </div>
+          </section>
+        )}
+
         {accounts.length === 0 ? (
           <EmptyNote text="दान खाता विवरण जल्द ही उपलब्ध होंगे।" />
         ) : (
@@ -99,14 +115,7 @@ export default async function DonationPage() {
                           <CopyButton value={a.upiId} label="UPI ID" />
                         </div>
                       )}
-                      {a.upiId && (
-                        <a
-                          href={`upi://pay?pa=${encodeURIComponent(a.upiId)}&pn=${encodeURIComponent(a.accountName || "श्री त्रिपुरा सुंदरी मंदिर")}&cu=INR`}
-                          className="mt-3 inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#FFE27A] to-[#E0A100] px-5 py-2 text-sm font-bold text-[#6B0000] shadow transition hover:-translate-y-0.5 md:hidden"
-                        >
-                          UPI ऐप से भुगतान करें
-                        </a>
-                      )}
+                      {a.upiId && <UpiPay upiId={a.upiId} name={a.accountName || DEFAULT_UPI_NAME} className="mt-3" />}
                     </div>
                   )}
                 </div>
