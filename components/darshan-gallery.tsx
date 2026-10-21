@@ -73,6 +73,8 @@ function InstagramIcon({ size = 18 }: { size?: number }) {
   )
 }
 
+type Petal = { id: number; left: number; delay: number; size: number; drift: number }
+
 export default function DarshanGallery({ darshan, initialDate }: { darshan: DarshanContent; initialDate: string }) {
   const { images, verse, caption, closing } = darshan
   // the date is the visitor's "today" in India: recomputed in the browser so a cached page never shows yesterday
@@ -81,8 +83,25 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
   const [done, setDone] = useState<string | null>(null)
   const [menu, setMenu] = useState<number | null>(null)
   const [current, setCurrent] = useState(0)
+  const [petals, setPetals] = useState<Petal[]>([])
   const track = useRef<HTMLUListElement>(null)
-  const { liked, count, toggle } = useDarshanLike()
+  const { liked, count, toggle: baseLikeToggle } = useDarshanLike()
+
+  const toggle = () => {
+    const willLike = !liked
+    baseLikeToggle()
+    if (willLike) {
+      const fresh: Petal[] = Array.from({ length: 16 }, (_, i) => ({
+        id: Date.now() + i,
+        left: 5 + Math.random() * 90,
+        delay: Math.random() * 0.7,
+        size: 7 + Math.random() * 7,
+        drift: (Math.random() - 0.5) * 40,
+      }))
+      setPetals(fresh)
+      window.setTimeout(() => setPetals([]), 2400)
+    }
+  }
 
   const onScroll = () => {
     const el = track.current
@@ -201,6 +220,14 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
             <div className="rounded-t-[999px] rounded-b-3xl bg-gradient-to-b from-[#FFD700] via-[#C8941A] to-[#8F0000] p-[5px] shadow-[0_10px_30px_-12px_rgba(143,0,0,0.5)]">
               <div className="overflow-hidden rounded-t-[999px] rounded-b-[1.25rem] bg-[#FFF6E2]">
                 <div className="relative">
+                  {/* petal rain keyframes */}
+                  <style>{`
+                    @keyframes petal-fall {
+                      0%   { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+                      100% { opacity: 0; transform: translateY(300px) rotate(480deg) scale(0.4); }
+                    }
+                  `}</style>
+
                   <ul
                     ref={track}
                     onScroll={onScroll}
@@ -220,6 +247,55 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                       </li>
                     ))}
                   </ul>
+
+                  {/* petal rain overlay */}
+                  {petals.length > 0 && (
+                    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                      {petals.map((p) => (
+                        <div
+                          key={p.id}
+                          className="absolute top-0"
+                          style={{
+                            left: `${p.left}%`,
+                            width: p.size,
+                            height: p.size * 1.6,
+                            animation: `petal-fall ${1.4 + p.delay * 0.8}s ease-in ${p.delay}s forwards`,
+                          }}
+                        >
+                          <svg viewBox="0 0 10 16" className="w-full h-full drop-shadow-sm">
+                            <ellipse cx="5" cy="8" rx="4.2" ry="7.2" fill="#E8001A" fillOpacity="0.85" transform={`rotate(${p.drift} 5 8)`} />
+                            <ellipse cx="5" cy="6" rx="2.5" ry="4" fill="#FF6680" fillOpacity="0.5" transform={`rotate(${p.drift} 5 8)`} />
+                          </svg>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Instagram-Reels-style heart button — right center of image */}
+                  <div className="absolute right-3 top-[62%] -translate-y-1/2 flex flex-col items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={toggle}
+                      aria-label={liked ? "नापसंद करें" : "पसंद करें"}
+                      className="flex items-center justify-center transition-transform active:scale-75"
+                      style={{ background: "none", border: "none", padding: 0 }}
+                    >
+                      <Heart
+                        size={30}
+                        strokeWidth={1.6}
+                        className={`drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] transition-all duration-200 ${
+                          liked
+                            ? "fill-red-500 stroke-red-400 scale-110"
+                            : "fill-transparent stroke-white"
+                        }`}
+                      />
+                    </button>
+                    {count !== null && (
+                      <span className="text-[11px] font-semibold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] leading-none">
+                        {count.toLocaleString("hi-IN")}
+                      </span>
+                    )}
+                  </div>
 
                   {images.length > 1 && (
                     <>
@@ -272,26 +348,6 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                     {done === `d${current}` ? <Check size={18} /> : <Download size={18} />}
                     डाउनलोड
                   </button>
-
-                  {/* Heart like button */}
-                  <div className="flex flex-col items-center gap-0.5">
-                    <button
-                      type="button"
-                      onClick={toggle}
-                      aria-label={liked ? "नापसंद करें" : "पसंद करें"}
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#C8941A] bg-white text-[#8F0000] transition hover:bg-[#FFF4E6] active:scale-90"
-                    >
-                      <Heart
-                        size={20}
-                        className={`transition-all duration-200 ${liked ? "fill-red-500 stroke-red-500 scale-110" : "fill-transparent stroke-[#8F0000]"}`}
-                      />
-                    </button>
-                    {count !== null && (
-                      <span className="text-[10px] font-semibold text-[#8F0000] leading-none">
-                        {count.toLocaleString("hi-IN")}
-                      </span>
-                    )}
-                  </div>
 
                   <button
                     type="button"
