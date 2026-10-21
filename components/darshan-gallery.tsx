@@ -2,8 +2,54 @@
 
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
-import { Check, ChevronLeft, ChevronRight, Copy, Download, Share2 } from "lucide-react"
+import { Check, ChevronLeft, ChevronRight, Copy, Download, Heart, Share2 } from "lucide-react"
 import { darshanId, hindiDateLine, shareMessage, type DarshanContent } from "@/lib/darshan"
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+
+function useDarshanLike() {
+  const [liked, setLiked] = useState(false)
+  const [count, setCount] = useState<number | null>(null)
+  const [loading, setLoading] = useState(false)
+  const visitorIdRef = useRef("")
+
+  useEffect(() => {
+    let id = ""
+    try {
+      id = localStorage.getItem("darshan_visitor_id") || ""
+      if (!id) {
+        id = Math.random().toString(36).slice(2) + Date.now().toString(36)
+        localStorage.setItem("darshan_visitor_id", id)
+      }
+      setLiked(localStorage.getItem("darshan_liked") === "1")
+    } catch {}
+    visitorIdRef.current = id
+    fetch(`${API_BASE}/darshan/likes`)
+      .then((r) => r.json())
+      .then((d) => { if (d.count !== undefined) setCount(d.count) })
+      .catch(() => {})
+  }, [])
+
+  const toggle = async () => {
+    if (loading || !visitorIdRef.current) return
+    const next = !liked
+    setLiked(next)
+    setLoading(true)
+    try { localStorage.setItem("darshan_liked", next ? "1" : "0") } catch {}
+    try {
+      const r = await fetch(`${API_BASE}/darshan/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visitorId: visitorIdRef.current, liked: next }),
+      })
+      const d = await r.json()
+      if (d.count !== undefined) setCount(d.count)
+    } catch {}
+    setLoading(false)
+  }
+
+  return { liked, count, toggle }
+}
 import { makePoster } from "@/lib/darshan-poster"
 import { downloadImage, fileNameFor, loadFile, openPlain, saveFile } from "@/lib/darshan-files"
 
@@ -36,6 +82,7 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
   const [menu, setMenu] = useState<number | null>(null)
   const [current, setCurrent] = useState(0)
   const track = useRef<HTMLUListElement>(null)
+  const { liked, count, toggle } = useDarshanLike()
 
   const onScroll = () => {
     const el = track.current
@@ -225,6 +272,27 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                     {done === `d${current}` ? <Check size={18} /> : <Download size={18} />}
                     डाउनलोड
                   </button>
+
+                  {/* Heart like button */}
+                  <div className="flex flex-col items-center gap-0.5">
+                    <button
+                      type="button"
+                      onClick={toggle}
+                      aria-label={liked ? "नापसंद करें" : "पसंद करें"}
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#C8941A] bg-white text-[#8F0000] transition hover:bg-[#FFF4E6] active:scale-90"
+                    >
+                      <Heart
+                        size={20}
+                        className={`transition-all duration-200 ${liked ? "fill-red-500 stroke-red-500 scale-110" : "fill-transparent stroke-[#8F0000]"}`}
+                      />
+                    </button>
+                    {count !== null && (
+                      <span className="text-[10px] font-semibold text-[#8F0000] leading-none">
+                        {count.toLocaleString("hi-IN")}
+                      </span>
+                    )}
+                  </div>
+
                   <button
                     type="button"
                     onClick={() => share(images[current], current)}
