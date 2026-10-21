@@ -1,11 +1,61 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Camera, WifiOff, AlertTriangle } from "lucide-react"
+import { Camera, WifiOff, AlertTriangle, Heart } from "lucide-react"
 import { SectionHeading } from "@/components/ornaments"
 import Image from "next/image"
 import Link from "next/link"
 import { fetchContent, isManaged, type SocialLink } from "@/lib/api"
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+
+function useDarshanLike() {
+  const [liked, setLiked] = useState(false)
+  const [count, setCount] = useState<number | null>(null)
+  const [loading, setLoading] = useState(false)
+  const visitorIdRef = useRef<string>("")
+
+  useEffect(() => {
+    let id = ""
+    try {
+      id = localStorage.getItem("darshan_visitor_id") || ""
+      if (!id) {
+        id = Math.random().toString(36).slice(2) + Date.now().toString(36)
+        localStorage.setItem("darshan_visitor_id", id)
+      }
+      const savedLiked = localStorage.getItem("darshan_liked") === "1"
+      setLiked(savedLiked)
+    } catch {}
+    visitorIdRef.current = id
+
+    fetch(`${API_BASE}/darshan/likes`)
+      .then((r) => r.json())
+      .then((d) => { if (d.count !== undefined) setCount(d.count) })
+      .catch(() => {})
+  }, [])
+
+  const toggle = async () => {
+    if (loading || !visitorIdRef.current) return
+    const next = !liked
+    setLiked(next)
+    setLoading(true)
+    try {
+      localStorage.setItem("darshan_liked", next ? "1" : "0")
+    } catch {}
+    try {
+      const r = await fetch(`${API_BASE}/darshan/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visitorId: visitorIdRef.current, liked: next }),
+      })
+      const d = await r.json()
+      if (d.count !== undefined) setCount(d.count)
+    } catch {}
+    setLoading(false)
+  }
+
+  return { liked, count, toggle }
+}
 
 const IS_CURRENTLY_LIVE = true
 const YOUTUBE_CHANNEL_ID = "UClQYJEOUrS2WS4a5-8yD7cQ"
@@ -39,6 +89,7 @@ export default function LiveDarshanSection({ socialLinks = [] }: { socialLinks?:
   const [inView, setInView] = useState(false)
   const streamUrlRef = useRef(streamUrl)
   const playerRef = useRef<HTMLDivElement>(null)
+  const { liked, count, toggle } = useDarshanLike()
 
   // Don't request the YouTube player (heavy) until the visitor is about to see it.
   useEffect(() => {
@@ -152,6 +203,25 @@ export default function LiveDarshanSection({ socialLinks = [] }: { socialLinks?:
                     <WifiOff size={14} />
                     OFFLINE
                   </div>
+                )}
+              </div>
+
+              {/* Like button */}
+              <div className="absolute bottom-4 right-4 flex flex-col items-center gap-1">
+                <button
+                  onClick={toggle}
+                  aria-label={liked ? "नापसंद करें" : "पसंद करें"}
+                  className="group flex items-center justify-center rounded-full bg-black/40 p-2.5 backdrop-blur-sm transition-transform active:scale-90 hover:bg-black/60"
+                >
+                  <Heart
+                    size={26}
+                    className={`transition-all duration-200 ${liked ? "fill-red-500 stroke-red-500 scale-110" : "fill-transparent stroke-white"}`}
+                  />
+                </button>
+                {count !== null && (
+                  <span className="rounded-full bg-black/40 px-2 py-0.5 text-xs font-semibold text-white backdrop-blur-sm">
+                    {count.toLocaleString("hi-IN")}
+                  </span>
                 )}
               </div>
             </div>
