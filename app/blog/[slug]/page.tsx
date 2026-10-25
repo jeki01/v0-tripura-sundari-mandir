@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const blog = await fetchBlogBySlug(decodeURIComponent(slug))
   if (!blog || blog.status !== "published") return { title: "ब्लॉग | श्री त्रिपुरा सुंदरी मंदिर" }
   const description = blog.excerpt || String(blog.content || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160)
-  const url = `${SITE_URL}/blog/${encodeURIComponent(blog.slug)}`
+  const url = `${SITE_URL}/blog/${blog.slug}`
   return {
     title: `${blog.title} | श्री त्रिपुरा सुंदरी मंदिर`,
     description,
@@ -41,7 +41,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const [blog, all] = await Promise.all([fetchBlogBySlug(decodeURIComponent(slug)), fetchPublishedBlogs()])
   if (!blog || blog.status !== "published") notFound()
 
-  const url = `${SITE_URL}/blog/${encodeURIComponent(blog.slug)}`
+  const url = `${SITE_URL}/blog/${blog.slug}`
   const more = (all as any[]).filter((b) => b.slug !== blog.slug).slice(0, 3)
   const date = formatHindiDate(blog.publishedAt || blog.createdAt)
 

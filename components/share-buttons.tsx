@@ -18,7 +18,8 @@ export default function ShareButtons({ title, url, label = "इस ब्लॉ�
   const [canNativeShare, setCanNativeShare] = useState(false)
 
   useEffect(() => {
-    setShareUrl(window.location.origin + window.location.pathname)
+    // decodeURIComponent turns %E0%A4%... back into readable Unicode/ASCII
+    setShareUrl(window.location.origin + decodeURIComponent(window.location.pathname))
     setCanNativeShare(typeof navigator !== "undefined" && typeof navigator.share === "function")
   }, [])
 
