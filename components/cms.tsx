@@ -1,5 +1,6 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
+import { sanitizeCmsHtml } from "@/lib/sanitize"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import NavigationHandler from "@/components/navigation-handler"
@@ -70,7 +71,7 @@ export const proseClass =
 export function RichBody({ html }: { html: string }) {
   return (
     <div className="temple-card mx-auto max-w-4xl p-6 md:p-10">
-      <div className={proseClass} dangerouslySetInnerHTML={{ __html: html || "" }} />
+      <div className={proseClass} dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(html) }} />
     </div>
   )
 }

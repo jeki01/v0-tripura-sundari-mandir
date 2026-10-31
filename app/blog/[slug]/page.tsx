@@ -10,6 +10,7 @@ import CmsImage from "@/components/cms-image"
 import ShareButtons from "@/components/share-buttons"
 import { Lotus, OrnamentDivider } from "@/components/ornaments"
 import { SITE_URL, fetchBlogBySlug, fetchPublishedBlogs, formatHindiDate } from "@/lib/api"
+import { sanitizeCmsHtml } from "@/lib/sanitize"
 
 export const dynamic = "force-dynamic"
 
@@ -96,7 +97,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           )}
 
           <div className="temple-card mt-8 p-6 sm:p-10">
-            <div className={articleClass} dangerouslySetInnerHTML={{ __html: blog.content || "" }} />
+            <div className={articleClass} dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(blog.content || "") }} />
 
             <OrnamentDivider className="mt-10" />
             <div className="mt-6 flex flex-col items-center gap-4 text-center">
