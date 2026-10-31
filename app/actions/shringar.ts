@@ -1,6 +1,8 @@
 "use server"
 
-const API = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+import { mandirHeaders } from "@/lib/backend-headers"
+
+const API = process.env.API_URL || "https://backend.shreetripurasundari.com"
 
 export async function bookShringar(data: {
   name: string
@@ -12,7 +14,7 @@ export async function bookShringar(data: {
   try {
     const res = await fetch(`${API}/shringar/book`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: mandirHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify(data),
     })
     const json = await res.json().catch(() => ({}))

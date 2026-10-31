@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
+import { mandirHeaders } from "@/lib/backend-headers"
 
-const API = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+const API = process.env.API_URL || "https://backend.shreetripurasundari.com"
 
 export async function GET() {
   try {
-    const res = await fetch(`${API}/shringar/availability`, { cache: "no-store" })
+    const res = await fetch(`${API}/shringar/availability`, { cache: "no-store", headers: mandirHeaders() })
     const json = await res.json().catch(() => ({}))
     return NextResponse.json(json)
   } catch {
