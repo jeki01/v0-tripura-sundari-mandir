@@ -13,6 +13,7 @@ import { Lotus, OrnamentDivider } from "@/components/ornaments"
 import { SITE_URL } from "@/lib/api"
 import { hindiDate } from "@/lib/darshan"
 import { aartiPath, fetchAartiItems, stripHtml, type AartiItem } from "@/lib/aarti"
+import { sanitizeCmsHtml } from "@/lib/sanitize"
 
 // One page per video / article. Title, description and picture of the link preview are written into the page's
 // <head> on the server, so WhatsApp and search engines can read them.
@@ -128,7 +129,7 @@ export default async function AartiDetailPage({ params }: Props) {
                   </div>
                 )}
                 <div className="temple-card mt-8 p-6 sm:p-10">
-                  <div className={articleClass} dangerouslySetInnerHTML={{ __html: item.body }} />
+                  <div className={articleClass} dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(item.body) }} />
                   <OrnamentDivider className="mt-10" />
                   <p className="mt-6 text-center font-display text-lg text-[#8F0000]">॥ जय श्री माँ त्रिपुरा सुंदरी ॥</p>
                 </div>

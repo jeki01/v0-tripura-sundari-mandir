@@ -3,6 +3,7 @@ import { BookOpen } from "lucide-react"
 import { SectionHeading } from "@/components/ornaments"
 import CmsImage from "@/components/cms-image"
 import { proseClass } from "@/components/cms"
+import { sanitizeCmsHtml } from "@/lib/sanitize"
 
 interface AboutSectionProps {
   title?: string
@@ -23,7 +24,7 @@ export default function AboutSection({ title, subtitle, html, images = [] }: Abo
 
         <div className={`mx-auto grid max-w-6xl items-start gap-8 lg:gap-10 ${hasImages ? "lg:grid-cols-[3fr_2fr]" : "max-w-4xl"}`}>
           <div className="temple-card p-6 md:p-10">
-            <div className={proseClass} dangerouslySetInnerHTML={{ __html: html || "" }} />
+            <div className={proseClass} dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(html || "") }} />
           </div>
 
           {hasImages && (
