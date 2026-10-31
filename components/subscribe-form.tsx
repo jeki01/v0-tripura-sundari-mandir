@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { API_BASE } from "@/lib/api"
+import { subscribeEmail } from "@/app/actions/subscribe"
 
 export default function SubscribeForm({ source = "mandir" }: { source?: string }) {
   const [email, setEmail] = useState("")
@@ -12,20 +12,11 @@ export default function SubscribeForm({ source = "mandir" }: { source?: string }
     e.preventDefault()
     if (!email.trim()) return
     setStatus("loading")
-    try {
-      const res = await fetch(`${API_BASE}/subscriber`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source }),
-      })
-      const json = await res.json()
-      if (res.ok && json.success) {
-        setStatus("ok"); setMsg("धन्यवाद! आपकी सदस्यता हो गई।"); setEmail("")
-      } else {
-        setStatus("err"); setMsg(json.message || "सदस्यता विफल")
-      }
-    } catch {
-      setStatus("err"); setMsg("कुछ गड़बड़ हुई, पुनः प्रयास करें")
+    const result = await subscribeEmail(email, source)
+    if (result.ok) {
+      setStatus("ok"); setMsg("धन्यवाद! आपकी सदस्यता हो गई।"); setEmail("")
+    } else {
+      setStatus("err"); setMsg(result.message || "सदस्यता विफल")
     }
   }
 
