@@ -1,18 +1,6 @@
 import Image from "next/image"
 import { httpsStorageUrl } from "@/lib/api"
-
-// Hosts configured in next.config.mjs `images.remotePatterns`
-const OPTIMIZED_HOSTS = new Set(["storage.shreetripurasundari.com"])
-
-function canOptimize(src: string) {
-  if (src.startsWith("/")) return true
-  try {
-    const u = new URL(src)
-    return u.protocol === "https:" && OPTIMIZED_HOSTS.has(u.hostname)
-  } catch {
-    return false
-  }
-}
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 interface CmsImageProps {
   src: string
@@ -23,8 +11,9 @@ interface CmsImageProps {
 }
 
 // Renders an admin-supplied image URL (normally from the storage service) inside a
-// `relative` parent. Hosts we haven't whitelisted are shown as-is instead of failing.
+// `relative` parent. Storage images are proxied through /api/img so the origin is
+// never visible in the browser.
 export default function CmsImage({ src: rawSrc, alt, sizes, className, priority }: CmsImageProps) {
-  const src = httpsStorageUrl(rawSrc)
-  return <Image src={src} alt={alt} fill sizes={sizes} quality={75} priority={priority} className={className} unoptimized={!canOptimize(src)} />
+  const src = toProxyImgUrl(httpsStorageUrl(rawSrc))
+  return <Image src={src} alt={alt} fill sizes={sizes} quality={75} priority={priority} className={className} />
 }
