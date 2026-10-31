@@ -36,7 +36,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
               "img-src 'self' data: blob:",
-              "frame-src https://www.google.com",
+              "frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
               "connect-src 'self'",
               "object-src 'none'",
               "base-uri 'self'",
