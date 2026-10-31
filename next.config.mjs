@@ -44,7 +44,7 @@ const nextConfig = {
               // Local images + data URIs (PhotoPicker previews) + blob (canvas poster)
               "img-src 'self' data: blob:",
               // Google Maps embed
-              "frame-src https://www.google.com",
+              "frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
               // API calls go to self only (backend called server-side)
               "connect-src 'self'",
               "object-src 'none'",
