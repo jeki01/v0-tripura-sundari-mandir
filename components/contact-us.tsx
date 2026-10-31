@@ -4,8 +4,9 @@ import { useState } from "react"
 import { SectionHeading } from "@/components/ornaments"
 import { Phone, Mail, Navigation, MapPin } from "lucide-react"
 import Link from "next/link"
-import { API_BASE, type SocialLink } from "@/lib/api"
+import type { SocialLink } from "@/lib/api"
 import { SocialIcon, platformMeta } from "@/components/social-icons"
+import { contactMessage, subscribeEmail } from "@/app/actions/subscribe"
 
 export default function ContactSection({ socialLinks = [] }: { socialLinks?: SocialLink[] }) {
     const [form, setForm] = useState({
@@ -27,30 +28,17 @@ export default function ContactSection({ socialLinks = [] }: { socialLinks?: Soc
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         setBusy(true); setContactMsg("")
-        try {
-            const res = await fetch(`${API_BASE}/subscriber/contact`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
-            })
-            const json = await res.json()
-            if (res.ok && json.success) {
-                if (form.email) {
-                    fetch(`${API_BASE}/subscriber`, {
-                        method: "POST", headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email: form.email, name: form.name, source: "mandir-contact" }),
-                    }).catch(() => { })
-                }
-                setContactMsg("🙏 धन्यवाद! आपका संदेश भेज दिया गया है।")
-                setForm({ name: "", email: "", phone: "", message: "" })
-            } else {
-                setContactMsg(json.message || "संदेश नहीं भेजा जा सका")
+        const result = await contactMessage(form)
+        if (result.ok) {
+            if (form.email) {
+                subscribeEmail(form.email, "mandir-contact", form.name).catch(() => {})
             }
-        } catch {
-            setContactMsg("कुछ गड़बड़ हुई, पुनः प्रयास करें")
-        } finally {
-            setBusy(false)
+            setContactMsg("🙏 धन्यवाद! आपका संदेश भेज दिया गया है।")
+            setForm({ name: "", email: "", phone: "", message: "" })
+        } else {
+            setContactMsg(result.message || "संदेश नहीं भेजा जा सका")
         }
+        setBusy(false)
     }
 
     // Newsletter subscribe only — independent from the Reach Out form's own state,
@@ -59,17 +47,9 @@ export default function ContactSection({ socialLinks = [] }: { socialLinks?: Soc
         e.preventDefault()
         if (!newsletterEmail) return
         setSubMsg("")
-        try {
-            const res = await fetch(`${API_BASE}/subscriber`, {
-                method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: newsletterEmail, source: "mandir-newsletter" }),
-            })
-            const json = await res.json()
-            setSubMsg(res.ok && json.success ? "धन्यवाद! सदस्यता हो गई।" : (json.message || "सदस्यता विफल"))
-            if (res.ok && json.success) setNewsletterEmail("")
-        } catch {
-            setSubMsg("कुछ गड़बड़ हुई")
-        }
+        const result = await subscribeEmail(newsletterEmail, "mandir-newsletter")
+        setSubMsg(result.ok ? "धन्यवाद! सदस्यता हो गई।" : (result.message || "सदस्यता विफल"))
+        if (result.ok) setNewsletterEmail("")
     }
 
     return (

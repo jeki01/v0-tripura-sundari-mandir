@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { Bell } from "lucide-react"
-import { API_BASE } from "@/lib/api"
 import { activeNotices } from "@/lib/notices"
 
 const REFRESH_MS = 5 * 60 * 1000
@@ -18,7 +17,7 @@ export default function NoticeBar() {
     let alive = true
     const load = async () => {
       try {
-        const res = await fetch(`${API_BASE}/content/notices`, { cache: "no-store" })
+        const res = await fetch("/api/notices", { cache: "no-store" })
         if (!res.ok) return
         const json = await res.json()
         if (alive) setNotices(activeNotices(json?.data))

@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Loader2, X } from "lucide-react"
-import { API_BASE, type ShringarAvailability } from "@/lib/api"
+import type { ShringarAvailability } from "@/lib/api"
+import { bookShringar } from "@/app/actions/shringar"
 
 const MONTHS = ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"]
 const WEEKDAYS = ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"]
@@ -38,7 +39,7 @@ export default function ShringarBooking({ initial }: { initial: ShringarAvailabi
 
   const refresh = useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE}/shringar/availability`, { cache: "no-store" })
+      const res = await fetch("/api/shringar-availability", { cache: "no-store" })
       const json = await res.json()
       if (res.ok && json?.data) {
         setAvail(json.data)
@@ -113,28 +114,18 @@ export default function ShringarBooking({ initial }: { initial: ShringarAvailabi
     setError("")
     if (!selected) return setError("कृपया एक उपलब्ध तिथि चुनें")
     setBusy(true)
-    try {
-      const res = await fetch(`${API_BASE}/shringar/book`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, email, date: selected, website }),
-      })
-      const json = await res.json().catch(() => ({}))
-      if (res.ok && json.success) {
-        setBookedDate(selected)
-        setStep("done")
+    const result = await bookShringar({ name, phone, email, date: selected, website })
+    setBusy(false)
+    if (result.ok) {
+      setBookedDate(selected)
+      setStep("done")
+      refresh()
+    } else {
+      setError(result.message || "कुछ गड़बड़ हुई, कृपया पुनः प्रयास करें")
+      if (result.conflict) {
+        setSelected("")
         refresh()
-      } else {
-        setError(json.message || "कुछ गड़बड़ हुई, कृपया पुनः प्रयास करें")
-        if (res.status === 409) {
-          setSelected("")
-          refresh()
-        }
       }
-    } catch {
-      setError("नेटवर्क में समस्या है, कृपया पुनः प्रयास करें")
-    } finally {
-      setBusy(false)
     }
   }
 

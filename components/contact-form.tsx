@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { API_BASE } from "@/lib/api"
+import { contactMessage, subscribeEmail } from "@/app/actions/subscribe"
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" })
@@ -13,29 +13,15 @@ export default function ContactForm() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus("loading")
-    try {
-      const res = await fetch(`${API_BASE}/subscriber/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      })
-      const json = await res.json()
-      if (res.ok && json.success) {
-        // also subscribe if opted in and email present
-        if (subscribe && form.email) {
-          fetch(`${API_BASE}/subscriber`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: form.email, name: form.name, source: "mandir-contact" }),
-          }).catch(() => {})
-        }
-        setStatus("ok"); setMsg("धन्यवाद! आपका संदेश भेज दिया गया है।")
-        setForm({ name: "", email: "", phone: "", message: "" })
-      } else {
-        setStatus("err"); setMsg(json.message || "संदेश नहीं भेजा जा सका")
+    const result = await contactMessage(form)
+    if (result.ok) {
+      if (subscribe && form.email) {
+        subscribeEmail(form.email, "mandir-contact", form.name).catch(() => {})
       }
-    } catch {
-      setStatus("err"); setMsg("कुछ गड़बड़ हुई, पुनः प्रयास करें")
+      setStatus("ok"); setMsg("धन्यवाद! आपका संदेश भेज दिया गया है।")
+      setForm({ name: "", email: "", phone: "", message: "" })
+    } else {
+      setStatus("err"); setMsg(result.message || "संदेश नहीं भेजा जा सका")
     }
   }
 

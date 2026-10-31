@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { CheckCircle2, Loader2, Send } from "lucide-react"
-import { API_BASE } from "@/lib/api"
 import PhotoPicker from "@/components/photo-picker"
+import { submitForm } from "@/app/actions/submissions"
 
 const field =
   "w-full rounded-lg border border-[#C8941A]/50 bg-white p-3 text-[#3A2A1A] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
@@ -15,14 +15,7 @@ async function send(kind: "testimonial" | "grievance", values: Record<string, st
   const form = new FormData()
   Object.entries(values).forEach(([k, v]) => form.append(k, v))
   photos.forEach((p) => form.append("images", p, p.name))
-  try {
-    const res = await fetch(`${API_BASE}/submissions/${kind}`, { method: "POST", body: form })
-    const json = await res.json().catch(() => ({}))
-    if (res.ok && json.success) return { ok: true as const, ref: json.data?.ref as string }
-    return { ok: false as const, message: (json.message as string) || "भेजा नहीं जा सका, कृपया पुनः प्रयास करें" }
-  } catch {
-    return { ok: false as const, message: "इंटरनेट / सर्वर की समस्या — कृपया कुछ देर बाद पुनः प्रयास करें" }
-  }
+  return submitForm(kind, form)
 }
 
 // The hidden "website" box is for bots only; people never see or fill it.

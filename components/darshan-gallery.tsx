@@ -4,8 +4,7 @@ import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Check, ChevronLeft, ChevronRight, Copy, Download, Heart, Share2 } from "lucide-react"
 import { darshanId, hindiDateLine, shareMessage, type DarshanContent } from "@/lib/darshan"
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+import { toggleDarshanLike } from "@/app/actions/darshan"
 
 function useDarshanLike() {
   const [liked, setLiked] = useState(false)
@@ -24,7 +23,7 @@ function useDarshanLike() {
       setLiked(localStorage.getItem("darshan_liked") === "1")
     } catch {}
     visitorIdRef.current = id
-    fetch(`${API_BASE}/darshan/likes`)
+    fetch("/api/darshan-likes")
       .then((r) => r.json())
       .then((d) => { if (d.count !== undefined) setCount(d.count) })
       .catch(() => {})
@@ -37,12 +36,7 @@ function useDarshanLike() {
     setLoading(true)
     try { localStorage.setItem("darshan_liked", next ? "1" : "0") } catch {}
     try {
-      const r = await fetch(`${API_BASE}/darshan/like`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ visitorId: visitorIdRef.current, liked: next }),
-      })
-      const d = await r.json()
+      const d = await toggleDarshanLike(visitorIdRef.current, next)
       if (d.count !== undefined) setCount(d.count)
     } catch {}
     setLoading(false)
