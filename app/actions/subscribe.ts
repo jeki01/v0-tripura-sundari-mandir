@@ -1,12 +1,14 @@
 "use server"
 
-const API = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+import { mandirHeaders } from "@/lib/backend-headers"
+
+const API = process.env.API_URL || "https://backend.shreetripurasundari.com"
 
 export async function subscribeEmail(email: string, source: string, name?: string) {
   try {
     const res = await fetch(`${API}/subscriber`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: mandirHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ email, source, ...(name ? { name } : {}) }),
     })
     const json = await res.json().catch(() => ({}))
@@ -20,7 +22,7 @@ export async function contactMessage(form: { name: string; email: string; phone:
   try {
     const res = await fetch(`${API}/subscriber/contact`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: mandirHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify(form),
     })
     const json = await res.json().catch(() => ({}))

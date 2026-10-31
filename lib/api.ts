@@ -1,6 +1,7 @@
 // Base URL of the shared portal backend (where blog/CMS content lives).
+// Use a plain (non-NEXT_PUBLIC) env var so this value stays server-side only.
 export const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+  process.env.API_URL || "https://backend.shreetripurasundari.com"
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://shreetripurasundari.com").replace(/\/$/, "")
 
