@@ -46,6 +46,7 @@ function useDarshanLike() {
 }
 import { makePoster } from "@/lib/darshan-poster"
 import { downloadImage, fileNameFor, loadFile, openPlain, saveFile } from "@/lib/darshan-files"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 const SITE_URL = "https://shreetripurasundari.com"
 
@@ -231,7 +232,7 @@ export default function DarshanGallery({ darshan, initialDate }: { darshan: Dars
                     {images.map((url, i) => (
                       <li key={url + i} className="relative aspect-[3/4] w-full shrink-0 snap-center bg-[#FFE9B8]">
                         <Image
-                          src={url}
+                          src={toProxyImgUrl(url)}
                           alt={`माँ त्रिपुरा सुंदरी के आज के दर्शन — ${dateLine} (${i + 1}/${images.length})`}
                           fill
                           sizes="(min-width: 640px) 400px, 340px"

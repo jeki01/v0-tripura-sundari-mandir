@@ -7,6 +7,7 @@ import ScrollProgress from "@/components/scroll-progress"
 import DarshanSingleActions from "@/components/darshan-single-actions"
 import { SectionHeading } from "@/components/ornaments"
 import { SITE_URL, httpsStorageUrl } from "@/lib/api"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 import { fetchDarshan, findDarshanImage, hindiDateLine } from "@/lib/darshan"
 
 // One page per darshan picture. The link preview (WhatsApp, Facebook, ...) is read from this page's <head>,
@@ -52,7 +53,8 @@ export default async function DarshanPage({ params }: Props) {
     if (darshan.images.length) redirect("/#aaj-ke-darshan")
     notFound()
   }
-  const image = httpsStorageUrl(src) // shown on the page; the preview (<head>) uses the absolute address
+  const storageImage = httpsStorageUrl(src) // real URL for OG metadata and download
+  const image = toProxyImgUrl(storageImage)  // proxy URL for page display
 
   return (
     <div className="min-h-screen bg-[#FFF4E6]">
@@ -73,7 +75,7 @@ export default async function DarshanPage({ params }: Props) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={image} alt={`माँ त्रिपुरा सुंदरी के आज के दर्शन`} className="block aspect-[3/4] w-full object-cover" />
                 <div className="p-3 text-left">
-                  <DarshanSingleActions src={image} link={`${SITE_URL}/darshan/${id}`} caption={darshan.caption} closing={darshan.closing} />
+                  <DarshanSingleActions src={storageImage} link={`${SITE_URL}/darshan/${id}`} caption={darshan.caption} closing={darshan.closing} />
                 </div>
               </div>
             </div>

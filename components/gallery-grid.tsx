@@ -3,21 +3,11 @@
 import { useCallback, useEffect, useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 export interface GalleryItem {
   src: string
   caption?: string
-}
-
-const OPTIMIZED_HOSTS = new Set(["storage.shreetripurasundari.com"])
-function canOptimize(src: string) {
-  if (src.startsWith("/")) return true
-  try {
-    const u = new URL(src)
-    return u.protocol === "https:" && OPTIMIZED_HOSTS.has(u.hostname)
-  } catch {
-    return false
-  }
 }
 
 // Photo grid with a keyboard-friendly full-screen viewer
@@ -59,12 +49,11 @@ export default function GalleryGrid({ items, columns = "md:grid-cols-3 lg:grid-c
             className="group relative aspect-[4/3] overflow-hidden rounded-xl border-[3px] border-[#E0A100]/70 bg-[#2B0A0A] transition hover:-translate-y-1"
           >
             <Image
-              src={it.src}
+              src={toProxyImgUrl(it.src)}
               alt={it.caption || `फ़ोटो ${i + 1}`}
               fill
               sizes="(min-width: 1024px) 24vw, (min-width: 768px) 32vw, 48vw"
               quality={70}
-              unoptimized={!canOptimize(it.src)}
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
             {it.caption && (
@@ -109,7 +98,7 @@ export default function GalleryGrid({ items, columns = "md:grid-cols-3 lg:grid-c
           )}
           <figure className="relative max-h-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={active.src} alt={active.caption || ""} className="max-h-[82vh] w-auto rounded-lg object-contain" />
+            <img src={toProxyImgUrl(active.src)} alt={active.caption || ""} className="max-h-[82vh] w-auto rounded-lg object-contain" />
             {active.caption && <figcaption className="mt-3 text-center text-sm text-white/90">{active.caption}</figcaption>}
           </figure>
         </div>
