@@ -43,7 +43,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
               // Local images + data URIs (PhotoPicker previews) + blob (canvas poster)
-              "img-src 'self' data: blob:",
+              "img-src 'self' data: blob: https://i.ytimg.com",
               // Google Maps embed
               "frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
               // API calls go to self only (backend called server-side)
