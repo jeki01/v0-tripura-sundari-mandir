@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { X } from "lucide-react"
 import { hindiDateLine } from "@/lib/darshan"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 const SHOW_FOR_MS = 5000
 const SEEN_KEY = "darshan-popup-seen"
@@ -72,7 +73,7 @@ export default function DarshanPopup({ src, title = "आज के दर्श�
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={src}
+          src={toProxyImgUrl(src)}
           alt={`${title} — माँ त्रिपुरा सुंदरी`}
           onLoad={() => setLoaded(true)}
           onError={close}

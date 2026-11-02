@@ -40,20 +40,6 @@ export function httpsStorageUrl(url: string): string {
   return typeof url === "string" ? url.replace(/^http:\/\/(storage\.shreetripurasundari\.com)(?=[/:?#]|$)/i, "https://$1") : url
 }
 
-// CSP allows only 'self' for img-src, so storage URLs must be proxied through /api/img.
-export function storageImgProxy(url?: string | null): string | null {
-  if (!url) return null
-  try {
-    const upgraded = httpsStorageUrl(url)
-    const u = new URL(upgraded)
-    if (/storage\.shreetripurasundari\.com/i.test(u.hostname)) {
-      return `/api/img?p=${encodeURIComponent(u.pathname)}`
-    }
-    return upgraded
-  } catch {
-    return url
-  }
-}
 
 export function hasContent(c: any) {
   return !!(c && (c.html || (Array.isArray(c.items) && c.items.length) || (c.items && !Array.isArray(c.items) && Object.keys(c.items).length)))

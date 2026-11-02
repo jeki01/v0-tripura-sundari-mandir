@@ -3,6 +3,7 @@ import { CalendarDays, Play } from "lucide-react"
 import { Lotus } from "@/components/ornaments"
 import { aartiPath, type AartiItem } from "@/lib/aarti"
 import { hindiDate } from "@/lib/darshan"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 // One video / article in a list. Plain markup so it can be used by server and client components.
 export default function AartiCard({ item }: { item: AartiItem }) {
@@ -12,7 +13,7 @@ export default function AartiCard({ item }: { item: AartiItem }) {
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl bg-gradient-to-br from-[#5A0000] to-[#B30000]">
         {item.image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={item.image} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <img src={toProxyImgUrl(item.image)} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
         ) : (
           <span className="absolute inset-0 flex items-center justify-center text-[#FFD700]/70">
             <Lotus size={56} />
