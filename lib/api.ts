@@ -1,3 +1,5 @@
+import { mandirHeaders } from "@/lib/backend-headers"
+
 // Base URL of the shared portal backend (where blog/CMS content lives).
 // Use a plain (non-NEXT_PUBLIC) env var so this value stays server-side only.
 export const API_BASE =
@@ -7,7 +9,7 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://shreetripu
 
 export async function fetchPublishedBlogs() {
   try {
-    const res = await fetch(`${API_BASE}/blog?status=published`, { cache: "no-store" })
+    const res = await fetch(`${API_BASE}/blog?status=published`, { cache: "no-store", headers: mandirHeaders() })
     if (!res.ok) return []
     const json = await res.json()
     return Array.isArray(json?.data) ? json.data : []
@@ -20,7 +22,9 @@ export async function fetchPublishedBlogs() {
 // instead of hitting the API on every request.
 export async function fetchContent(key: string, opts?: { revalidate?: number }) {
   try {
-    const init = opts?.revalidate ? { next: { revalidate: opts.revalidate } } : { cache: "no-store" as const }
+    const init = opts?.revalidate
+      ? { next: { revalidate: opts.revalidate }, headers: mandirHeaders() }
+      : { cache: "no-store" as const, headers: mandirHeaders() }
     const res = await fetch(`${API_BASE}/content/${encodeURIComponent(key)}`, init)
     if (!res.ok) return null
     const json = await res.json()
@@ -49,7 +53,7 @@ export function isManaged(c: any) {
 
 export async function fetchBlogBySlug(slug: string) {
   try {
-    const res = await fetch(`${API_BASE}/blog/slug/${encodeURIComponent(slug)}`, { cache: "no-store" })
+    const res = await fetch(`${API_BASE}/blog/slug/${encodeURIComponent(slug)}`, { cache: "no-store", headers: mandirHeaders() })
     if (!res.ok) return null
     const json = await res.json()
     return json?.data || null
@@ -124,7 +128,7 @@ export type ShringarAvailability = { from: string; to: string; unavailable: stri
 
 export async function fetchShringarAvailability(): Promise<ShringarAvailability | null> {
   try {
-    const res = await fetch(`${API_BASE}/shringar/availability`, { cache: "no-store" })
+    const res = await fetch(`${API_BASE}/shringar/availability`, { cache: "no-store", headers: mandirHeaders() })
     if (!res.ok) return null
     const json = await res.json()
     return json?.data || null
