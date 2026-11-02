@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { ExternalLink, Play, X } from "lucide-react"
 import type { GalleryVideo } from "@/lib/gallery-video"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 export type VideoItem = { video: GalleryVideo; caption?: string }
 
@@ -47,7 +48,7 @@ export default function VideoGrid({ items }: { items: VideoItem[] }) {
           >
             {video.thumb ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={video.thumb} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <img src={toProxyImgUrl(video.thumb)} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
             ) : (
               <span className="absolute inset-0 bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#FCAF45]" aria-hidden="true" />
             )}
