@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { X } from "lucide-react"
+import { storageImgProxy } from "@/lib/api"
 
 interface VisitItem {
   name?: string
@@ -29,7 +30,7 @@ export default function RecentVisitsGrid({ items }: { items: VisitItem[] }) {
           >
             {v.photo ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={v.photo} alt={v.name} className="w-full h-44 object-cover rounded-lg mb-3" />
+              <img src={storageImgProxy(v.photo) ?? v.photo} alt={v.name} className="w-full h-44 object-cover rounded-lg mb-3" />
             ) : null}
             <h3 className="text-lg font-semibold text-[#B30000] text-center">{v.name}</h3>
             {v.designation && <p className="text-sm text-gray-600 text-center">{v.designation}</p>}
@@ -63,7 +64,7 @@ export default function RecentVisitsGrid({ items }: { items: VisitItem[] }) {
             <div className="p-5 space-y-4">
               {active.photo && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={active.photo} alt={active.name} className="w-full h-64 object-cover rounded-xl" />
+                <img src={storageImgProxy(active.photo) ?? active.photo} alt={active.name} className="w-full h-64 object-cover rounded-xl" />
               )}
               <div>
                 {active.designation && <p className="text-sm font-medium text-gray-700">{active.designation}</p>}
@@ -84,7 +85,7 @@ export default function RecentVisitsGrid({ items }: { items: VisitItem[] }) {
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                     {active.images.map((img, idx) => (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img key={idx} src={img} alt="" className="w-full h-24 object-cover rounded-lg border" />
+                      <img key={idx} src={storageImgProxy(img) ?? img} alt="" className="w-full h-24 object-cover rounded-lg border" />
                     ))}
                   </div>
                 </div>
