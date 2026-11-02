@@ -4,6 +4,7 @@ import { PageShell, EmptyNote } from "@/components/cms"
 import PressShare from "@/components/press-share"
 import { SITE_URL, fetchContent } from "@/lib/api"
 import { normalizePress, pressPath } from "@/lib/press"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 export const dynamic = "force-dynamic"
 
@@ -36,7 +37,7 @@ export default async function PressReleasePage() {
                 </div>
                 {p.image && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.image} alt="" loading={i === 0 ? "eager" : "lazy"} className="mb-4 aspect-[16/9] w-full rounded-xl border border-[#C8941A]/50 object-cover" />
+                  <img src={toProxyImgUrl(p.image)} alt="" loading={i === 0 ? "eager" : "lazy"} className="mb-4 aspect-[16/9] w-full rounded-xl border border-[#C8941A]/50 object-cover" />
                 )}
                 <h3 className="font-display text-xl leading-snug text-[#8F0000]">
                   <Link href={pressPath(p.id)} className="hover:underline">
