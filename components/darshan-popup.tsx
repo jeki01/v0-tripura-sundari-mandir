@@ -6,14 +6,11 @@ import { hindiDateLine } from "@/lib/darshan"
 import { toProxyImgUrl } from "@/lib/proxy-img"
 
 const SHOW_FOR_MS = 5000
-
-function seenKey() {
-  return `darshan-popup-${new Date().toISOString().slice(0, 10)}`
-}
+const SEEN_KEY = "darshan-popup-seen"
 
 // "Today's Darshan" pop-up when the home page opens: the first picture of the day in full (not cropped),
-// closing by itself after 5 seconds or with the cross at the top right. It appears once per calendar day
-// (resets at midnight), so going back to the home page on the same day does not show it again.
+// closing by itself after 5 seconds or with the cross at the top right. It appears once per browser
+// session (tab open → close), so going back to the home page does not show it again.
 export default function DarshanPopup({ src, title = "आज के दर्शन" }: { src: string; title?: string }) {
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -21,7 +18,7 @@ export default function DarshanPopup({ src, title = "आज के दर्श�
 
   useEffect(() => {
     try {
-      if (localStorage.getItem(seenKey())) return
+      if (sessionStorage.getItem(SEEN_KEY)) return
     } catch {}
     setDate(hindiDateLine())
     setOpen(true)
@@ -30,7 +27,7 @@ export default function DarshanPopup({ src, title = "आज के दर्श�
   const close = useCallback(() => {
     setOpen(false)
     try {
-      localStorage.setItem(seenKey(), "1")
+      sessionStorage.setItem(SEEN_KEY, "1")
     } catch {}
   }, [])
 
