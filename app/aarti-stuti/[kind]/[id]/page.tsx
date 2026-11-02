@@ -14,6 +14,7 @@ import { SITE_URL } from "@/lib/api"
 import { hindiDate } from "@/lib/darshan"
 import { aartiPath, fetchAartiItems, stripHtml, type AartiItem } from "@/lib/aarti"
 import { sanitizeCmsHtml } from "@/lib/sanitize"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 // One page per video / article. Title, description and picture of the link preview are written into the page's
 // <head> on the server, so WhatsApp and search engines can read them.
@@ -125,7 +126,7 @@ export default async function AartiDetailPage({ params }: Props) {
                 {item.image && (
                   <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-3xl border-[3px] border-[#E0A100]/70">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
+                    <img src={toProxyImgUrl(item.image)} alt={item.title} className="h-full w-full object-cover" />
                   </div>
                 )}
                 <div className="temple-card mt-8 p-6 sm:p-10">

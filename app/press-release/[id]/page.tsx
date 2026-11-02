@@ -10,6 +10,7 @@ import PressShare from "@/components/press-share"
 import { OrnamentDivider } from "@/components/ornaments"
 import { SITE_URL } from "@/lib/api"
 import { fetchPress, pressPath } from "@/lib/press"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 // One page per press release. Title, description and picture for the link preview (WhatsApp, Facebook, ...)
 // are written into the page's <head> on the server.
@@ -77,7 +78,7 @@ export default async function PressDetailPage({ params }: Props) {
             {item.image && (
               <div className="mt-8 overflow-hidden rounded-3xl border-[3px] border-[#E0A100]/70">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.image} alt={item.title} className="block aspect-[16/9] w-full object-cover" />
+                <img src={toProxyImgUrl(item.image)} alt={item.title} className="block aspect-[16/9] w-full object-cover" />
               </div>
             )}
 
