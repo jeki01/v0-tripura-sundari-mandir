@@ -47,10 +47,12 @@ const nextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
-              // Local images + data URIs (PhotoPicker previews) + blob (canvas poster)
-              "img-src 'self' data: blob: https://i.ytimg.com",
-              // Google Maps embed
-              "frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
+              // Local images + data URIs (PhotoPicker previews) + blob (canvas poster) + Vimeo CDN
+              "img-src 'self' data: blob: https://i.ytimg.com https://*.vimeocdn.com",
+              // Google Maps embed + Vimeo
+              "frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com",
+              // Vimeo video CDN
+              "media-src 'self' https://vimeo.com https://*.vimeocdn.com https://*.vimeo.com",
               // API calls go to self only (backend called server-side)
               "connect-src 'self'",
               "object-src 'none'",
