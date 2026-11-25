@@ -17,7 +17,12 @@ export default function NoticeBar() {
     let alive = true
     const load = async () => {
       try {
-        const res = await fetch("/api/notices", { cache: "no-store" })
+        const API = process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+        const KEY = process.env.NEXT_PUBLIC_MANDIR_API_KEY || ""
+        const res = await fetch(`${API}/content/notices`, {
+          cache: "no-store",
+          headers: KEY ? { "X-Api-Key": KEY } : {},
+        })
         if (!res.ok) return
         const json = await res.json()
         if (alive) setNotices(activeNotices(json?.data))

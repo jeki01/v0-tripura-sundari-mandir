@@ -23,7 +23,9 @@ function useDarshanLike() {
       setLiked(localStorage.getItem("darshan_liked") === "1")
     } catch {}
     visitorIdRef.current = id
-    fetch("/api/darshan-likes")
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+    const KEY = process.env.NEXT_PUBLIC_MANDIR_API_KEY || ""
+    fetch(`${API}/darshan/likes`, { headers: KEY ? { "X-Api-Key": KEY } : {} })
       .then((r) => r.json())
       .then((d) => { if (d.count !== undefined) setCount(d.count) })
       .catch(() => {})
