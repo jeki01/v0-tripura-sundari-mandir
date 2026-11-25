@@ -8,7 +8,8 @@ export async function GET() {
     const res = await fetch(`${API}/darshan/likes`, { cache: "no-store", headers: mandirHeaders() })
     const json = await res.json().catch(() => ({}))
     return NextResponse.json(json)
-  } catch {
+  } catch (err) {
+    console.error("[/api/darshan-likes] fetch failed:", err)
     return NextResponse.json({}, { status: 500 })
   }
 }

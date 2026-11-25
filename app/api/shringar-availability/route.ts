@@ -8,7 +8,8 @@ export async function GET() {
     const res = await fetch(`${API}/shringar/availability`, { cache: "no-store", headers: mandirHeaders() })
     const json = await res.json().catch(() => ({}))
     return NextResponse.json(json)
-  } catch {
+  } catch (err) {
+    console.error("[/api/shringar-availability] fetch failed:", err)
     return NextResponse.json({ data: null }, { status: 500 })
   }
 }
