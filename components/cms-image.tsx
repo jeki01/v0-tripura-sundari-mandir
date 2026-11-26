@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { httpsStorageUrl } from "@/lib/api"
+import { toProxyImgUrl } from "@/lib/proxy-img"
 
 interface CmsImageProps {
   src: string
@@ -9,8 +10,7 @@ interface CmsImageProps {
   priority?: boolean
 }
 
-// Renders an admin-supplied image URL directly from storage (browser-side fetch, no server proxy).
 export default function CmsImage({ src: rawSrc, alt, sizes, className, priority }: CmsImageProps) {
-  const src = httpsStorageUrl(rawSrc)
-  return <Image src={src} alt={alt} fill sizes={sizes} quality={75} priority={priority} className={className} unoptimized />
+  const src = toProxyImgUrl(httpsStorageUrl(rawSrc))
+  return <Image src={src} alt={alt} fill sizes={sizes} quality={75} priority={priority} className={className} />
 }

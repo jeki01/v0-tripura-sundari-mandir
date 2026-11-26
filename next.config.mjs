@@ -8,16 +8,17 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    // Serve resized AVIF/WebP instead of the raw files
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [360, 480, 640, 768, 1024, 1280, 1536, 1920],
-    imageSizes: [32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
-    // Storage images are proxied through /api/img and served as local paths
+    // Vercel Hobby plan image optimization quota exhausted (402).
+    // Serve images directly until upgraded to Pro.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "i.ytimg.com",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.shreetripurasundari.com",
       },
     ],
   },
@@ -47,14 +48,12 @@ const nextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
               "font-src 'self' fonts.gstatic.com",
-              // Local images + data URIs (PhotoPicker previews) + blob (canvas poster) + Vimeo CDN + storage
-              "img-src 'self' data: blob: https://i.ytimg.com https://*.vimeocdn.com https://storage.shreetripurasundari.com",
+              "img-src 'self' data: blob: https://i.ytimg.com https://*.vimeocdn.com",
               // Google Maps embed + Vimeo
               "frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com",
               // Vimeo video CDN
               "media-src 'self' https://vimeo.com https://*.vimeocdn.com https://*.vimeo.com",
-              // API calls: self + direct backend (client-side calls)
-              "connect-src 'self' https://backend.shreetripurasundari.com",
+              "connect-src 'self'",
               "object-src 'none'",
               "base-uri 'self'",
             ].join("; "),

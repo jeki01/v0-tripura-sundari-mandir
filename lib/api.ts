@@ -1,9 +1,7 @@
 import { mandirHeaders } from "@/lib/backend-headers"
 
-// Base URL of the shared portal backend.
-// Falls back to NEXT_PUBLIC_API_URL in browser (client components).
 export const API_BASE =
-  process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
+  process.env.API_URL || "https://backend.shreetripurasundari.com"
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://shreetripurasundari.com").replace(/\/$/, "")
 

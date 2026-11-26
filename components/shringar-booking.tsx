@@ -39,12 +39,7 @@ export default function ShringarBooking({ initial }: { initial: ShringarAvailabi
 
   const refresh = useCallback(async () => {
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://backend.shreetripurasundari.com"
-      const KEY = process.env.NEXT_PUBLIC_MANDIR_API_KEY || ""
-      const res = await fetch(`${API}/shringar/availability`, {
-        cache: "no-store",
-        headers: KEY ? { "X-Api-Key": KEY } : {},
-      })
+      const res = await fetch("/api/shringar-availability", { cache: "no-store" })
       const json = await res.json()
       if (res.ok && json?.data) {
         setAvail(json.data)
