@@ -5,7 +5,7 @@ import { Camera, WifiOff, AlertTriangle } from "lucide-react"
 import { SectionHeading } from "@/components/ornaments"
 import Image from "next/image"
 import Link from "next/link"
-import { fetchContent, isManaged, type SocialLink } from "@/lib/api"
+import { type SocialLink } from "@/lib/api"
 
 const IS_CURRENTLY_LIVE = true
 const YOUTUBE_CHANNEL_ID = "UClQYJEOUrS2WS4a5-8yD7cQ"
@@ -67,8 +67,15 @@ export default function LiveDarshanSection({ socialLinks = [] }: { socialLinks?:
     // it actually changed — so a page already open picks up a stream switch
     // without the visitor needing to refresh.
     const check = async () => {
-      const c = await fetchContent("live-darshan")
-      if (cancelled || !isManaged(c)) return
+      let c: any = null
+      try {
+        const res = await fetch("/api/live-darshan")
+        if (res.ok) {
+          const json = await res.json()
+          c = json?.data ?? null
+        }
+      } catch {}
+      if (cancelled || !c) return
       const items = c?.items && !Array.isArray(c.items) ? c.items : null
       const raw = items?.streamUrl?.trim() || items?.defaultUrl?.trim()
       if (!raw) return
